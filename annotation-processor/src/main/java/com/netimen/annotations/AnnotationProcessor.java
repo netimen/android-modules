@@ -13,6 +13,12 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
         super.init(processingEnv);
         add(new EventHandler(processingEnv));
         add(new CustomInjectHandler(processingEnv));
+        add(0, new CustomInjectInstanceHandler(processingEnv)); // should go before BeanHandler, so beans could use CustomInject correctly
+    }
+
+    private void add(int position, CustomInjectInstanceHandler handler) {
+       annotationHandlers.get().add(position, handler);
+        annotationHandlers.getDecorating().add(position, handler);
     }
 
     private void add(AnnotationHandler<? extends GeneratedClassHolder> handler) {

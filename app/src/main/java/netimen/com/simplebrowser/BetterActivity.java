@@ -15,8 +15,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -25,7 +23,6 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 
-import netimen.com.annotations.Event;
 import netimen.com.simplebrowser.api.Api;
 
 @EActivity(R.layout.better_activity)
@@ -46,17 +43,7 @@ public class BetterActivity extends Activity {
     ViewGroup container;
 
     @Bean
-    Api api;//, api2;
-
-    @AfterInject
-    void afterInject() {
-        toString();
-        api.event(new PageShown());
-    }
-
-    @AfterViews
-    void afterViews() {
-    }
+    Api api, api2;
 
     @Click
     void go() {
@@ -68,12 +55,4 @@ public class BetterActivity extends Activity {
         go.setEnabled(!TextUtils.isEmpty(adress));
     }
 
-    @Event
-    void onPageShown() {
-    }
-
-    @Event(PageShown.class)
-    void onPageShown2(PageShown event) {
-        event.toString();
-    }
 }
