@@ -43,7 +43,7 @@ public class BetterActivity extends Activity {
     ViewGroup container;
 
     @Bean
-    Api api, api2;
+    Api api;//, api2;
 
     @Click
     void go() {

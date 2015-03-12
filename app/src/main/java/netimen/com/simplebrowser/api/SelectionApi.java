@@ -9,6 +9,14 @@ package netimen.com.simplebrowser.api;
 
 import org.androidannotations.annotations.EBean;
 
+import netimen.com.annotations.Event;
+
 @EBean
-public class SelectionApi extends BaseApi{
+public class SelectionApi extends BaseApi {
+
+    @Event(ItemLoaded.class)
+    void onLoaded(ItemLoaded event) {
+        event.toString();
+    }
+
 }
