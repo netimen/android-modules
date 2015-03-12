@@ -48,6 +48,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 
+/**
+ * this class is a copy of AndroidAnnotationProcessor, but annotationHandlers are now protected, so we can access them
+ */
 public class AndroidAnnotationProcessorFix extends AbstractProcessor {
 
     private static final org.androidannotations.logger.Logger LOGGER = LoggerFactory.getLogger(AndroidAnnotationProcessor.class);
