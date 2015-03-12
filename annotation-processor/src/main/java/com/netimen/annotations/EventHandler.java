@@ -7,10 +7,10 @@
  */
 package com.netimen.annotations;
 
-import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JMod;
+import com.bookmate.bus.Bus;
+import com.sun.codemodel.JClass;
+import com.sun.codemodel.JFieldRef;
+import com.sun.codemodel.JInvocation;
 
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.holder.EComponentHolder;
@@ -35,8 +35,14 @@ public class EventHandler extends BaseAnnotationHandler<EComponentHolder> {
     @Override
     public void process(Element element, EComponentHolder holder) throws Exception {
 
-        JDefinedClass anonymousReceiverClass = codeModel().anonymousClass(classes().BROADCAST_RECEIVER);
-        JExpression receiverInit = JExpr._new(anonymousReceiverClass);
-        holder.getGeneratedClass().field(JMod.PRIVATE | JMod.FINAL, classes().BROADCAST_RECEIVER, "aaaa", receiverInit);
+//        JDefinedClass anonymousReceiverClass = codeModel().anonymousClass(classes().BROADCAST_RECEIVER);
+//        JExpression receiverInit = JExpr._new(anonymousReceiverClass);
+//        holder.getGeneratedClass().field(JMod.PRIVATE | JMod.FINAL, classes().BROADCAST_RECEIVER, "aaaa", receiverInit);
+
+        JFieldRef fullScreen = classes().WINDOW_MANAGER_LAYOUT_PARAMS.staticRef("FLAG_FULLSCREEN");
+        JClass busProviderClass = refClass(Bus.class);
+        final JInvocation bus = busProviderClass.staticInvoke("getBus");
+        final JInvocation register = bus.invoke("register");
+        holder.getInitBody().add(register);
     }
 }

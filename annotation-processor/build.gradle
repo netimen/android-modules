@@ -12,6 +12,7 @@ sourceSets {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':annotations')
+    compile project(':bus')
 
     compile "org.androidannotations:androidannotations:3.2"
 }

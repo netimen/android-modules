@@ -48,4 +48,5 @@ dependencies {
 
     apt project(':annotation-processor')
     compile project(':annotations')
+    compile project(':bus')
 }
