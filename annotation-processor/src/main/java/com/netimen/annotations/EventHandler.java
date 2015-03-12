@@ -75,7 +75,8 @@ public class EventHandler extends BaseAnnotationHandler<EComponentHolder> {
         onEventMethod.body().add(onEventCall);
 
         JClass busProviderClass = refClass(BusProvider.class);
-        final JInvocation getBus = busProviderClass.staticInvoke("getBus").arg(holder.getContextRef());
+//        final JInvocation getBus = busProviderClass.staticInvoke("getBus").arg(holder.getContextRef());
+        final JInvocation getBus = busProviderClass.staticInvoke("getBus");//.arg(holder.getContextRef());
         final JInvocation register = getBus.invoke("register").arg(eventClass.dotclass()).arg(_new(listenerClass));
         holder.getInitBody().add(register);
     }

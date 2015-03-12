@@ -7,5 +7,6 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
         annotationHandlers.add(new EventHandler(processingEnv));
+        annotationHandlers.add(new CustomInjectHandler(processingEnv));
     }
 }

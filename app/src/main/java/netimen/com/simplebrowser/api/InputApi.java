@@ -5,16 +5,10 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.simplebrowser;
+package netimen.com.simplebrowser.api;
 
 import org.androidannotations.annotations.EBean;
 
-import netimen.com.annotations.Event;
-
 @EBean
-public class EventHandlerBean {
-    @Event
-    void onPageShown() {
-
-    }
+public class InputApi extends BaseApi {
 }
