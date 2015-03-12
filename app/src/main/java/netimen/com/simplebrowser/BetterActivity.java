@@ -46,11 +46,12 @@ public class BetterActivity extends Activity {
     ViewGroup container;
 
     @Bean
-    Api api, api2;
+    Api api;//, api2;
 
     @AfterInject
     void afterInject() {
         toString();
+        api.event(new PageShown());
     }
 
     @AfterViews
@@ -73,5 +74,6 @@ public class BetterActivity extends Activity {
 
     @Event(PageShown.class)
     void onPageShown2(PageShown event) {
+        event.toString();
     }
 }

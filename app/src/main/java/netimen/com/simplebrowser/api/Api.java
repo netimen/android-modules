@@ -8,7 +8,6 @@
 package netimen.com.simplebrowser.api;
 
 import com.bookmate.bus.Bus;
-import com.bookmate.bus.BusProvider;
 import com.bookmate.bus.CustomInjectProvider;
 
 import org.androidannotations.annotations.AfterInject;
@@ -17,7 +16,7 @@ import org.androidannotations.annotations.EBean;
 
 @EBean
 public class Api {
-    private final Bus bus = BusProvider.initBus();
+    private final Bus bus = CustomInjectProvider.set(Bus.class, new Bus());
 
     @Bean
     InputApi inputApi;
@@ -31,5 +30,9 @@ public class Api {
     @AfterInject
     void ready() {
         toString();
+    }
+
+    public void event(Object event) {
+        bus.event(event);
     }
 }

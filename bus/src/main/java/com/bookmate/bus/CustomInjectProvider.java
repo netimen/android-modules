@@ -7,18 +7,20 @@
  */
 package com.bookmate.bus;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CustomInjectProvider {
-    private static final Map<Class<?>, Object> instances = new HashMap<>();
+    private static final Map<Class<?>, WeakReference<?>> instances = new HashMap<>();
 
-    public static <T> void set(Class<T> cls, T instance) {
-        instances.put(cls, instance);
+    public static <T> T set(Class<T> cls, T instance) {
+        instances.put(cls, new WeakReference<>(instance));
+        return instance;
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T get(Class<T> cls) {
-        return (T) instances.get(cls);
+        return (T) instances.get(cls).get();
     }
 }

@@ -8,7 +8,7 @@
 package com.netimen.annotations;
 
 import com.bookmate.bus.Bus;
-import com.bookmate.bus.BusProvider;
+import com.bookmate.bus.CustomInjectProvider;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JInvocation;
@@ -74,9 +74,8 @@ public class EventHandler extends BaseAnnotationHandler<EComponentHolder> {
             onEventCall.arg(eventVar);
         onEventMethod.body().add(onEventCall);
 
-        JClass busProviderClass = refClass(BusProvider.class);
-//        final JInvocation getBus = busProviderClass.staticInvoke("getBus").arg(holder.getContextRef());
-        final JInvocation getBus = busProviderClass.staticInvoke("getBus");//.arg(holder.getContextRef());
+        JClass providerClass = refClass(CustomInjectProvider.class);
+        final JInvocation getBus = providerClass.staticInvoke("get").arg(codeModel().ref(Bus.class).dotclass());
         final JInvocation register = getBus.invoke("register").arg(eventClass.dotclass()).arg(_new(listenerClass));
         holder.getInitBody().add(register);
     }
