@@ -8,10 +8,14 @@
 package netimen.com.annotations;
 
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.METHOD)
 public @interface Event {
-//    ComplexityLevel value() default ComplexityLevel.MEDIUM;
-//
-//    public enum ComplexityLevel {
-//        VERY_SIMPLE, SIMPLE, MEDIUM, COMPLEX, VERY_COMPLEX;
-//    }
+    @SuppressWarnings("UnusedDeclaration")
+    Class<?> value() default Object.class;
 }

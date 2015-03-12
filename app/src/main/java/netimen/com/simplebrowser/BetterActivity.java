@@ -27,7 +27,6 @@ import netimen.com.annotations.Event;
 @EActivity(R.layout.better_activity)
 @Fullscreen
 @WindowFeature(Window.FEATURE_NO_TITLE)
-@Event
 public class BetterActivity extends Activity {
 
     @ViewById(R.id.web_view)
@@ -52,4 +51,9 @@ public class BetterActivity extends Activity {
         go.setEnabled(!TextUtils.isEmpty(adress));
     }
 
+    @Event
+    void onPageShown() {}
+
+    @Event(PageShown.class)
+    void onPageShown2(PageShown event) {}
 }
