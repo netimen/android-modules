@@ -1,6 +1,7 @@
 package com.netimen.annotations;
 
-import com.netimen.annotations.handlers.BeanHandlerFix;
+import com.netimen.annotations.androidannotationsfix.AndroidAnnotationProcessorFix;
+import com.netimen.annotations.androidannotationsfix.BeanHandlerFix;
 import com.netimen.annotations.handlers.CustomInjectHandler;
 import com.netimen.annotations.handlers.CustomInjectInstanceHandler;
 import com.netimen.annotations.handlers.EBeanCustomScopeHandler;

@@ -15,7 +15,8 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.androidannotations.annotations.Bean;
+import com.netimen.annotations.BeanInitScope;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
@@ -42,8 +43,8 @@ public class BetterActivity extends Activity {
     @ViewById
     ViewGroup container;
 
-    @Bean
-    Api api;//, api2;
+    @BeanInitScope
+    Api api, api2;
 
     @Click
     void go() {

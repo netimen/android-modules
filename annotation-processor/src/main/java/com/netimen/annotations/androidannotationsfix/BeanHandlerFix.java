@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   13.03.15
  */
-package com.netimen.annotations.handlers;
+package com.netimen.annotations.androidannotationsfix;
 
 import com.netimen.annotations.EBeanCustomScope;
 

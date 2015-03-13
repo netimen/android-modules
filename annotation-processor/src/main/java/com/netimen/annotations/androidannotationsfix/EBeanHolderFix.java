@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   13.03.15
  */
-package com.netimen.annotations;
+package com.netimen.annotations.androidannotationsfix;
 
 import com.sun.codemodel.ClassType;
 import com.sun.codemodel.JAnnotatable;
@@ -56,15 +56,20 @@ public class EBeanHolderFix extends EBeanHolder {
         setExtends();
 
         // all the above just copied from super
-        addNonAAAnotations(generatedClass, annotatedElement.getAnnotationMirrors(), this);
+        addNonAAAnnotations(generatedClass, annotatedElement.getAnnotationMirrors(), this);
     }
 
-    private void addNonAAAnotations(JAnnotatable annotatable, List<? extends AnnotationMirror> annotationMirrors, GeneratedClassHolder holder) {
+    private void addNonAAAnnotations(JAnnotatable annotatable, List<? extends AnnotationMirror> annotationMirrors, GeneratedClassHolder holder) {
         for (AnnotationMirror annotationMirror : annotationMirrors) {
             JClass annotationClass = codeModelHelper.typeMirrorToJClass(annotationMirror.getAnnotationType(), holder);
-            if (!annotationClass.fullName().startsWith("org.androidannotations") && !annotationClass.fullName().startsWith(getClass().getPackage().getName())) { // avoiding our annotations
+            if (!annotationClass.fullName().startsWith("org.androidannotations") && !isOurAnnotation(annotationClass)) { // avoiding our annotations
                 codeModelHelper.addAnnotation(annotatable, annotationMirror, holder);
             }
         }
+    }
+
+    private boolean isOurAnnotation(JClass annotationClass) {
+        final String packageName = getClass().getPackage().getName();
+        return annotationClass.fullName().startsWith(packageName.substring(0, packageName.lastIndexOf('.'))); // removing .androidannotationsfix
     }
 }

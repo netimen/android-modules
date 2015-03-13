@@ -9,7 +9,7 @@ package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.CustomInjectProvider;
 import com.netimen.annotations.EBeanCustomScope;
-import com.netimen.annotations.EBeanHolderFix;
+import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
 import com.sun.codemodel.JMethod;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;

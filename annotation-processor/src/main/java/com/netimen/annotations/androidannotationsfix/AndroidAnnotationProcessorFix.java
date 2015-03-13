@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   11.03.15
  */
-package com.netimen.annotations;
+package com.netimen.annotations.androidannotationsfix;
 
 import org.androidannotations.AndroidAnnotationProcessor;
 import org.androidannotations.annotations.EActivity;

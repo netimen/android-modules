@@ -11,6 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+// CUR rename, document
 public class CustomInjectProvider {
     private static final Map<Class<?>, WeakReference<?>> instances = new HashMap<>();
 

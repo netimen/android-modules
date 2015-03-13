@@ -16,7 +16,7 @@ import org.androidannotations.annotations.Bean;
 
 @EBeanCustomScope
 public class Api {
-    private final Bus bus = CustomInjectProvider.set(Bus.class, new Bus());
+    private final Bus bus = CustomInjectProvider.set(Bus.class, new Bus()); // CUR BusHolder
 
     @Bean
     InputApi inputApi;
