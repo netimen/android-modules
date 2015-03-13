@@ -35,8 +35,8 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
 
         addDecoratingHandler(new EventHandler(processingEnv));
         addDecoratingHandler(new InjectHandler(processingEnv));
-        addDecoratingHandler(new InjectInitScopeHandler(processingEnv));
         addDecoratingHandler(0, new CustomInjectInstanceHandler(processingEnv)); // should go before BeanHandler, so beans could use CustomInject correctly
+        addDecoratingHandler(0, new InjectInitScopeHandler(processingEnv));
         addDecoratingHandler(0, new BeanInitScopeHandler(processingEnv)); // want to init the custom scope beans first, so other beans could use this instance
     }
 

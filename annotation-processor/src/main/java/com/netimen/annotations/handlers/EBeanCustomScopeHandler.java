@@ -12,7 +12,6 @@ import com.netimen.annotations.EBeanCustomScope;
 import com.netimen.annotations.MethodNames;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
 import com.sun.codemodel.JDefinedClass;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;
@@ -26,6 +25,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 import static com.sun.codemodel.JExpr._new;
+import static com.sun.codemodel.JExpr._this;
 import static com.sun.codemodel.JMod.PUBLIC;
 import static com.sun.codemodel.JMod.STATIC;
 
@@ -55,12 +55,14 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
     public void process(Element element, EBeanHolder holder) throws Exception {
 
         final JDefinedClass generatedClass = holder.getGeneratedClass();
+        generatedClass.constructors().next().body().staticInvoke(holder.refClass(InjectInstanceProvider.class), MethodNames.SET).arg(generatedClass.dotclass()).arg(_this());
+        holder.invokeInitInConstructor();
+
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
         getMethod.body()._return(holder.refClass(InjectInstanceProvider.class).staticInvoke(MethodNames.GET).arg(generatedClass.dotclass()));
 
         JMethod initMethod = generateFactoryMethod(holder, MethodNames.INIT_INSTANCE);
-        final JInvocation newInstance = _new(generatedClass).arg(initMethod.listParams()[0]);
-        initMethod.body()._return(holder.refClass(InjectInstanceProvider.class).staticInvoke(MethodNames.SET).arg(generatedClass.dotclass()).arg(newInstance));
+        initMethod.body()._return(_new(generatedClass).arg(initMethod.listParams()[0]));
     }
 
     JMethod generateFactoryMethod(EBeanHolder holder, String methodName) {
