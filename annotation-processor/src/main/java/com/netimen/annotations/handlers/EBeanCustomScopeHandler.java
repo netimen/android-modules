@@ -10,6 +10,8 @@ package com.netimen.annotations.handlers;
 import com.bookmate.bus.CustomInjectProvider;
 import com.netimen.annotations.EBeanCustomScope;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;
@@ -22,6 +24,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
+import static com.sun.codemodel.JExpr._new;
 import static com.sun.codemodel.JMod.PUBLIC;
 import static com.sun.codemodel.JMod.STATIC;
 
@@ -50,10 +53,18 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
     @Override
     public void process(Element element, EBeanHolder holder) throws Exception {
 
-        JMethod factoryMethod = holder.getGeneratedClass().method(PUBLIC | STATIC, holder.getGeneratedClass(), EBeanHolder.GET_INSTANCE_METHOD_NAME);
+        final JDefinedClass generatedClass = holder.getGeneratedClass();
+        JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
+        getMethod.body()._return(holder.refClass(CustomInjectProvider.class).staticInvoke("get").arg(generatedClass.dotclass())); // CUR "get"
 
-        factoryMethod.param(classes().CONTEXT, "context"); // used for compatibility with @Bean
+        JMethod initMethod = generateFactoryMethod(holder, BeanInitScopeHandler.INIT_INSTANCE_METHOD_NAME);
+        final JInvocation newInstance = _new(generatedClass).arg(initMethod.listParams()[0]);
+        initMethod.body()._return(holder.refClass(CustomInjectProvider.class).staticInvoke("set").arg(generatedClass.dotclass()).arg(newInstance));
+    }
 
-        factoryMethod.body()._return(holder.refClass(CustomInjectProvider.class).staticInvoke("get").arg(holder.getGeneratedClass().dotclass()));
+    JMethod generateFactoryMethod(EBeanHolder holder, String methodName) {
+        JMethod getMethod = holder.getGeneratedClass().method(PUBLIC | STATIC, holder.getGeneratedClass(), methodName);
+        getMethod.param(classes().CONTEXT, "context");
+        return getMethod;
     }
 }
