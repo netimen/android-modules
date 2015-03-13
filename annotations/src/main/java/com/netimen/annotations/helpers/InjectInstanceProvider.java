@@ -5,12 +5,13 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package com.bookmate.bus;
+package com.netimen.annotations.helpers;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("UnusedDeclaration")
 public class InjectInstanceProvider {
     private static final Map<Class<?>, WeakReference<?>> instances = new HashMap<>();
 

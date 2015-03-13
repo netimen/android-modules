@@ -8,7 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.Bus;
-import com.bookmate.bus.InjectInstanceProvider;
+import com.netimen.annotations.helpers.InjectInstanceProvider;
 import com.netimen.annotations.Event;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;

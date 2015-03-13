@@ -7,7 +7,7 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.bookmate.bus.InjectInstanceProvider;
+import com.netimen.annotations.helpers.InjectInstanceProvider;
 import com.netimen.annotations.CustomInjectInstance;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
@@ -23,7 +23,7 @@ import javax.lang.model.element.Element;
 
 import static com.sun.codemodel.JExpr._this;
 
-// CUR
+// CUR remove this
 public class CustomInjectInstanceHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     public CustomInjectInstanceHandler(ProcessingEnvironment processingEnvironment) {
