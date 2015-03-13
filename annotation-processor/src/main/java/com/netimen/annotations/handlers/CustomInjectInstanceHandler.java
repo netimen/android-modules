@@ -7,7 +7,9 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.bookmate.bus.CustomInjectProvider;
+import com.bookmate.bus.InjectInstanceProvider;
+import com.netimen.annotations.CustomInjectInstance;
+import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JInvocation;
 
@@ -19,11 +21,11 @@ import org.androidannotations.process.IsValid;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 
-import com.netimen.annotations.CustomInjectInstance;
-
 import static com.sun.codemodel.JExpr._this;
 
+// CUR
 public class CustomInjectInstanceHandler extends BaseAnnotationHandler<EComponentHolder> {
+
     public CustomInjectInstanceHandler(ProcessingEnvironment processingEnvironment) {
         super(CustomInjectInstance.class, processingEnvironment);
     }
@@ -35,8 +37,8 @@ public class CustomInjectInstanceHandler extends BaseAnnotationHandler<EComponen
 
     @Override
     public void process(Element element, EComponentHolder holder) throws Exception {
-        JClass providerClass = refClass(CustomInjectProvider.class);
-        final JInvocation set = providerClass.staticInvoke("set").arg(codeModel().ref(element.getSimpleName().toString()).dotclass()).arg(_this());
+        JClass providerClass = refClass(InjectInstanceProvider.class);
+        final JInvocation set = providerClass.staticInvoke(MethodNames.SET).arg(codeModel().ref(element.getSimpleName().toString()).dotclass()).arg(_this());
         try {
             holder.getInitBody().add(set);
         } catch (Exception e) { // I don't know why there is exception here

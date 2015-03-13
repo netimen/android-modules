@@ -7,8 +7,9 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.bookmate.bus.CustomInjectProvider;
-import com.netimen.annotations.CustomInject;
+import com.bookmate.bus.InjectInstanceProvider;
+import com.netimen.annotations.InjectCustomScope;
+import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
 
@@ -24,12 +25,12 @@ import javax.lang.model.type.TypeMirror;
 
 import static com.sun.codemodel.JExpr.ref;
 
-public class CustomInjectHandler extends BaseAnnotationHandler<EComponentHolder> {
+public class InjectCustomScopeHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     private final TargetAnnotationHelper annotationHelper;
 
-    public CustomInjectHandler(ProcessingEnvironment processingEnvironment) {
-        super(CustomInject.class, processingEnvironment);
+    public InjectCustomScopeHandler(ProcessingEnvironment processingEnvironment) {
+        super(InjectCustomScope.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 
@@ -53,6 +54,6 @@ public class CustomInjectHandler extends BaseAnnotationHandler<EComponentHolder>
         JClass injectedClass = refClass(typeMirror.toString());
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
-        holder.getInitBody().assign(injectField, codeModel().ref(CustomInjectProvider.class).staticInvoke("get").arg(injectedClass.dotclass())); // field = CustomInjectProvider.get()
+        holder.getInitBody().assign(injectField, codeModel().ref(InjectInstanceProvider.class).staticInvoke(MethodNames.GET).arg(injectedClass.dotclass())); // field = CustomInjectProvider.get()
     }
 }

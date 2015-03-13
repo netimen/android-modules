@@ -8,6 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.BeanInitScope;
+import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JInvocation;
@@ -25,7 +26,6 @@ import javax.lang.model.type.TypeMirror;
 import static com.sun.codemodel.JExpr.ref;
 
 public class BeanInitScopeHandler extends BaseAnnotationHandler<EComponentHolder> {
-    public static final String INIT_INSTANCE_METHOD_NAME = "initInstance_";
 
     private final TargetAnnotationHelper annotationHelper;
 
@@ -53,7 +53,7 @@ public class BeanInitScopeHandler extends BaseAnnotationHandler<EComponentHolder
 
         JClass injectedClass = refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(typeMirror.toString()));
         JFieldRef beanField = ref(element.getSimpleName().toString());
-        JInvocation initInstance = injectedClass.staticInvoke(INIT_INSTANCE_METHOD_NAME).arg(holder.getContextRef());
+        JInvocation initInstance = injectedClass.staticInvoke(MethodNames.INIT_INSTANCE).arg(holder.getContextRef());
 
         holder.getInitBody().assign(beanField, initInstance);
     }

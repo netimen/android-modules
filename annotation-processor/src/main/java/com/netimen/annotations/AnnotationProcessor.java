@@ -3,7 +3,7 @@ package com.netimen.annotations;
 import com.netimen.annotations.androidannotationsfix.AndroidAnnotationProcessorFix;
 import com.netimen.annotations.androidannotationsfix.BeanHandlerFix;
 import com.netimen.annotations.handlers.BeanInitScopeHandler;
-import com.netimen.annotations.handlers.CustomInjectHandler;
+import com.netimen.annotations.handlers.InjectCustomScopeHandler;
 import com.netimen.annotations.handlers.CustomInjectInstanceHandler;
 import com.netimen.annotations.handlers.EBeanCustomScopeHandler;
 import com.netimen.annotations.handlers.EventHandler;
@@ -33,7 +33,7 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
         replaceHandlerInList(annotationHandlers.get(), beanHandlerFix);
 
         addDecoratingHandler(new EventHandler(processingEnv));
-        addDecoratingHandler(new CustomInjectHandler(processingEnv));
+        addDecoratingHandler(new InjectCustomScopeHandler(processingEnv));
         addDecoratingHandler(0, new CustomInjectInstanceHandler(processingEnv)); // should go before BeanHandler, so beans could use CustomInject correctly
         addDecoratingHandler(0, new BeanInitScopeHandler(processingEnv)); // want to init the custom scope beans first, so other beans could use this instance
     }
