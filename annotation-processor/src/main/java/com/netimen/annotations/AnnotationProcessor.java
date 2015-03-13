@@ -8,6 +8,7 @@ import com.netimen.annotations.handlers.CustomInjectInstanceHandler;
 import com.netimen.annotations.handlers.EBeanCustomScopeHandler;
 import com.netimen.annotations.handlers.EventHandler;
 import com.netimen.annotations.handlers.InjectInitScopeHandler;
+import com.netimen.annotations.handlers.RequestHandler;
 
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.handler.AnnotationHandler;
@@ -34,6 +35,7 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
         replaceHandlerInList(annotationHandlers.get(), beanHandlerFix);
 
         addDecoratingHandler(new EventHandler(processingEnv));
+        addDecoratingHandler(new RequestHandler(processingEnv));
         addDecoratingHandler(new InjectHandler(processingEnv));
         addDecoratingHandler(0, new CustomInjectInstanceHandler(processingEnv)); // should go before BeanHandler, so beans could use CustomInject correctly
         addDecoratingHandler(0, new InjectInitScopeHandler(processingEnv));

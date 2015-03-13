@@ -8,6 +8,7 @@
 package netimen.com.simplebrowser.api;
 
 import com.netimen.annotations.Event;
+import com.netimen.annotations.Request;
 
 import org.androidannotations.annotations.EBean;
 
@@ -19,4 +20,7 @@ public class InputApi extends BaseApi {
         bus.event(new ItemLoaded());
     }
 
+    @Request(IsPublic.class)
+    void onIsPublic() {
+    }
 }
