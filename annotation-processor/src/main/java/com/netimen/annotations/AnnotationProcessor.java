@@ -2,6 +2,7 @@ package com.netimen.annotations;
 
 import com.netimen.annotations.androidannotationsfix.AndroidAnnotationProcessorFix;
 import com.netimen.annotations.androidannotationsfix.BeanHandlerFix;
+import com.netimen.annotations.handlers.BeanInitScopeHandler;
 import com.netimen.annotations.handlers.CustomInjectHandler;
 import com.netimen.annotations.handlers.CustomInjectInstanceHandler;
 import com.netimen.annotations.handlers.EBeanCustomScopeHandler;
@@ -9,6 +10,7 @@ import com.netimen.annotations.handlers.EventHandler;
 
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.handler.AnnotationHandler;
+import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.handler.BeanHandler;
 import org.androidannotations.helper.ModelConstants;
 import org.androidannotations.holder.GeneratedClassHolder;
@@ -33,6 +35,7 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
         addDecoratingHandler(new EventHandler(processingEnv));
         addDecoratingHandler(new CustomInjectHandler(processingEnv));
         addDecoratingHandler(0, new CustomInjectInstanceHandler(processingEnv)); // should go before BeanHandler, so beans could use CustomInject correctly
+        addDecoratingHandler(0, new BeanInitScopeHandler(processingEnv)); // want to init the custom scope beans first, so other beans could use this instance
     }
 
     void replaceHandlerInList(List<AnnotationHandler<? extends GeneratedClassHolder>> handlers, AnnotationHandler<? extends GeneratedClassHolder> handlerFix) {
@@ -43,7 +46,7 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
             }
     }
 
-    private void addDecoratingHandler(int position, CustomInjectInstanceHandler handler) {
+    private void addDecoratingHandler(int position, BaseAnnotationHandler<? extends GeneratedClassHolder> handler) {
         annotationHandlers.get().add(position, handler);
         annotationHandlers.getDecorating().add(position, handler);
     }
