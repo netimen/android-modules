@@ -1,4 +1,4 @@
-package netimen.com.annotations;
+package com.netimen.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

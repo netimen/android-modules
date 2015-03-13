@@ -1,4 +1,4 @@
-package netimen.com.annotations;
+package com.netimen.annotations;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

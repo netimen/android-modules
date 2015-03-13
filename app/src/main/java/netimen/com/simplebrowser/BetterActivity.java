@@ -51,7 +51,7 @@ public class BetterActivity extends Activity {
     }
 
     @TextChange(R.id.edit_address)
-    void onAdressChanged(CharSequence adress) {
+    void onAddressChanged(CharSequence adress) {
         go.setEnabled(!TextUtils.isEmpty(adress));
     }
 

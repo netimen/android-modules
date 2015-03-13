@@ -7,12 +7,11 @@
  */
 package netimen.com.simplebrowser.api;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-
-import netimen.com.annotations.CustomInject;
 
 @EBean
 public class BaseApi {
-    @CustomInject
+    @Bean
     Api api;
 }

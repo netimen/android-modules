@@ -7,9 +7,9 @@
  */
 package netimen.com.simplebrowser.api;
 
-import org.androidannotations.annotations.EBean;
+import com.netimen.annotations.Event;
 
-import netimen.com.annotations.Event;
+import org.androidannotations.annotations.EBean;
 
 @EBean
 public class InputApi extends BaseApi {

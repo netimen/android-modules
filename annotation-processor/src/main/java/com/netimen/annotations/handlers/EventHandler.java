@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   11.03.15
  */
-package com.netimen.annotations;
+package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.Bus;
 import com.bookmate.bus.CustomInjectProvider;
@@ -26,7 +26,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.DeclaredType;
 
-import netimen.com.annotations.Event;
+import com.netimen.annotations.Event;
 
 import static com.sun.codemodel.JExpr._new;
 import static com.sun.codemodel.JExpr.invoke;

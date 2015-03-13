@@ -3,9 +3,9 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   12.03.15
+ * Date:   13.03.15
  */
-package netimen.com.annotations;
+package com.netimen.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface CustomInjectInstance {
+public @interface EBeanCustomScope {
 }

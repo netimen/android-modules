@@ -9,15 +9,12 @@ package netimen.com.simplebrowser.api;
 
 import com.bookmate.bus.Bus;
 import com.bookmate.bus.CustomInjectProvider;
+import com.netimen.annotations.EBeanCustomScope;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
 
-import netimen.com.annotations.CustomInjectInstance;
-
-@EBean
-@CustomInjectInstance
+@EBeanCustomScope
 public class Api {
     private final Bus bus = CustomInjectProvider.set(Bus.class, new Bus());
 
