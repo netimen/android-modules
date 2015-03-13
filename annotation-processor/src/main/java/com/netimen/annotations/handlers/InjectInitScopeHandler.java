@@ -3,12 +3,12 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   12.03.15
+ * Date:   13.03.15
  */
 package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.InjectInstanceProvider;
-import com.netimen.annotations.Inject;
+import com.netimen.annotations.InjectInitScope;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -23,19 +23,19 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 
+import static com.sun.codemodel.JExpr._new;
 import static com.sun.codemodel.JExpr.ref;
 
-public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
-
+public class InjectInitScopeHandler extends BaseAnnotationHandler<EComponentHolder> {
     private final TargetAnnotationHelper annotationHelper;
 
-    public InjectHandler(ProcessingEnvironment processingEnvironment) {
-        super(Inject.class, processingEnvironment);
+    public InjectInitScopeHandler(ProcessingEnvironment processingEnvironment) {
+        super(InjectInitScope.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 
     @Override
-    public void validate(Element element, AnnotationElements validatedElements, IsValid valid) {
+    protected void validate(Element element, AnnotationElements validatedElements, IsValid valid) {
         validatorHelper.enclosingElementHasEnhancedComponentAnnotation(element, validatedElements, valid);
 
         validatorHelper.isNotPrivate(element, valid);
@@ -54,6 +54,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JClass injectedClass = refClass(typeMirror.toString());
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
-        holder.getInitBody().assign(injectField, codeModel().ref(InjectInstanceProvider.class).staticInvoke(MethodNames.GET).arg(injectedClass.dotclass())); // field = InjectInstanceProvider.get()
+        holder.getInitBody().assign(injectField, codeModel().ref(InjectInstanceProvider.class).staticInvoke(MethodNames.SET).arg(injectedClass.dotclass()).arg(_new(injectedClass))); // field = InjectInstanceProvider.set(new ...)
     }
 }
