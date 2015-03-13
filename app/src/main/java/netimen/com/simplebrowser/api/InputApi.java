@@ -16,7 +16,7 @@ public class InputApi extends BaseApi {
 
     @Event
     void onPageShown() {
-        api.event(new ItemLoaded());
+        bus.event(new ItemLoaded());
     }
 
 }

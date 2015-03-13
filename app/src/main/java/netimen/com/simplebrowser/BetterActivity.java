@@ -15,8 +15,11 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.bookmate.bus.Bus;
 import com.netimen.annotations.BeanInitScope;
+import com.netimen.annotations.Inject;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
@@ -25,6 +28,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 
 import netimen.com.simplebrowser.api.Api;
+import netimen.com.simplebrowser.api.PageShown;
 
 @EActivity(R.layout.better_activity)
 @Fullscreen
@@ -44,7 +48,15 @@ public class BetterActivity extends Activity {
     ViewGroup container;
 
     @BeanInitScope
-    Api api, api2;
+    Api api;
+
+    @Inject
+    Bus bus;
+
+    @AfterInject
+    void ready(){
+        bus.event(new PageShown());
+    }
 
     @Click
     void go() {

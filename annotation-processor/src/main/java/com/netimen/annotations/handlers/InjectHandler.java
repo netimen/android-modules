@@ -8,7 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.InjectInstanceProvider;
-import com.netimen.annotations.InjectCustomScope;
+import com.netimen.annotations.Inject;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -25,12 +25,12 @@ import javax.lang.model.type.TypeMirror;
 
 import static com.sun.codemodel.JExpr.ref;
 
-public class InjectCustomScopeHandler extends BaseAnnotationHandler<EComponentHolder> {
+public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     private final TargetAnnotationHelper annotationHelper;
 
-    public InjectCustomScopeHandler(ProcessingEnvironment processingEnvironment) {
-        super(InjectCustomScope.class, processingEnvironment);
+    public InjectHandler(ProcessingEnvironment processingEnvironment) {
+        super(Inject.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 

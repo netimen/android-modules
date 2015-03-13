@@ -29,7 +29,4 @@ public class Api {
         bus.event(new PageShown());
     }
 
-    public void event(Object event) {
-        bus.event(event);
-    }
 }
