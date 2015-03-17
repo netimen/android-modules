@@ -23,7 +23,6 @@ import javax.lang.model.element.Element;
 
 import static com.sun.codemodel.JExpr._this;
 
-// CUR remove this
 public class CustomInjectInstanceHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     public CustomInjectInstanceHandler(ProcessingEnvironment processingEnvironment) {

@@ -12,6 +12,9 @@ import com.netimen.annotations.Request;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @EBean
 public class InputApi extends BaseApi {
 
@@ -20,7 +23,18 @@ public class InputApi extends BaseApi {
         bus.event(new ItemLoaded());
     }
 
-    @Request(IsPublic.class)
-    void onIsPublic() {
+    @Request
+    List<Boolean> arePublic() {
+        return new ArrayList<>();
+    }
+
+    @Request
+    Boolean isPublic() {
+        return true;
+    }
+
+    @Request
+    boolean onIsPublic() {
+        return false;
     }
 }

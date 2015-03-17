@@ -36,4 +36,5 @@ gradle-app.setting
 
 #other stuff
 *.hprof
+hs_err*
 

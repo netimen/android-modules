@@ -3,11 +3,13 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   13.03.15
+ * Date:   17.03.15
  */
 package netimen.com.simplebrowser.api;
 
 import com.bookmate.bus.Bus;
 
-public class IsPublic extends Bus.BooleanRequest {
+import java.util.List;
+
+public class ArePublic extends Bus.Request<List<Boolean>> {
 }
