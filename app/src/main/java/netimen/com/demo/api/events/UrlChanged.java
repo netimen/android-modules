@@ -7,5 +7,11 @@
  */
 package netimen.com.demo.api.events;
 
-public class PageShown {
+public class UrlChanged {
+
+    public final boolean isEmpty;
+
+    public UrlChanged(boolean isEmpty) {
+        this.isEmpty = isEmpty;
+    }
 }

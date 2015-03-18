@@ -9,5 +9,5 @@ package netimen.com.demo.api.events;
 
 import com.bookmate.bus.Bus;
 
-public class IsPublic extends Bus.BooleanRequest {
+public class GetUrl extends Bus.Request<String> {
 }
