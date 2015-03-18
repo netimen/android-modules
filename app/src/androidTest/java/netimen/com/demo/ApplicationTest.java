@@ -1,4 +1,4 @@
-package netimen.com.simplebrowser;
+package netimen.com.demo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

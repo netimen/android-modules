@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.simplebrowser.api;
+package netimen.com.demo.api;
 
 import com.netimen.annotations.Event;
 import com.netimen.annotations.Request;
@@ -14,6 +14,8 @@ import org.androidannotations.annotations.EBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import netimen.com.demo.api.events.ItemLoaded;
 
 @EBean
 public class InputApi extends BaseApi {

@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   07.12.14
  */
-package netimen.com.simplebrowser;
+package netimen.com.demo;
 
 import android.app.Activity;
 import android.text.TextUtils;
@@ -27,13 +27,13 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 
-import netimen.com.simplebrowser.api.Api;
-import netimen.com.simplebrowser.api.PageShown;
+import netimen.com.demo.api.Api;
+import netimen.com.demo.api.events.PageShown;
 
 @EActivity(R.layout.better_activity)
 @Fullscreen
 @WindowFeature(Window.FEATURE_NO_TITLE)
-public class BetterActivity extends Activity {
+public class ManiActivity extends Activity {
 
     @ViewById(R.id.web_view)
     WebView webView;

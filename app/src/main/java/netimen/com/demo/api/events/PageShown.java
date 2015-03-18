@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.simplebrowser.api;
+package netimen.com.demo.api.events;
 
-public class ItemLoaded {
+public class PageShown {
 }

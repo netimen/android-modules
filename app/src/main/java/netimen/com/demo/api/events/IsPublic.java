@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   13.03.15
  */
-package netimen.com.simplebrowser.api;
+package netimen.com.demo.api.events;
 
 import com.bookmate.bus.Bus;
 
