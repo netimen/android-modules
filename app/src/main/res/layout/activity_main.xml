@@ -10,7 +10,8 @@
         android:id="@+id/edit_url"
         android:hint="@string/enter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textUri" />
     <Button
         android:id="@+id/go"
         android:enabled="false"
