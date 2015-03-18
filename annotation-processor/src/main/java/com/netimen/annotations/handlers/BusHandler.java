@@ -88,6 +88,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         else {
             className = methodName.startsWith("on") ? methodName.substring(2) : methodName;
             className = className.substring(0, 1).toUpperCase() + className.substring(1); // making it start from an uppercase letter
+            className = processingEnv.getOptions().get("eventsPackageName") + "." + className;
         }
 
         return codeModel().ref(className);
