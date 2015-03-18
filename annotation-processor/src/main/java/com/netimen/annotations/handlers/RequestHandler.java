@@ -46,5 +46,5 @@ public class RequestHandler extends BusHandler {
         return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, cls);
     }
 
-    // CUR remove BeanInitScope, document, test, remove CustomInjectInstance, InjectInitScope
+    // CUR remove BeanInitScope, document, test, "unused option" warning, try to load package by resourcePackageName
 }
