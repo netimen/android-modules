@@ -13,4 +13,5 @@ dependencies {
     compile project(':bus')
 
     compile "org.androidannotations:androidannotations:3.2"
+    compile 'commons-io:commons-io:2.4'
 }

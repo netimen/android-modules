@@ -24,6 +24,8 @@ import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
 
+import java.net.MalformedURLException;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -79,7 +81,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     protected abstract JClass getProcessingClass(JClass cls, Element element) throws ClassNotFoundException;
 
 
-    JClass getEventOrRequestClass(Element element, String methodName) {
+    JClass getEventOrRequestClass(Element element, String methodName) throws MalformedURLException, ClassNotFoundException {
         final DeclaredType classType = annotationHelper.extractAnnotationClassParameter(element, getTarget());
 
         String className;
@@ -88,7 +90,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         else {
             className = methodName.startsWith("on") ? methodName.substring(2) : methodName;
             className = className.substring(0, 1).toUpperCase() + className.substring(1); // making it start from an uppercase letter
-            className = processingEnv.getOptions().get("eventsPackageName") + "." + className;
+            className = SourceHelper.getClassesFullNameMap(processingEnv).get(className); // trying to guess the package
         }
 
         return codeModel().ref(className);
