@@ -30,7 +30,6 @@ public class MainActivity extends Activity {
 
     @Event
     void calc(Calc calc) {
-        result.setText(calc.number * calc.number);
+        result.setText(" " + (calc.number * calc.number));
     }
-
 }

@@ -4,6 +4,6 @@
     <string name="app_name">Square calculator</string>
     <string name="enter">Enter number</string>
     <string name="calc_button">Calc</string>
-    <string name="result_desc">x^2=</string>
+    <string name="result_desc">x^2 =</string>
 
 </resources>

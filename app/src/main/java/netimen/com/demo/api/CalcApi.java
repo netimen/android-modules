@@ -13,6 +13,7 @@ import com.netimen.annotations.Event;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
 
 import netimen.com.demo.api.events.Calc;
@@ -35,4 +36,8 @@ public class CalcApi extends BaseApi {
         bus.event(new Calc(bus.request(new GetNumber())));
     }
 
+    @EditorAction
+    void editNumber() {
+        calc();
+    }
 }
