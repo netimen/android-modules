@@ -8,31 +8,29 @@
 package netimen.com.demo;
 
 import android.app.Activity;
-import android.view.Window;
+import android.widget.TextView;
 
 import com.netimen.annotations.BeanInitScope;
+import com.netimen.annotations.Event;
 
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Fullscreen;
-import org.androidannotations.annotations.WindowFeature;
+import org.androidannotations.annotations.ViewById;
 
 import netimen.com.demo.api.Api;
+import netimen.com.demo.api.events.Calc;
 
 @EActivity(R.layout.activity_main)
-@Fullscreen
-@WindowFeature(Window.FEATURE_NO_TITLE)
 public class MainActivity extends Activity {
+
+    @ViewById
+    TextView result;
 
     @BeanInitScope
     Api api;
 
-//    @Inject
-//    Bus bus;
-//
-//    @AfterInject
-//    void ready(){
-//        bus.event(new AddressChanged());
-//    }
-
+    @Event
+    void calc(Calc calc) {
+        result.setText(calc.number * calc.number);
+    }
 
 }

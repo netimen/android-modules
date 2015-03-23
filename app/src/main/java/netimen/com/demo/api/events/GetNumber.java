@@ -9,5 +9,5 @@ package netimen.com.demo.api.events;
 
 import com.bookmate.bus.Bus;
 
-public class GetUrl extends Bus.Request<String> {
+public class GetNumber extends Bus.Request<Integer> {
 }

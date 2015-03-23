@@ -17,21 +17,21 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
 import netimen.com.demo.R;
-import netimen.com.demo.api.events.UrlChanged;
+import netimen.com.demo.api.events.NumberChanged;
 
 @EBean
-public class UrlWatcherApi extends BaseApi {
+public class NumberWatcherApi extends BaseApi {
 
     @ViewById
-    EditText editUrl;
+    EditText editNumber;
 
-    @TextChange(R.id.edit_url)
-    void onAddressChanged(CharSequence url) {
-        bus.event(new UrlChanged(TextUtils.isEmpty(url)));
+    @TextChange(R.id.edit_number)
+    void onNumberChanged(CharSequence number) {
+        bus.event(new NumberChanged(TextUtils.isEmpty(number)));
     }
 
     @Request
-    String getUrl() {
-        return editUrl.getText().toString();
+    Integer getNumber() {
+        return Integer.valueOf(editNumber.getText().toString());
     }
 }

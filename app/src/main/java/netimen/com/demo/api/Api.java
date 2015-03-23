@@ -20,8 +20,8 @@ public class Api {
     Bus bus;
 
     @Bean
-    LoadUrlApi loadUrlApi;
-//
+    CalcApi calcApi;
+
     @Bean
-    UrlWatcherApi urlWatcherApi;
+    NumberWatcherApi numberWatcherApi;
 }

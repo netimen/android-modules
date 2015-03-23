@@ -3,15 +3,14 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   12.03.15
+ * Date:   23.03.15
  */
 package netimen.com.demo.api.events;
 
-public class UrlChanged {
+public class Calc {
+    public final int number;
 
-    public final boolean isEmpty;
-
-    public UrlChanged(boolean isEmpty) {
-        this.isEmpty = isEmpty;
+    public Calc(int number) {
+        this.number = number;
     }
 }
