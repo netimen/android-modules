@@ -7,17 +7,12 @@
  */
 package netimen.com.demo.api;
 
-import com.bookmate.bus.Bus;
 import com.netimen.annotations.EBeanCustomScope;
-import com.netimen.annotations.InjectInitScope;
 
 import org.androidannotations.annotations.Bean;
 
 @EBeanCustomScope
 public class Api {
-
-    @InjectInitScope
-    Bus bus;
 
     @Bean
     CalcApi calcApi;

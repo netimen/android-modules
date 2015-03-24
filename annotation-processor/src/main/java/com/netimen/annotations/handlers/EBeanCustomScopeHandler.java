@@ -8,13 +8,11 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.EBeanCustomScope;
-import com.netimen.annotations.MethodNames;
+import com.netimen.annotations.ModuleHelper;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
-import com.netimen.annotations.helpers.Module;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JMethod;
-import com.sun.codemodel.JMod;
-import com.sun.codemodel.JVar;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;
 import org.androidannotations.holder.EBeanHolder;
@@ -26,8 +24,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
-import static com.sun.codemodel.JExpr._new;
-import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr._this;
 import static com.sun.codemodel.JMod.PUBLIC;
 import static com.sun.codemodel.JMod.STATIC;
@@ -58,13 +54,11 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
     public void process(Element element, EBeanHolder holder) throws Exception {
 
         final JDefinedClass generatedClass = holder.getGeneratedClass();
-        generatedClass.constructors().next().body().staticInvoke(holder.refClass(Module.class), MethodNames.MODULE_SET).arg(generatedClass.dotclass()).arg(_this());
+        generatedClass.constructors().next().body().add(ModuleHelper.moduleSetInstance(holder, generatedClass, _this()));
         holder.invokeInitInConstructor();
 
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
-        final JVar instance = getMethod.body().decl(JMod.NONE, generatedClass, "instance", holder.refClass(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(generatedClass.dotclass()));
-        getMethod.body()._if(instance.eq(_null()))._then().assign(instance, _new(generatedClass).arg(getMethod.listParams()[0]));
-        getMethod.body()._return(instance);
+        ModuleHelper.returnNewInstance(holder, getMethod, generatedClass, JExpr._new(generatedClass).arg(getMethod.listParams()[0]));
 
 //        getMethod.body()._return(holder.refClass(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(generatedClass.dotclass()));
 //        JMethod initMethod = generateFactoryMethod(holder, MethodNames.INIT_INSTANCE);

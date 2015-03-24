@@ -8,7 +8,6 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.Module;
-import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JInvocation;
@@ -53,7 +52,7 @@ public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
 
         JClass injectedClass = refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(typeMirror.toString()));
         JFieldRef beanField = ref(element.getSimpleName().toString());
-        JInvocation initInstance = injectedClass.staticInvoke(MethodNames.INIT_INSTANCE).arg(holder.getContextRef());
+        JInvocation initInstance = injectedClass.staticInvoke("initInstance_").arg(holder.getContextRef());
 
         holder.getInitBody().assign(beanField, initInstance);
     }
