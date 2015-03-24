@@ -7,12 +7,14 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.helpers.Module;
 import com.netimen.annotations.EBeanCustomScope;
 import com.netimen.annotations.MethodNames;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
+import com.netimen.annotations.helpers.Module;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JMod;
+import com.sun.codemodel.JVar;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;
 import org.androidannotations.holder.EBeanHolder;
@@ -25,6 +27,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 import static com.sun.codemodel.JExpr._new;
+import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr._this;
 import static com.sun.codemodel.JMod.PUBLIC;
 import static com.sun.codemodel.JMod.STATIC;
@@ -59,10 +62,13 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
         holder.invokeInitInConstructor();
 
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
-        getMethod.body()._return(holder.refClass(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(generatedClass.dotclass()));
+        final JVar instance = getMethod.body().decl(JMod.NONE, generatedClass, "instance", holder.refClass(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(generatedClass.dotclass()));
+        getMethod.body()._if(instance.eq(_null()))._then().assign(instance, _new(generatedClass).arg(getMethod.listParams()[0]));
+        getMethod.body()._return(instance);
 
-        JMethod initMethod = generateFactoryMethod(holder, MethodNames.INIT_INSTANCE);
-        initMethod.body()._return(_new(generatedClass).arg(initMethod.listParams()[0]));
+//        getMethod.body()._return(holder.refClass(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(generatedClass.dotclass()));
+//        JMethod initMethod = generateFactoryMethod(holder, MethodNames.INIT_INSTANCE);
+//        initMethod.body()._return(_new(generatedClass).arg(initMethod.listParams()[0]));
     }
 
     JMethod generateFactoryMethod(EBeanHolder holder, String methodName) {

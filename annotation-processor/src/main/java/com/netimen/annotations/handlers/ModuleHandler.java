@@ -7,7 +7,7 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.BeanInitScope;
+import com.netimen.annotations.Module;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -25,12 +25,12 @@ import javax.lang.model.type.TypeMirror;
 
 import static com.sun.codemodel.JExpr.ref;
 
-public class BeanInitScopeHandler extends BaseAnnotationHandler<EComponentHolder> {
+public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     private final TargetAnnotationHelper annotationHelper;
 
-    public BeanInitScopeHandler(ProcessingEnvironment processingEnvironment) {
-        super(BeanInitScope.class, processingEnvironment);
+    public ModuleHandler(ProcessingEnvironment processingEnvironment) {
+        super(Module.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 
