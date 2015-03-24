@@ -7,7 +7,7 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.helpers.InjectInstanceProvider;
+import com.netimen.annotations.helpers.Module;
 import com.netimen.annotations.Inject;
 import com.netimen.annotations.MethodNames;
 import com.sun.codemodel.JClass;
@@ -54,6 +54,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JClass injectedClass = refClass(typeMirror.toString());
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
-        holder.getInitBody().assign(injectField, codeModel().ref(InjectInstanceProvider.class).staticInvoke(MethodNames.GET).arg(injectedClass.dotclass())); // field = InjectInstanceProvider.get()
+        holder.getInitBody().assign(injectField, codeModel().ref(Module.class).staticInvoke(MethodNames.GET).arg(injectedClass.dotclass())); // field = InjectInstanceProvider.get()
     }
 }

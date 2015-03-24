@@ -9,7 +9,7 @@ package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.Bus;
 import com.netimen.annotations.MethodNames;
-import com.netimen.annotations.helpers.InjectInstanceProvider;
+import com.netimen.annotations.helpers.Module;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -120,7 +120,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     }
 
     void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass) {
-        JClass providerClass = refClass(InjectInstanceProvider.class);
+        JClass providerClass = refClass(Module.class);
         final JInvocation getBus = providerClass.staticInvoke(MethodNames.GET).arg(codeModel().ref(Bus.class).dotclass());
         final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
         holder.getInitBody().add(register);

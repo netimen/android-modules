@@ -7,7 +7,7 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.helpers.InjectInstanceProvider;
+import com.netimen.annotations.helpers.Module;
 import com.netimen.annotations.EBeanCustomScope;
 import com.netimen.annotations.MethodNames;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
@@ -55,11 +55,11 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
     public void process(Element element, EBeanHolder holder) throws Exception {
 
         final JDefinedClass generatedClass = holder.getGeneratedClass();
-        generatedClass.constructors().next().body().staticInvoke(holder.refClass(InjectInstanceProvider.class), MethodNames.SET).arg(generatedClass.dotclass()).arg(_this());
+        generatedClass.constructors().next().body().staticInvoke(holder.refClass(Module.class), MethodNames.SET).arg(generatedClass.dotclass()).arg(_this());
         holder.invokeInitInConstructor();
 
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
-        getMethod.body()._return(holder.refClass(InjectInstanceProvider.class).staticInvoke(MethodNames.GET).arg(generatedClass.dotclass()));
+        getMethod.body()._return(holder.refClass(Module.class).staticInvoke(MethodNames.GET).arg(generatedClass.dotclass()));
 
         JMethod initMethod = generateFactoryMethod(holder, MethodNames.INIT_INSTANCE);
         initMethod.body()._return(_new(generatedClass).arg(initMethod.listParams()[0]));
