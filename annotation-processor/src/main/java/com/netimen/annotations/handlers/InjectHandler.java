@@ -23,7 +23,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 
-import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr.ref;
 
 public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
@@ -56,7 +55,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
         final JBlock initBody = holder.getInitBody();
-        initBody.assign(injectField, ModuleHelper.moduleGetInstance(holder, injectedClass)); // field = Module.getInstance()
-        initBody._if(injectField.eq(_null()))._then().assign(injectField, ModuleHelper.moduleSetInstance(holder, injectedClass));
+        initBody.assign(injectField, ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass)); // field = Module.getInstance()
     }
 }
