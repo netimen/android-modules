@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/calc"
+        android:enabled="false"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/calc_button" />
+
+    <EditText
+        android:id="@+id/edit_number"
+        android:hint="@string/enter"
+        android:layout_toStartOf="@id/calc"
+        android:layout_alignBaseline="@id/calc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/result_desc"
+        android:layout_marginTop="20dp"
+        android:text="@string/result_desc"
+        android:layout_below="@id/edit_number"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_toEndOf="@id/result_desc"
+        android:layout_alignBaseline="@id/result_desc"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
