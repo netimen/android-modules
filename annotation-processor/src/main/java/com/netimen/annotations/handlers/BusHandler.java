@@ -121,7 +121,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass) {
         JClass providerClass = refClass(Module.class);
-        final JInvocation getBus = providerClass.staticInvoke(MethodNames.GET).arg(codeModel().ref(Bus.class).dotclass());
+        final JInvocation getBus = providerClass.staticInvoke(MethodNames.MODULE_GET).arg(codeModel().ref(Bus.class).dotclass());
         final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
         holder.getInitBody().add(register);
     }

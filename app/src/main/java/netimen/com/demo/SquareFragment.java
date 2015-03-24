@@ -10,9 +10,9 @@ package netimen.com.demo;
 import android.app.Fragment;
 import android.widget.TextView;
 
-import com.netimen.annotations.BeanInitScope;
 import com.netimen.annotations.Event;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -24,7 +24,8 @@ public class SquareFragment extends Fragment {
     @ViewById
     TextView result;
 
-    @BeanInitScope
+//    @Module("")
+    @Bean
     Api api;
 
     @Event

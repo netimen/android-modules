@@ -8,7 +8,7 @@
 package com.netimen.annotations;
 
 public class MethodNames {
-    public static final String GET = "get";
+    public static final String MODULE_GET = "getInstance";
     public static final String INIT_INSTANCE = "initInstance_";
-    public static final String SET = "set";
+    public static final String MODULE_SET = "setInstance";
 }

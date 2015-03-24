@@ -54,6 +54,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JClass injectedClass = refClass(typeMirror.toString());
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
-        holder.getInitBody().assign(injectField, codeModel().ref(Module.class).staticInvoke(MethodNames.GET).arg(injectedClass.dotclass())); // field = InjectInstanceProvider.get()
+        holder.getInitBody().assign(injectField, codeModel().ref(Module.class).staticInvoke(MethodNames.MODULE_GET).arg(injectedClass.dotclass())); // field = InjectInstanceProvider.get()
     }
 }
