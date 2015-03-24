@@ -16,9 +16,11 @@ import java.util.Map;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class Module {
-    private final Map<Class<?>, WeakReference<?>> instances = new HashMap<>();
+
     private static final Map<String, Module> modules = new HashMap<>();
     private static Module currentModule = new Module();
+
+    private final Map<Class<?>, WeakReference<?>> instances = new HashMap<>();
 
     private Module() {
 
@@ -31,7 +33,8 @@ public class Module {
 
     @SuppressWarnings("unchecked")
     private <T> T get(Class<T> cls) {
-        return (T) instances.get(cls).get();
+        final WeakReference<?> reference = instances.get(cls);
+        return reference == null ? null : (T) reference.get();
     }
 
     private static <T> T setInstance(Module module, Class<T> cls, T instance) {
