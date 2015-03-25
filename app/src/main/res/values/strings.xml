@@ -8,5 +8,7 @@
     <string name="search_button">Search</string>
     <string name="enter_search">Search…</string>
     <string name="result_desc_search">Found:</string>
+    <string name="comment_calc">something calculated…</string>
+    <string name="comment_search">something found…</string>
 
 </resources>

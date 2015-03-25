@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,10 +14,15 @@
         tools:layout="@layout/fragment_calc" />
 
     <fragment
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="netimen.com.demo.SearchFragment_"
         android:id="@+id/fragment_search"
         tools:layout="@layout/fragment_search" />
+
+    <TextView
+        android:layout_marginTop="@dimen/margin"
+        android:textStyle="italic"
+        style="@style/Widget" />
 </LinearLayout>

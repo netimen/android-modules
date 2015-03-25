@@ -5,4 +5,36 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Widget">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.Big">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="Container" parent="Widget.Big"/>
+
+    <style name="Text" parent="Widget">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Text.ResultDesc">
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="Text.Result">
+        <item name="android:textColor">@android:color/holo_orange_dark</item>
+    </style>
+
+    <style name="Edit" parent="Widget.Big">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Button" parent="Widget">
+        <item name="android:enabled">false</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
 </resources>
