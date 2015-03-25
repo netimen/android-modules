@@ -22,6 +22,7 @@
         tools:layout="@layout/fragment_search" />
 
     <TextView
+        android:id="@+id/comment"
         android:layout_marginTop="@dimen/margin"
         android:textStyle="italic"
         style="@style/Widget" />

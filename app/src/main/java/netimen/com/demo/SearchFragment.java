@@ -7,12 +7,12 @@
  */
 package netimen.com.demo;
 
-import android.app.Fragment;
 import android.widget.TextView;
 
 import com.netimen.annotations.Event;
-import com.netimen.annotations.ModuleBean;
+import com.netimen.annotations.Module;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
@@ -21,11 +21,13 @@ import netimen.com.demo.api.events.Search;
 import netimen.com.demo.api.search.SearchApi;
 
 @EFragment(R.layout.fragment_search)
-public class SearchFragment extends Fragment {
+public class SearchFragment extends WorkFragment {
+
     @ViewById
     TextView resultSearch;
 
-    @ModuleBean(moduleName = "search")
+    @Module("search")
+    @Bean
     SearchApi searchApi;
 
     @StringRes
@@ -33,6 +35,7 @@ public class SearchFragment extends Fragment {
 
     @Event
     void search(Search search) {
-        resultSearch.setText(searchSome + search.query + searchWordEnd);
+        resultSearch.setText(" " + searchSome + " " + search.query + searchWordEnd);
+        workDone();
     }
 }

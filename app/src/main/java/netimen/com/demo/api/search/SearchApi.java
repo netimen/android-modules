@@ -9,6 +9,13 @@ package netimen.com.demo.api.search;
 
 import com.netimen.annotations.EBeanCustomScope;
 
+import org.androidannotations.annotations.Bean;
+
 @EBeanCustomScope
 public class SearchApi {
+    @Bean
+    QueryWatcherApi queryWatcherApi;
+
+    @Bean
+    PerformSearchApi performSearchApi;
 }
