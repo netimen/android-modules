@@ -9,7 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="netimen.com.demo.CalcFragment_"
-        tools:layout="@layout/fragment_calc"
-        android:id="@+id/fragment_calc" />
+        android:id="@+id/fragment_calc"
+        tools:layout="@layout/fragment_calc" />
 
+    <fragment
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="netimen.com.demo.SearchFragment_"
+        android:id="@+id/fragment_search"
+        tools:layout="@layout/fragment_search" />
 </LinearLayout>

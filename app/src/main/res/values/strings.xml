@@ -2,8 +2,11 @@
 <resources>
 
     <string name="app_name">Square calculator</string>
-    <string name="enter">Enter number</string>
+    <string name="enter_number">Enter number</string>
     <string name="calc_button">Calc</string>
     <string name="result_desc">x^2 =</string>
+    <string name="search_button">Search</string>
+    <string name="enter_search">Search…</string>
+    <string name="result_desc_search">Found:</string>
 
 </resources>
