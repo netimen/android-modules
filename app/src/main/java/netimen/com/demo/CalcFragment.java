@@ -11,21 +11,20 @@ import android.app.Fragment;
 import android.widget.TextView;
 
 import com.netimen.annotations.Event;
+import com.netimen.annotations.ModuleBean;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import netimen.com.demo.api.Api;
 import netimen.com.demo.api.events.Calc;
 
-@EFragment(R.layout.fragment_square)
-public class SquareFragment extends Fragment {
+@EFragment(R.layout.fragment_calc)
+public class CalcFragment extends Fragment {
     @ViewById
     TextView result;
 
-//    @Module("")
-    @Bean
+    @ModuleBean(moduleName = "calc")
     Api api;
 
     @Event

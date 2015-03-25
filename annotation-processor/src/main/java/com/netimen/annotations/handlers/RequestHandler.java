@@ -46,5 +46,5 @@ public class RequestHandler extends BusHandler {
         return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, cls);
     }
 
-    // CUR document, test, @ModuleBean, @Module
+    // CUR document, test, @ModuleBean, @Module, Request("moduleName")
 }

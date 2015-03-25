@@ -32,6 +32,11 @@ public class ModuleHelper {
         return instance;
     }
 
+
+    public static JInvocation initModule(EComponentHolder holder, String moduleName) {
+        return holder.refClass(com.netimen.annotations.helpers.Module.class).staticInvoke("initModule").arg(moduleName);
+    }
+
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
         return holder.refClass(com.netimen.annotations.helpers.Module.class).staticInvoke("getInstance").arg(instanceCls.dotclass());
     }

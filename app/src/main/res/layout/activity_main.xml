@@ -8,8 +8,8 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="netimen.com.demo.SquareFragment_"
-        tools:layout="@layout/fragment_square"
-        android:id="@+id/fragment_square" />
+        android:name="netimen.com.demo.CalcFragment_"
+        tools:layout="@layout/fragment_calc"
+        android:id="@+id/fragment_calc" />
 
 </LinearLayout>

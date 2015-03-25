@@ -7,13 +7,17 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.Module;
+import com.netimen.annotations.ModuleBean;
+import com.netimen.annotations.ModuleHelper;
+import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JInvocation;
 
+import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.helper.TargetAnnotationHelper;
+import org.androidannotations.holder.EBeanHolder;
 import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
@@ -22,14 +26,15 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 
+import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr.ref;
 
-public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
+public class ModuleBeanHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     private final TargetAnnotationHelper annotationHelper;
 
-    public ModuleHandler(ProcessingEnvironment processingEnvironment) {
-        super(Module.class, processingEnvironment);
+    public ModuleBeanHandler(ProcessingEnvironment processingEnvironment) {
+        super(ModuleBean.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 
@@ -42,7 +47,11 @@ public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     @Override
     public void process(Element element, EComponentHolder holder) throws Exception {
+        holder.getInitBody().add(ModuleHelper.initModule(holder, element.getAnnotation(ModuleBean.class).moduleName()));
+        processBean(element, holder);
+    }
 
+    private void processBean(Element element, EComponentHolder holder) {
         // I just copied this block from BeanHandler, I'm not sure I understand it
         TypeMirror typeMirror = annotationHelper.extractAnnotationClassParameter(element);
         if (typeMirror == null) {
@@ -50,11 +59,20 @@ public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
             typeMirror = holder.processingEnvironment().getTypeUtils().erasure(typeMirror);
         }
 
-        JClass injectedClass = refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(typeMirror.toString()));
-        JFieldRef beanField = ref(element.getSimpleName().toString());
-        JInvocation initInstance = injectedClass.staticInvoke("initInstance_").arg(holder.getContextRef());
+        String typeQualifiedName = typeMirror.toString();
+        JClass injectedClass = refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(typeQualifiedName));
 
-        holder.getInitBody().assign(beanField, initInstance);
+        String fieldName = element.getSimpleName().toString();
+        JFieldRef beanField = ref(fieldName);
+        JBlock block = holder.getInitBody();
+
+        boolean hasNonConfigurationInstanceAnnotation = element.getAnnotation(NonConfigurationInstance.class) != null;
+        if (hasNonConfigurationInstanceAnnotation) {
+            block = block._if(beanField.eq(_null()))._then();
+        }
+
+        JInvocation getInstance = injectedClass.staticInvoke(EBeanHolder.GET_INSTANCE_METHOD_NAME).arg(holder.getContextRef());
+        block.assign(beanField, getInstance);
     }
 
 }
