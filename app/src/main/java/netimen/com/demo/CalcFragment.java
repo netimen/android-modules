@@ -16,7 +16,7 @@ import com.netimen.annotations.ModuleBean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import netimen.com.demo.api.Api;
+import netimen.com.demo.api.calc.CalcApi;
 import netimen.com.demo.api.events.Calc;
 
 @EFragment(R.layout.fragment_calc)
@@ -25,7 +25,7 @@ public class CalcFragment extends Fragment {
     TextView result;
 
     @ModuleBean(moduleName = "calc")
-    Api api;
+    CalcApi calcApi;
 
     @Event
     void calc(Calc calc) {

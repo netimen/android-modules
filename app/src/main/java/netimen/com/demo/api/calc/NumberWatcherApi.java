@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.demo.api;
+package netimen.com.demo.api.calc;
 
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -17,7 +17,8 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
 import netimen.com.demo.R;
-import netimen.com.demo.api.events.NumberChanged;
+import netimen.com.demo.api.BaseApi;
+import netimen.com.demo.api.events.InputChanged;
 
 @EBean
 public class NumberWatcherApi extends BaseApi {
@@ -27,7 +28,7 @@ public class NumberWatcherApi extends BaseApi {
 
     @TextChange(R.id.edit_number)
     void onNumberChanged(CharSequence number) {
-        bus.event(new NumberChanged(TextUtils.isEmpty(number)));
+        bus.event(new InputChanged(TextUtils.isEmpty(number)));
     }
 
     @Request

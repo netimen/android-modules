@@ -10,5 +10,7 @@
     <string name="result_desc_search">Found:</string>
     <string name="comment_calc">something calculated…</string>
     <string name="comment_search">something found…</string>
+    <string name="search_some"> some</string>
+    <string name="search_word_end">\'s</string>
 
 </resources>

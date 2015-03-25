@@ -7,7 +7,7 @@
         style="@style/Button" />
 
     <EditText
-        android:id="@+id/edit_search"
+        android:id="@+id/edit_query"
         android:hint="@string/enter_search"
         android:layout_toStartOf="@id/search"
         android:layout_alignBaseline="@id/search"
@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/result_desc_search"
         android:text="@string/result_desc_search"
-        android:layout_below="@id/edit_search"
+        android:layout_below="@id/edit_query"
         style="@style/Text.ResultDesc" />
 
     <TextView

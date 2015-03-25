@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.demo.api;
+package netimen.com.demo.api.calc;
 
 import android.widget.Button;
 
@@ -16,18 +16,19 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
 
+import netimen.com.demo.api.BaseApi;
 import netimen.com.demo.api.events.Calc;
 import netimen.com.demo.api.events.GetNumber;
-import netimen.com.demo.api.events.NumberChanged;
+import netimen.com.demo.api.events.InputChanged;
 
 @EBean
-public class CalcApi extends BaseApi {
+public class PerformCalcApi extends BaseApi {
 
     @ViewById
     Button calc;
 
     @Event
-    void onNumberChanged(NumberChanged event) {
+    void onInputChanged(InputChanged event) {
         calc.setEnabled(!event.isEmpty);
     }
 

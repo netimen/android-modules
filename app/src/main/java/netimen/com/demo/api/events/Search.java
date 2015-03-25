@@ -3,15 +3,14 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   12.03.15
+ * Date:   25.03.15
  */
 package netimen.com.demo.api.events;
 
-public class NumberChanged {
+public class Search {
+    public final String query;
 
-    public final boolean isEmpty;
-
-    public NumberChanged(boolean isEmpty) {
-        this.isEmpty = isEmpty;
+    public Search(String query) {
+        this.query = query;
     }
 }
