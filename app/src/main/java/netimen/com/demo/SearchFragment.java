@@ -32,7 +32,7 @@ public class SearchFragment extends Fragment {
     String searchSome, searchWordEnd;
 
     @Event
-    void Search(Search search) {
+    void search(Search search) {
         resultSearch.setText(searchSome + search.query + searchWordEnd);
     }
 }

@@ -28,7 +28,7 @@ import java.net.MalformedURLException;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import static com.sun.codemodel.JExpr._new;
@@ -61,7 +61,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
         final String methodName = element.getSimpleName().toString(); // isPublic
 
-        final JClass cls = getEventOrRequestClass(element, methodName); // IsPublic.class
+        final JClass cls = getEventOrRequestClass((ExecutableElement) element, methodName); // IsPublic.class
         if (cls == null)
             return;
 
@@ -83,8 +83,16 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     protected abstract JClass getProcessingClass(JClass cls, Element element) throws ClassNotFoundException;
 
 
-    JClass getEventOrRequestClass(Element element, String methodName) throws MalformedURLException, ClassNotFoundException {
-        final DeclaredType classType = annotationHelper.extractAnnotationClassParameter(element, getTarget());
+    JClass getEventOrRequestClass(ExecutableElement element, String methodName) throws MalformedURLException, ClassNotFoundException {
+        if (Character.isUpperCase(methodName.charAt(0))) {
+            methodNameEqualsClassNameError(element, methodName);
+            return null;
+        }
+
+        TypeMirror classType = annotationHelper.extractAnnotationClassParameter(element, getTarget());
+
+        if (classType == null && element.getParameters().size() > 0) // trying to extract the event/request class from parameters
+            classType = element.getParameters().get(0).asType();
 
         String className, extractedName = null;
         if (classType != null)
@@ -107,8 +115,16 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         }
     }
 
+    private void printError(Element element, String methodName, String message) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Bus. " + message + " " + element.getEnclosingElement().getSimpleName() + "." + methodName + "()");
+    }
+
+    private void methodNameEqualsClassNameError(Element element, String methodName) {
+        printError(element, methodName, "we can't generate correct code if the method name is equal to the event/request class name. ");
+    }
+
     private void classNotFoundError(Element element, String methodName, String className) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Bus. couldn't load class: " + className + " for " + element.getEnclosingElement().getSimpleName() + "." + methodName);
+        printError(element, methodName, "couldn't load class: " + className + " for");
     }
 
     JInvocation callProcessorMethod(ExecutableElement element, String methodName, JVar eventOrRequestVar) {
