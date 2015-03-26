@@ -60,7 +60,7 @@ public class ModuleHelper {
         return moduleGetInstance(holder, instanceCls);
     }
 
-    private static JMethod findMethod(JDefinedClass definedClass, String methodName) {
+    public static JMethod findMethod(JDefinedClass definedClass, String methodName) {
         for (JMethod method : definedClass.methods())
             if (method.name().equals(methodName))
                 return method;
