@@ -44,7 +44,7 @@ public class ModuleInstancesHolder {
     }
 
     private static ModuleInstancesHolder getModule(String moduleName) {
-        final WeakReference<ModuleInstancesHolder> moduleWeakReference = modules.get(moduleName);
+        final WeakReference<ModuleInstancesHolder> moduleWeakReference = isEmpty(moduleName) ? currentModule : modules.get(moduleName);
         return moduleWeakReference == null ? null : moduleWeakReference.get();
     }
 
@@ -57,11 +57,11 @@ public class ModuleInstancesHolder {
     }
 
     public static <T> T setInstance(Class<T> cls, T instance) {
-        return setInstance(currentModule.get(), cls, instance);
+        return setInstance(getModule(null), cls, instance);
     }
 
     public static <T> T getInstance(Class<T> cls) {
-        return getInstance(currentModule.get(), cls);
+        return getInstance("", cls);
     }
 
     public static <T> T getInstance(String moduleName, Class<T> cls) {
@@ -78,7 +78,7 @@ public class ModuleInstancesHolder {
     }
 
     public static ModuleInstancesHolder initModule(String moduleName, boolean reset) {
-        final boolean moduleNameNotEmpty = moduleName != null && moduleName.length() != 0;
+        final boolean moduleNameNotEmpty = !isEmpty(moduleName);
         ModuleInstancesHolder existingModuleInstancesHolder = getModule(moduleName);
         if (existingModuleInstancesHolder != null && currentModuleName.equals(moduleName) && moduleNameNotEmpty) // if module name is empty we always create a new module
             return existingModuleInstancesHolder;
@@ -105,6 +105,12 @@ public class ModuleInstancesHolder {
         currentModuleName = "";
         defaultModule.clear();
         currentModule = new WeakReference<>(defaultModule);
+    }
+
+    ///
+
+    private static boolean isEmpty(String string) {
+        return string == null || string.length() == 0;
     }
 
 }

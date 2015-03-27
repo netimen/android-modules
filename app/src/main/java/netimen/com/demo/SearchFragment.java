@@ -22,11 +22,12 @@ import netimen.com.demo.api.search.SearchApi;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends WorkFragment {
+    public static final String MODULE_NAME = "search";
 
     @ViewById
     TextView resultSearch;
 
-    @Module("search")
+    @Module(MODULE_NAME)
     @Bean
     SearchApi searchApi;
 

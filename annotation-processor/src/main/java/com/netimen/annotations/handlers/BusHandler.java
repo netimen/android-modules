@@ -71,7 +71,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         final JVar param = processingMethod.param(cls, "param");
         addMethodCall(processingMethod.body(), callProcessorMethod((ExecutableElement) element, methodName, param)); // return isPublic(param);
 
-        register(holder, cls, processingClass);
+        register(holder, cls, processingClass, (String) annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName"));
     }
 
     protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
@@ -134,8 +134,8 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         return call;
     }
 
-    void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass) {
-        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), codeModel().ref(Bus.class));
+    void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName) {
+        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), codeModel().ref(Bus.class), moduleName);
         final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
         JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged"); // try to register in onViewChanged if present, because bus may have been initialized in a fragment
         if (method == null) method = holder.getInit();

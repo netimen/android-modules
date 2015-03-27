@@ -15,7 +15,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
+@SuppressWarnings("UnusedDeclaration")
 public @interface Event {
-    @SuppressWarnings("UnusedDeclaration")
     Class<?> value() default Object.class;
+    String moduleName() default "";
 }

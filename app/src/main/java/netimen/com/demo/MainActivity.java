@@ -16,6 +16,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
+import netimen.com.demo.api.events.WorkDone;
+
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
     @ViewById
@@ -24,8 +26,12 @@ public class MainActivity extends Activity {
     @StringRes
     String commentCalc, commentSearch;
 
-    @Event
-    void workDone() {
+    @Event(value = WorkDone.class, moduleName = CalcFragment.MODULE_NAME)
+    void calcDone() {
         comment.setText(commentCalc);
     }
+//    @Event(value = WorkDone.class, moduleName = CalcFragment.MODULE_NAME)
+//    void searchDone() {
+//        comment.setText(commentSearch);
+//    }
 }

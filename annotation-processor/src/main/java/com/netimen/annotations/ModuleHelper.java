@@ -40,7 +40,11 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
-        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("getInstance").arg(instanceCls.dotclass());
+        return moduleGetInstance(holder, instanceCls, "");
+    }
+
+    public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls, String moduleName) {
+        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("getInstance").arg(moduleName).arg(instanceCls.dotclass());
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls) {
@@ -51,7 +55,7 @@ public class ModuleHelper {
         return holder.refClass(ModuleInstancesHolder.class).staticInvoke("setInstance").arg(instanceCls.dotclass()).arg(newInstance);
     }
 
-    public static JInvocation moduleGetInstanceOrAddDefault(EComponentHolder holder, JDefinedClass generatedClass, JMethod method, JClass instanceCls) {
+    public static JInvocation moduleGetInstanceOrAddDefault(EComponentHolder holder, JDefinedClass generatedClass, JMethod method, JClass instanceCls, String moduleName) {
         final String setInstanceMethodName = "set" + instanceCls.name() + "_";
         if (findMethod(generatedClass, setInstanceMethodName) == null) { // if we already have such a method generated it means the instance is already initialized, so don't add unnecessary ifs
             final JMethod setNewInstance = holder.getGeneratedClass().method(JMod.PRIVATE, instanceCls, setInstanceMethodName);
@@ -60,9 +64,9 @@ public class ModuleHelper {
             setNewInstance.body().assign(instanceField, ModuleHelper.moduleSetInstance(holder, instanceCls));
             setNewInstance.body()._return(instanceField);
             method.body().directStatement("// this is needed to ensure we really have instance of " + instanceCls.name());
-            method.body()._if(moduleGetInstance(holder, instanceCls).eq(_null()))._then().add(_this().invoke(setNewInstance));
+            method.body()._if(moduleGetInstance(holder, instanceCls, moduleName).eq(_null()))._then().add(_this().invoke(setNewInstance));
         }
-        return moduleGetInstance(holder, instanceCls);
+        return moduleGetInstance(holder, instanceCls, moduleName);
     }
 
     public static JMethod findMethod(JDefinedClass definedClass, String methodName) {

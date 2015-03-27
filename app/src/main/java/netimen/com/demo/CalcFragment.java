@@ -20,10 +20,12 @@ import netimen.com.demo.api.events.Calc;
 
 @EFragment(R.layout.fragment_calc)
 public class CalcFragment extends WorkFragment {
+    public static final String MODULE_NAME = "calc";
+
     @ViewById
     TextView result;
 
-    @ModuleBean(moduleName = "calc")
+    @ModuleBean(moduleName = MODULE_NAME)
     CalcApi calcApi;
 
     @Event
