@@ -10,15 +10,16 @@ package netimen.com.demo;
 import android.widget.TextView;
 
 import com.netimen.annotations.Event;
-import com.netimen.annotations.Module;
+import com.netimen.annotations.ModuleBean;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
+import netimen.com.demo.api.Api;
 import netimen.com.demo.api.events.Search;
-import netimen.com.demo.api.search.SearchApi;
+import netimen.com.demo.api.search.PerformSearchApi;
+import netimen.com.demo.api.search.QueryWatcherApi;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends WorkFragment {
@@ -27,9 +28,8 @@ public class SearchFragment extends WorkFragment {
     @ViewById
     TextView resultSearch;
 
-    @Module(MODULE_NAME)
-    @Bean
-    SearchApi searchApi;
+    @ModuleBean(moduleName = MODULE_NAME, submodules = {PerformSearchApi.class, QueryWatcherApi.class})
+    Api api;
 
     @StringRes
     String searchSome, searchWordEnd;

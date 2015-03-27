@@ -46,5 +46,5 @@ public class RequestHandler extends BusHandler {
         return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, cls);
     }
 
-    // CUR document, test, Request("moduleName"), bug with activities
+    // CUR document, test, validate submodules (no '_' classes) and target == EBCScope
 }
