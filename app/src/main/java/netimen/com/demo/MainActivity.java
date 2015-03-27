@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         comment.setText(commentCalc);
     }
 
-    @Event(value = WorkDone.class, moduleName = CalcFragment.MODULE_NAME)
+    @Event(value = WorkDone.class, moduleName = SearchFragment.MODULE_NAME)
     void searchDone() {
         comment.setText(commentSearch);
     }
