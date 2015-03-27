@@ -23,6 +23,6 @@
         android:id="@+id/result_search"
         android:layout_toEndOf="@id/result_desc_search"
         android:layout_alignBaseline="@id/result_desc_search"
-        style="@style/Text.Result" />
+        style="@style/Text.Result.Search" />
 
 </RelativeLayout>

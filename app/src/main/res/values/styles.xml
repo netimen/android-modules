@@ -28,6 +28,10 @@
         <item name="android:textColor">@android:color/holo_orange_dark</item>
     </style>
 
+    <style name="Text.Result.Search">
+        <item name="android:textColor">@android:color/holo_green_light</item>
+    </style>
+
     <style name="Edit" parent="Widget.Big">
         <item name="android:singleLine">true</item>
     </style>
