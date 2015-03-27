@@ -27,7 +27,17 @@ public class ModuleTest {
     }
 
     @Test
-    public void initModuleReturnsExistingModuleWithSameName() {
+    public void initModulePreservesObjectsInExistingModuleWithSameName() {
+        assertEquals(testInitModule(false), ModuleInstancesHolder.getInstance(Integer.class));
+    }
+
+    @Test
+    public void initModuleClearsExistingModuleWithSameName() {
+        testInitModule(true);
+        assertNull(ModuleInstancesHolder.getInstance(Integer.class));
+    }
+
+    private Integer testInitModule(boolean reset) {
         final String moduleName = "module";
         final ModuleInstancesHolder module = ModuleInstancesHolder.initModule(moduleName);
         Integer object = 5;
@@ -35,8 +45,8 @@ public class ModuleTest {
         assertEquals(object, ModuleInstancesHolder.getInstance(Integer.class));
 
         ModuleInstancesHolder.initModule("module2");
-        assertEquals(module, ModuleInstancesHolder.initModule(moduleName));
-        assertEquals(object, ModuleInstancesHolder.getInstance(Integer.class));
+        assertEquals(module, ModuleInstancesHolder.initModule(moduleName, reset));
+        return object;
     }
 //    @Test
 //    public void getInstanceReturnsNullAfterObjectDeath() {
