@@ -7,9 +7,11 @@
  */
 package com.netimen.annotations;
 
+import com.netimen.annotations.helpers.ModuleInstancesHolder;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
@@ -34,11 +36,11 @@ public class ModuleHelper {
 
 
     public static JInvocation initModule(EComponentHolder holder, String moduleName) {
-        return holder.refClass(com.netimen.annotations.helpers.Module.class).staticInvoke("initModule").arg(moduleName);
+        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("initModule").arg(moduleName);
     }
 
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
-        return holder.refClass(com.netimen.annotations.helpers.Module.class).staticInvoke("getInstance").arg(instanceCls.dotclass());
+        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("getInstance").arg(instanceCls.dotclass());
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls) {
@@ -46,14 +48,17 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls, JExpression newInstance) {
-        return holder.refClass(com.netimen.annotations.helpers.Module.class).staticInvoke("setInstance").arg(instanceCls.dotclass()).arg(newInstance);
+        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("setInstance").arg(instanceCls.dotclass()).arg(newInstance);
     }
 
     public static JInvocation moduleGetInstanceOrAddDefault(EComponentHolder holder, JDefinedClass generatedClass, JMethod method, JClass instanceCls) {
         final String setInstanceMethodName = "set" + instanceCls.name() + "_";
-        if (findMethod(generatedClass, setInstanceMethodName) == null) {
+        if (findMethod(generatedClass, setInstanceMethodName) == null) { // if we already have such a method generated it means the instance is already initialized, so don't add unnecessary ifs
             final JMethod setNewInstance = holder.getGeneratedClass().method(JMod.PRIVATE, instanceCls, setInstanceMethodName);
-            setNewInstance.body()._return(ModuleHelper.moduleSetInstance(holder, instanceCls));
+            setNewInstance.body().directStatement("// Module stores only weak references, so we need to store the object ourselves");
+            final JFieldVar instanceField = holder.getGeneratedClass().field(JMod.PRIVATE, instanceCls, Character.toLowerCase(instanceCls.name().charAt(0)) + instanceCls.name().substring(1) + "_"); // myCls_
+            setNewInstance.body().assign(instanceField, ModuleHelper.moduleSetInstance(holder, instanceCls));
+            setNewInstance.body()._return(instanceField);
             method.body().directStatement("// this is needed to ensure we really have instance of " + instanceCls.name());
             method.body()._if(moduleGetInstance(holder, instanceCls).eq(_null()))._then().add(_this().invoke(setNewInstance));
         }
