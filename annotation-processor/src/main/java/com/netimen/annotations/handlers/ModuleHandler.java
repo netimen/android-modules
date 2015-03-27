@@ -8,7 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.Module;
-import com.netimen.annotations.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleHelper;
 
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.holder.EComponentHolder;

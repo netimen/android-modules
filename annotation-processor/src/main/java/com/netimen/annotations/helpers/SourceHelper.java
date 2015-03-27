@@ -5,7 +5,9 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   20.03.15
  */
-package com.netimen.annotations.handlers;
+package com.netimen.annotations.helpers;
+
+import com.sun.codemodel.JClass;
 
 import org.androidannotations.helper.OptionsHelper;
 import org.apache.commons.io.FileUtils;
@@ -25,6 +27,7 @@ import javax.tools.Diagnostic;
  */
 public class SourceHelper {
     private static Map<String, String> classNameToFullName;
+    private static Map<String, JClass> classes = new HashMap<>();
 
     private static void init(ProcessingEnvironment processingEnv) {
         classNameToFullName = new HashMap<>();
@@ -50,4 +53,11 @@ public class SourceHelper {
         return classNameToFullName;
     }
 
+    public static JClass getClass(String className) {
+        return classes.get(className);
+    }
+
+    public static void addClass(String className, JClass jClass) {
+        classes.put(className, jClass);
+    }
 }

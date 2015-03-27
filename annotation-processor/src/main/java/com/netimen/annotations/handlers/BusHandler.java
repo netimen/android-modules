@@ -8,7 +8,8 @@
 package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.Bus;
-import com.netimen.annotations.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleHelper;
+import com.netimen.annotations.helpers.SourceHelper;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -108,7 +109,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         }
 
         try {
-            return codeModel().ref(className);
+            JClass jClass = SourceHelper.getClass(className); // for some reason if I call codeModel().ref twice on the same class it doesn't get imported correctly in the generated code. So I reuse previous JClass instead
+            if (jClass == null) {
+                jClass = codeModel().ref(className);
+                SourceHelper.addClass(className, jClass);
+            }
+            return jClass;
         } catch (Exception e) {
             classNotFoundError(element, methodName, (className == null || className.length() == 0 ? extractedName : className));
             return null;

@@ -8,7 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.ModuleBean;
-import com.netimen.annotations.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleHelper;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;

@@ -8,7 +8,7 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.EBeanCustomScope;
-import com.netimen.annotations.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleHelper;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;

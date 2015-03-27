@@ -5,9 +5,8 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   24.03.15
  */
-package com.netimen.annotations;
+package com.netimen.annotations.helpers;
 
-import com.netimen.annotations.helpers.ModuleInstancesHolder;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
