@@ -7,13 +7,11 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.bookmate.bus.Bus;
 import com.netimen.annotations.EBeanCustomScope;
 import com.netimen.annotations.androidannotationsfix.EBeanHolderFix;
 import com.netimen.annotations.helpers.ModuleHelper;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMethod;
 
 import org.androidannotations.handler.BaseGeneratingAnnotationHandler;
@@ -61,8 +59,7 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
 
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
         ModuleHelper.returnNewInstance(holder, getMethod, generatedClass, JExpr._new(generatedClass).arg(getMethod.listParams()[0]));
-        final JFieldVar submodules = generatedClass.field(PUBLIC, Object[].class, ModuleBeanHandler.SUBMODULES_FIELD);
-        submodules.javadoc().append("submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
+        ModuleHelper.addSubmodulesField(generatedClass);
     }
 
     JMethod generateFactoryMethod(EBeanHolder holder, String methodName) {

@@ -9,7 +9,6 @@ package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.ModuleBean;
 import com.netimen.annotations.helpers.ModuleHelper;
-import com.sun.codemodel.JArray;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -23,21 +22,16 @@ import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
 
-import java.util.List;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr.cast;
-import static com.sun.codemodel.JExpr.newArray;
 import static com.sun.codemodel.JExpr.ref;
 
 public class ModuleBeanHandler extends BaseAnnotationHandler<EComponentHolder> {
 
-    public static final String SUBMODULES_FIELD = "submodules_";
     private final TargetAnnotationHelper annotationHelper;
     private JFieldRef beanField;
     private JClass injectedClass;
@@ -60,16 +54,7 @@ public class ModuleBeanHandler extends BaseAnnotationHandler<EComponentHolder> {
         initBody.add(ModuleHelper.initModule(holder, element.getAnnotation(ModuleBean.class).moduleName()));
         processBean(element, holder);
 
-        final List<DeclaredType> submodules = annotationHelper.extractAnnotationClassArrayParameter(element, getTarget(), "submodules");
-        final JFieldRef submodulesField = ref(cast(injectedClass, beanField), SUBMODULES_FIELD);
-        if (submodules != null && submodules.size() > 0) {
-            final JArray submodulesArray = newArray(refClass(Object.class));
-            initBody.assign(submodulesField, submodulesArray);
-            for (DeclaredType type: submodules) {
-                final JClass submoduleClass = refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(type.toString()));
-                submodulesArray.add(submoduleClass.staticInvoke(EBeanHolder.GET_INSTANCE_METHOD_NAME).arg(holder.getContextRef()));
-            }
-        }
+        ModuleHelper.addSubmodules(element, holder, initBody, annotationHelper, getTarget(), ref(cast(injectedClass, beanField), ModuleHelper.SUBMODULES_FIELD));
     }
 
     private void processBean(Element element, EComponentHolder holder) {
