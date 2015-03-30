@@ -9,13 +9,16 @@ import com.netimen.annotations.handlers.ModuleBeanHandler;
 import com.netimen.annotations.handlers.ModuleHandler;
 import com.netimen.annotations.handlers.RequestHandler;
 
-import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.handler.AnnotationHandler;
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.handler.BeanHandler;
 import org.androidannotations.helper.ModelConstants;
 import org.androidannotations.holder.GeneratedClassHolder;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -24,7 +27,8 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        ModelConstants.VALID_ENHANCED_COMPONENT_ANNOTATIONS.set(ModelConstants.VALID_ENHANCED_COMPONENT_ANNOTATIONS.indexOf(EIntentService.class), EBeanCustomScope.class); // very bad, but we can't add a component, because asList doesn't support add operations, so we can only replace one of existing
+
+        hackEnhancedComponentsList();
 
         annotationHandlers.add(new EBeanCustomScopeHandler(processingEnv));
 
@@ -38,6 +42,16 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
         addDecoratingHandler(new RequestHandler(processingEnv));
         addDecoratingHandler(0, new ModuleHandler(processingEnv)); // want to init the custom scope beans first, so other beans could use this instance
         addDecoratingHandler(0, new ModuleBeanHandler(processingEnv)); // want to init the custom scope beans first, so other beans could use this instance
+    }
+
+    private void hackEnhancedComponentsList() {
+        final ArrayList<Class<? extends Annotation>> newEnhancedComponentsList = new ArrayList<>(ModelConstants.VALID_ENHANCED_COMPONENT_ANNOTATIONS);
+        newEnhancedComponentsList.add(EBeanCustomScope.class);
+        try {
+            setFinalStatic(ModelConstants.class.getField("VALID_ENHANCED_COMPONENT_ANNOTATIONS"), newEnhancedComponentsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void replaceHandlerInList(List<AnnotationHandler<? extends GeneratedClassHolder>> handlers, AnnotationHandler<? extends GeneratedClassHolder> handlerFix) {
@@ -63,5 +77,15 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
      */
     private void addToEndOfList(List<AnnotationHandler<? extends GeneratedClassHolder>> annotationHandlers, AnnotationHandler<? extends GeneratedClassHolder> handler) {
         annotationHandlers.add(annotationHandlers.size() - 20, handler); // ugly solution, hope AA will provide better API
+    }
+
+    static void setFinalStatic(Field field, Object newValue) throws Exception {
+        field.setAccessible(true);
+
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(null, newValue);
     }
 }
