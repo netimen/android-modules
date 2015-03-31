@@ -7,8 +7,12 @@
  */
 package com.netimen.annotations.handlers;
 
-import com.netimen.annotations.Module;
+import com.bookmate.bus.Bus;
+import com.netimen.annotations.EModule;
 import com.netimen.annotations.helpers.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleProvider;
+import com.sun.codemodel.JFieldVar;
+import com.sun.codemodel.JMod;
 
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.helper.ModelConstants;
@@ -20,14 +24,14 @@ import org.androidannotations.process.IsValid;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 
-import static com.sun.codemodel.JExpr.ref;
+import static com.sun.codemodel.JExpr._this;
 
-public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
+public class EModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
 
     private final TargetAnnotationHelper annotationHelper;
 
-    public ModuleHandler(ProcessingEnvironment processingEnvironment) {
-        super(Module.class, processingEnvironment);
+    public EModuleHandler(ProcessingEnvironment processingEnvironment) {
+        super(EModule.class, processingEnvironment);
         annotationHelper = new TargetAnnotationHelper(processingEnv, getTarget());
     }
 
@@ -45,9 +49,16 @@ public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
     public void process(Element element, EComponentHolder holder) throws Exception {
         if (skipGeneratedClass(element)) // I can't prevent copying @Module to generated class, so just don't process it
             return;
-        holder.getInitBody().add(ModuleHelper.initModule(holder, element.getAnnotation(Module.class).moduleName()));
-        ModuleHelper.addSubmodulesField(holder.getGeneratedClass());
-        ModuleHelper.addSubmodules(element, holder, holder.getInitBody(), annotationHelper, getTarget(), ref(ModuleHelper.SUBMODULES_FIELD));
+        holder.getGeneratedClass()._implements(ModuleProvider.IModule.class);
+        final JFieldVar instances = holder.getGeneratedClass().field(JMod.PRIVATE, ModuleProvider.InstancesHolder.class, "instances_");
+        holder.getInitBody().assign(instances, ModuleHelper.createModule(element.getAnnotation(EModule.class).moduleName(), holder));
+        holder.getInitBody().directStatement("// submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
+        holder.getInitBody().add(instances.invoke("setInaccessibleInstances").arg(ModuleHelper.generateSubmodulesArray(element, holder, annotationHelper, getTarget())));
+        holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
+//        final JFieldVar instances = holder.getGeneratedClass().field(PRIVATE, refClass(Map.class).narrow(Object.class, WeakReference.class), "instances_", _new(refClass(HashMap.class)));
+//        holder.getGeneratedClass().method()
+//        ModuleHelper.addSubmodulesField(holder.getGeneratedClass());
+//        ModuleHelper.addSubmodules(element, holder, holder.getInitBody(), annotationHelper, getTarget(), ref(ModuleHelper.SUBMODULES_FIELD));
     }
 
     private boolean skipGeneratedClass(Element element) {

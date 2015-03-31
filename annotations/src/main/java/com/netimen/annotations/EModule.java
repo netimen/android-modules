@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @SuppressWarnings("UnusedDeclaration")
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface Module {
+public @interface EModule {
     String moduleName() default "";
     Class<?> [] submodules() default {};
 }

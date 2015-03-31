@@ -59,7 +59,7 @@ public class EBeanCustomScopeHandler extends BaseGeneratingAnnotationHandler<EBe
 
         JMethod getMethod = generateFactoryMethod(holder, EBeanHolder.GET_INSTANCE_METHOD_NAME);
         ModuleHelper.returnNewInstance(holder, getMethod, generatedClass, JExpr._new(generatedClass).arg(getMethod.listParams()[0]));
-        ModuleHelper.addSubmodulesField(generatedClass);
+//        ModuleHelper.addSubmodulesField(generatedClass);
     }
 
     JMethod generateFactoryMethod(EBeanHolder holder, String methodName) {

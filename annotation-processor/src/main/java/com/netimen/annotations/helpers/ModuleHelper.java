@@ -7,13 +7,10 @@
  */
 package com.netimen.annotations.helpers;
 
-import com.bookmate.bus.Bus;
 import com.sun.codemodel.JArray;
-import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JFieldRef;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
@@ -33,7 +30,6 @@ import static com.sun.codemodel.JExpr._new;
 import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr._this;
 import static com.sun.codemodel.JExpr.newArray;
-import static com.sun.codemodel.JMod.PUBLIC;
 
 public class ModuleHelper {
     public static final String SUBMODULES_FIELD = "submodules_";
@@ -49,16 +45,12 @@ public class ModuleHelper {
     }
 
 
-    public static JInvocation initModule(EComponentHolder holder, String moduleName) {
-        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("initModule").arg(moduleName);
-    }
-
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
         return moduleGetInstance(holder, instanceCls, "");
     }
 
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls, String moduleName) {
-        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("getInstance").arg(moduleName).arg(instanceCls.dotclass());
+        return holder.refClass(ModuleProvider.class).staticInvoke("getInstance").arg(moduleName).arg(instanceCls.dotclass());
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls) {
@@ -66,7 +58,7 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls, JExpression newInstance) {
-        return holder.refClass(ModuleInstancesHolder.class).staticInvoke("setInstance").arg(instanceCls.dotclass()).arg(newInstance);
+        return holder.refClass(ModuleProvider.class).staticInvoke("setInstance").arg(instanceCls.dotclass()).arg(newInstance);
     }
 
     public static JInvocation moduleGetInstanceOrAddDefault(EComponentHolder holder, JDefinedClass generatedClass, JMethod method, JClass instanceCls, String moduleName) {
@@ -90,21 +82,26 @@ public class ModuleHelper {
         return null;
     }
 
-    public static JFieldVar addSubmodulesField(JDefinedClass generatedClass) {
-        final JFieldVar submodules = generatedClass.field(PUBLIC, Object[].class, SUBMODULES_FIELD);
-        submodules.javadoc().append("submodules communicate via {@link " + generatedClass.owner().ref(Bus.class).fullName() + "}, so we only need to store them");
-        return submodules;
+//    public static JFieldVar addSubmodulesField(JDefinedClass generatedClass) {
+//        final JFieldVar submodules = generatedClass.field(PRIVATE, Object[].class, SUBMODULES_FIELD);
+//        submodules.javadoc().append("submodules communicate via {@link " + generatedClass.owner().ref(Bus.class).fullName() + "}, so we only need to store them");
+//        return submodules;
+//    }
+
+    public static JInvocation createModule(String moduleName, EComponentHolder holder) {
+        return holder.refClass(ModuleProvider.class).staticInvoke("createModule").arg(moduleName);
     }
 
-    public static void addSubmodules(Element element, EComponentHolder holder, JBlock initBody, TargetAnnotationHelper annotationHelper, String annotationName, JFieldRef submodulesField) {
+    public static JArray generateSubmodulesArray(Element element, EComponentHolder holder, TargetAnnotationHelper annotationHelper, String annotationName) {
         final List<DeclaredType> submodules = annotationHelper.extractAnnotationClassArrayParameter(element, annotationName, "submodules");
         if (submodules != null && submodules.size() > 0) {
             final JArray submodulesArray = newArray(holder.refClass(Object.class));
-            initBody.assign(submodulesField, submodulesArray);
-            for (DeclaredType type: submodules) {
+            for (DeclaredType type : submodules) {
                 final JClass submoduleClass = holder.refClass(annotationHelper.generatedClassQualifiedNameFromQualifiedName(type.toString()));
                 submodulesArray.add(submoduleClass.staticInvoke(EBeanHolder.GET_INSTANCE_METHOD_NAME).arg(holder.getContextRef()));
             }
+            return submodulesArray;
         }
+        return null;
     }
 }

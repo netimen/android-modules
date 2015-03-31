@@ -8,7 +8,6 @@
 package com.netimen.annotations.handlers;
 
 import com.netimen.annotations.ModuleBean;
-import com.netimen.annotations.helpers.ModuleHelper;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -27,7 +26,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 
 import static com.sun.codemodel.JExpr._null;
-import static com.sun.codemodel.JExpr.cast;
 import static com.sun.codemodel.JExpr.ref;
 
 public class ModuleBeanHandler extends BaseAnnotationHandler<EComponentHolder> {
@@ -51,10 +49,10 @@ public class ModuleBeanHandler extends BaseAnnotationHandler<EComponentHolder> {
     @Override
     public void process(Element element, EComponentHolder holder) throws Exception {
         final JBlock initBody = holder.getInitBody();
-        initBody.add(ModuleHelper.initModule(holder, element.getAnnotation(ModuleBean.class).moduleName()));
+//        initBody.add(ModuleHelper.initModule(holder, element.getAnnotation(ModuleBean.class).moduleName()));
         processBean(element, holder);
 
-        ModuleHelper.addSubmodules(element, holder, initBody, annotationHelper, getTarget(), ref(cast(injectedClass, beanField), ModuleHelper.SUBMODULES_FIELD));
+//        ModuleHelper.addSubmodules(element, holder, initBody, annotationHelper, getTarget(), ref(cast(injectedClass, beanField), ModuleHelper.SUBMODULES_FIELD));
     }
 
     private void processBean(Element element, EComponentHolder holder) {

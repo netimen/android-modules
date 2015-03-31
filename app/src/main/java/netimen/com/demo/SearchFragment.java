@@ -9,8 +9,8 @@ package netimen.com.demo;
 
 import android.widget.TextView;
 
+import com.netimen.annotations.EModule;
 import com.netimen.annotations.Event;
-import com.netimen.annotations.Module;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -21,7 +21,7 @@ import netimen.com.demo.api.search.PerformSearchApi;
 import netimen.com.demo.api.search.QueryWatcherApi;
 
 @EFragment(R.layout.fragment_search)
-@Module(moduleName = SearchFragment.MODULE_NAME, submodules = {PerformSearchApi.class, QueryWatcherApi.class})
+@EModule(moduleName = SearchFragment.MODULE_NAME, submodules = {PerformSearchApi.class, QueryWatcherApi.class})
 public class SearchFragment extends WorkFragment {
     public static final String MODULE_NAME = "search";
 
