@@ -58,9 +58,9 @@ public class EModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
             moduleName = element.asType().toString();
         holder.getInitBody().assign(instances, ModuleHelper.createModule(moduleName, holder));
 
+        holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
         holder.getInitBody().directStatement("// submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
         holder.getInitBody().add(instances.invoke("setInaccessibleInstances").arg(ModuleHelper.generateSubmodulesArray(element, holder, annotationHelper, getTarget())));
-        holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
     }
 
     private boolean skipGeneratedClass(Element element) {

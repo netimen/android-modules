@@ -12,11 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@SuppressWarnings("UnusedDeclaration")
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-public @interface ModuleBean {
-    Class<?> value() default Void.class;
-    String moduleName() default "";
-    Class<?> [] submodules() default {};
+public @interface Module {
 }
