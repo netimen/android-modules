@@ -17,6 +17,6 @@ import java.lang.annotation.Target;
 @SuppressWarnings("UnusedDeclaration")
 public @interface Request {
     Class<?> value() default Object.class;
-    String moduleName() default "";
-    Class<?> moduleClass() default Object.class;
+    String[] moduleName() default "";
+    Class<?>[] moduleClass() default Object.class;
 }

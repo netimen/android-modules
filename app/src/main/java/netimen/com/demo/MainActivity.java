@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         comment.setText(String.format(commentWorkingWith, inputChanged.moduleName));
     }
 
-    @Event(value = WorkDone.class, moduleClass = CalcFragment.class)
+    @Event(value = WorkDone.class, moduleClass = {CalcFragment.class, SearchFragment.class})
     void calcDone() {
         comment.setText(commentCalcDone);
     }
