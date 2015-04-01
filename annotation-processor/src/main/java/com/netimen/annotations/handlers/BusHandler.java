@@ -26,6 +26,8 @@ import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -74,12 +76,19 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         final JVar param = processingMethod.param(cls, "param");
         addMethodCall(processingMethod.body(), callProcessorMethod((ExecutableElement) element, methodName, param)); // return isPublic(param);
 
-        String moduleName = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
-        if (Utility.isEmpty(moduleName)) {
-            final DeclaredType moduleClass = annotationHelper.extractAnnotationClassParameter(element, getTarget(), "moduleClass");
-            moduleName = moduleClass == null ? "" : moduleClass.toString();
-        }
-        register(holder, cls, processingClass, moduleName);
+        List<String> moduleNames = new ArrayList<>();
+        final String[] moduleNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
+        if (moduleNamesParam != null)
+            for (String moduleName : moduleNamesParam)
+                if (!Utility.isEmpty(moduleName))
+                    moduleNames.add(moduleName);
+
+        final List<DeclaredType> moduleClasses = annotationHelper.extractAnnotationClassArrayParameter(element, getTarget(), "moduleClass");
+        if (moduleClasses != null)
+            for (DeclaredType t : moduleClasses)
+                moduleNames.add(t.toString());
+
+        registerMany(holder, cls, processingClass, moduleNames);
     }
 
     protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
@@ -140,20 +149,28 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         printError(element, methodName, "couldn't load class: " + className + " for");
     }
 
-    JInvocation callProcessorMethod(ExecutableElement element, String methodName, JVar eventOrRequestVar) {
+    private JInvocation callProcessorMethod(ExecutableElement element, String methodName, JVar eventOrRequestVar) {
         final JInvocation call = invoke(methodName);
         if (((ExecutableElement) element).getParameters().size() > 0) // passing parameters if needed
             call.arg(eventOrRequestVar);
         return call;
     }
 
-    void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName) {
-        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), codeModel().ref(Bus.class), moduleName);
-        final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
+    private void registerMany(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, List<String> moduleNames) {
         JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged");
         if (method != null)
             method.body().directStatement("// register in onViewChanged, because bus may have been initialized in a fragment");
         if (method == null) method = holder.getInit();
+        if (moduleNames.size() > 0)
+            for (String moduleName : moduleNames)
+                register(holder, cls, listenerClass, moduleName, method);
+        else // registering to default module
+            register(holder, cls, listenerClass, "", method);
+    }
+
+    private void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName, JMethod method) {
+        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
+        final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
         method.body().add(register);
     }
 
