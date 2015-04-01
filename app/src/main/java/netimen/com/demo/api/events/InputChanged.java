@@ -10,8 +10,10 @@ package netimen.com.demo.api.events;
 public class InputChanged {
 
     public final boolean isEmpty;
+    public final String moduleName;
 
-    public InputChanged(boolean isEmpty) {
+    public InputChanged(String moduleName, boolean isEmpty) {
+        this.moduleName = moduleName;
         this.isEmpty = isEmpty;
     }
 }

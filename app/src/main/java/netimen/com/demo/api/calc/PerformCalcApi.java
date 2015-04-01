@@ -10,14 +10,12 @@ package netimen.com.demo.api.calc;
 import android.widget.Button;
 
 import com.netimen.annotations.Event;
-import com.netimen.annotations.Module;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
 
-import netimen.com.demo.WorkFragment;
 import netimen.com.demo.api.BaseApi;
 import netimen.com.demo.api.events.Calc;
 import netimen.com.demo.api.events.GetNumber;
@@ -28,9 +26,6 @@ public class PerformCalcApi extends BaseApi {
 
     @ViewById
     Button calc;
-
-    @Module
-    WorkFragment workFragment;
 
     @Event
     void onInputChanged(InputChanged event) {

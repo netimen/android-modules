@@ -8,9 +8,9 @@
     <string name="search_button">Search</string>
     <string name="enter_search">Search…</string>
     <string name="result_desc_search">Found:</string>
-    <string name="comment_calc">something calculated…</string>
-    <string name="comment_search">something found…</string>
-    <string name="search_some"> some</string>
-    <string name="search_word_end">\'s</string>
+    <string name="comment_calc_done">something calculated…</string>
+    <string name="comment_search_done">something found…</string>
+    <string name="comment_working_with">user is working with %s module…</string>
+    <string name="search_some"> some %s\'s</string>
 
 </resources>

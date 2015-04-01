@@ -14,12 +14,20 @@ import com.netimen.annotations.Inject;
 
 import org.androidannotations.annotations.EFragment;
 
+import java.util.Random;
+
 import netimen.com.demo.api.events.WorkDone;
 
 @EFragment
 public abstract class WorkFragment extends Fragment {
     @Inject
     protected Bus bus;
+
+    public final String name;
+
+    protected WorkFragment(String name) {
+        this.name = name + "-" + (1 + new Random().nextInt(10));
+    }
 
     protected void workDone() {
         bus.event(new WorkDone());

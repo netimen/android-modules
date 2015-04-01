@@ -150,7 +150,9 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName) {
         final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), codeModel().ref(Bus.class), moduleName);
         final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
-        JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged"); // try to register in onViewChanged if present, because bus may have been initialized in a fragment
+        JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged");
+        if (method != null)
+            method.body().directStatement("// register in onViewChanged, because bus may have been initialized in a fragment");
         if (method == null) method = holder.getInit();
         method.body().add(register);
     }

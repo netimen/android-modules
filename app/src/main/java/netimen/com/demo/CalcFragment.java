@@ -26,6 +26,10 @@ public class CalcFragment extends WorkFragment {
     @ViewById
     TextView result;
 
+    public CalcFragment() {
+        super("calc");
+    }
+
     @Event
     void calc(Calc calc) {
         result.setText(" " + (calc.number * calc.number));

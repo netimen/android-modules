@@ -28,11 +28,15 @@ public class SearchFragment extends WorkFragment {
     TextView resultSearch;
 
     @StringRes
-    String searchSome, searchWordEnd;
+    String searchSome;
+
+    public SearchFragment() {
+        super("search");
+    }
 
     @Event
     void search(Search search) {
-        resultSearch.setText(" " + searchSome + " " + search.query + searchWordEnd);
+        resultSearch.setText(String.format(" " + searchSome, search.query));
         workDone();
     }
 }
