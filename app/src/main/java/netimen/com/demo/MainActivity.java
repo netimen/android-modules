@@ -26,12 +26,12 @@ public class MainActivity extends Activity {
     @StringRes
     String commentCalc, commentSearch;
 
-    @Event(value = WorkDone.class, moduleName = CalcFragment.MODULE_NAME)
+    @Event(value = WorkDone.class, moduleClass = CalcFragment.class)
     void calcDone() {
         comment.setText(commentCalc);
     }
 
-    @Event(value = WorkDone.class, moduleName = SearchFragment.MODULE_NAME)
+    @Event(value = WorkDone.class, moduleClass = SearchFragment.class)
     void searchDone() {
         comment.setText(commentSearch);
     }

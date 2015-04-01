@@ -21,9 +21,8 @@ import netimen.com.demo.api.search.PerformSearchApi;
 import netimen.com.demo.api.search.QueryWatcherApi;
 
 @EFragment(R.layout.fragment_search)
-@EModule(moduleName = SearchFragment.MODULE_NAME, submodules = {PerformSearchApi.class, QueryWatcherApi.class})
+@EModule(submodules = {PerformSearchApi.class, QueryWatcherApi.class})
 public class SearchFragment extends WorkFragment {
-    public static final String MODULE_NAME = "search";
 
     @ViewById
     TextView resultSearch;

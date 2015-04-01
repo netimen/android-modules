@@ -19,4 +19,5 @@ import java.lang.annotation.Target;
 public @interface Event {
     Class<?> value() default Object.class;
     String moduleName() default "";
+    Class<?> moduleClass() default Object.class;
 }

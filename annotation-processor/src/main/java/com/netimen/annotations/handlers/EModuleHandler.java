@@ -11,6 +11,7 @@ import com.bookmate.bus.Bus;
 import com.netimen.annotations.EModule;
 import com.netimen.annotations.helpers.ModuleHelper;
 import com.netimen.annotations.helpers.ModuleProvider;
+import com.netimen.annotations.helpers.Utility;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JMod;
 
@@ -51,14 +52,15 @@ public class EModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
             return;
         holder.getGeneratedClass()._implements(ModuleProvider.IModule.class);
         final JFieldVar instances = holder.getGeneratedClass().field(JMod.PRIVATE, ModuleProvider.InstancesHolder.class, "instances_");
-        holder.getInitBody().assign(instances, ModuleHelper.createModule(element.getAnnotation(EModule.class).moduleName(), holder));
+
+        String moduleName = element.getAnnotation(EModule.class).moduleName();
+        if (Utility.isEmpty(moduleName))
+            moduleName = element.asType().toString();
+        holder.getInitBody().assign(instances, ModuleHelper.createModule(moduleName, holder));
+
         holder.getInitBody().directStatement("// submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
         holder.getInitBody().add(instances.invoke("setInaccessibleInstances").arg(ModuleHelper.generateSubmodulesArray(element, holder, annotationHelper, getTarget())));
         holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
-//        final JFieldVar instances = holder.getGeneratedClass().field(PRIVATE, refClass(Map.class).narrow(Object.class, WeakReference.class), "instances_", _new(refClass(HashMap.class)));
-//        holder.getGeneratedClass().method()
-//        ModuleHelper.addSubmodulesField(holder.getGeneratedClass());
-//        ModuleHelper.addSubmodules(element, holder, holder.getInitBody(), annotationHelper, getTarget(), ref(ModuleHelper.SUBMODULES_FIELD));
     }
 
     private boolean skipGeneratedClass(Element element) {

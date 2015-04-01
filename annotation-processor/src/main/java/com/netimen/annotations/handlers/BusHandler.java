@@ -10,6 +10,7 @@ package com.netimen.annotations.handlers;
 import com.bookmate.bus.Bus;
 import com.netimen.annotations.helpers.ModuleHelper;
 import com.netimen.annotations.helpers.SourceHelper;
+import com.netimen.annotations.helpers.Utility;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
@@ -29,6 +30,7 @@ import java.net.MalformedURLException;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
@@ -72,7 +74,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         final JVar param = processingMethod.param(cls, "param");
         addMethodCall(processingMethod.body(), callProcessorMethod((ExecutableElement) element, methodName, param)); // return isPublic(param);
 
-        register(holder, cls, processingClass, (String) annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName"));
+        String moduleName = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
+        if (Utility.isEmpty(moduleName)) {
+            final DeclaredType moduleClass = annotationHelper.extractAnnotationClassParameter(element, getTarget(), "moduleClass");
+            moduleName = moduleClass == null ? "" : moduleClass.toString();
+        }
+        register(holder, cls, processingClass, moduleName);
     }
 
     protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);

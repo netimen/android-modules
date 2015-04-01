@@ -20,9 +20,8 @@ import netimen.com.demo.api.calc.PerformCalcApi;
 import netimen.com.demo.api.events.Calc;
 
 @EFragment(R.layout.fragment_calc)
-@EModule(moduleName = CalcFragment.MODULE_NAME, submodules = {PerformCalcApi.class, NumberWatcherApi.class})
+@EModule(submodules = {PerformCalcApi.class, NumberWatcherApi.class})
 public class CalcFragment extends WorkFragment {
-    public static final String MODULE_NAME = "calc";
 
     @ViewById
     TextView result;

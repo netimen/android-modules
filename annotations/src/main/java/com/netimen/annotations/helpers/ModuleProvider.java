@@ -55,7 +55,7 @@ public class ModuleProvider {
     }
 
     private static InstancesHolder getInstanceHolder(String moduleName) {
-        final WeakReference<InstancesHolder> moduleWeakReference = isEmpty(moduleName) ? currentModule : modules.get(moduleName);
+        final WeakReference<InstancesHolder> moduleWeakReference = Utility.isEmpty(moduleName) ? currentModule : modules.get(moduleName);
         return moduleWeakReference == null ? null : moduleWeakReference.get();
     }
 
@@ -96,12 +96,6 @@ public class ModuleProvider {
         modules.clear();
         currentModuleName = "";
         currentModule = null;
-    }
-
-    ///
-
-    private static boolean isEmpty(String string) {
-        return string == null || string.length() == 0;
     }
 
 }
