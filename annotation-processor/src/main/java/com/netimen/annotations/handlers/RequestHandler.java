@@ -46,5 +46,5 @@ public class RequestHandler extends BusHandler {
         return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, cls);
     }
 
-    // CUR document, test, validate submodules (no '_' classes), "android modules", optimize viewbyid, remove @EBeanCustomScope?, ANY_MODULE
+    // CUR document, test, validate submodules (no '_' classes), "android modules", optimize viewbyid, ANY_MODULE
 }
