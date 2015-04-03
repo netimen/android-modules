@@ -8,12 +8,17 @@
 package com.netimen.annotations.handlers;
 
 import com.bookmate.bus.Bus;
+import com.netimen.annotations.Event;
 import com.netimen.annotations.helpers.ModuleHelper;
+import com.netimen.annotations.helpers.ModuleProvider;
 import com.netimen.annotations.helpers.SourceHelper;
 import com.netimen.annotations.helpers.Utility;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
+import com.sun.codemodel.JConditional;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JForEach;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JType;
@@ -79,9 +84,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         List<String> moduleNames = new ArrayList<>();
         final String[] moduleNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
         if (moduleNamesParam != null)
-            for (String moduleName : moduleNamesParam)
-                if (!Utility.isEmpty(moduleName))
-                    moduleNames.add(moduleName);
+            if (moduleNamesParam.length == 1 && Event.ANY_MODULE.equals(moduleNamesParam[0]))
+                registerAll(holder, cls, processingClass);
+            else
+                for (String moduleName : moduleNamesParam)
+                    if (!Utility.isEmpty(moduleName))
+                        moduleNames.add(moduleName);
 
         final List<DeclaredType> moduleClasses = annotationHelper.extractAnnotationClassArrayParameter(element, getTarget(), "moduleClass");
         if (moduleClasses != null)
@@ -156,11 +164,18 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         return call;
     }
 
+    private void registerAll(EComponentHolder holder, JClass cls, JDefinedClass listenerClass) {
+        JMethod method = getMethodForRegistering(holder);
+        final JClass moduleProviderClass = refClass(ModuleProvider.class);
+        final JInvocation modulesNames = moduleProviderClass.staticInvoke("modulesNames");
+        final JConditional isEmpty = method.body()._if(modulesNames.invoke("isEmpty"));
+        final JForEach forEach = isEmpty._then().forEach(refClass(String.class), "moduleName", modulesNames);
+        register(holder, cls, listenerClass, forEach.var(), forEach.body());
+//            register(holder, cls, listenerClass, "", method);
+    }
+
     private void registerMany(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, List<String> moduleNames) {
-        JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged");
-        if (method != null)
-            method.body().directStatement("// register in onViewChanged, because bus may have been initialized in a fragment");
-        if (method == null) method = holder.getInit();
+        JMethod method = getMethodForRegistering(holder);
         if (moduleNames.size() > 0)
             for (String moduleName : moduleNames)
                 register(holder, cls, listenerClass, moduleName, method);
@@ -168,10 +183,27 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
             register(holder, cls, listenerClass, "", method);
     }
 
+    private JMethod getMethodForRegistering(EComponentHolder holder) {
+        JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged");
+        if (method != null)
+            method.body().directStatement("// register in onViewChanged, because bus may have been initialized in a fragment");
+        if (method == null) method = holder.getInit();
+        return method;
+    }
+
     private void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName, JMethod method) {
-        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
+        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
+        performRegister(cls, listenerClass, method.body(), getBus);
+    }
+
+    private void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, JExpression moduleName, JBlock block) {
+        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, block, codeModel().ref(Bus.class), moduleName);
+        performRegister(cls, listenerClass, block, getBus);
+    }
+
+    private void performRegister(JClass cls, JDefinedClass listenerClass, JBlock block, JInvocation getBus) {
         final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
-        method.body().add(register);
+        block.add(register);
     }
 
 

@@ -11,13 +11,13 @@ import android.app.Activity;
 import android.widget.TextView;
 
 import com.netimen.annotations.Event;
+import com.netimen.annotations.helpers.ModuleProvider;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 import netimen.com.demo.api.events.InputChanged;
-import netimen.com.demo.api.events.WorkDone;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -32,13 +32,17 @@ public class MainActivity extends Activity {
         comment.setText(String.format(commentWorkingWith, inputChanged.moduleName));
     }
 
-    @Event(value = WorkDone.class, moduleClass = CalcFragment.class)
-    void calcDone() {
-        comment.setText(commentCalcDone);
+    @Event(moduleName = Event.ANY_MODULE)
+    void workDone(ModuleProvider.IModule module) {
+        comment.setText(module instanceof CalcFragment ? commentCalcDone : commentSearchDone);
     }
-
-    @Event(value = WorkDone.class, moduleClass = SearchFragment.class)
-    void searchDone() {
-        comment.setText(commentSearchDone);
-    }
+//    @Event(value = WorkDone.class, moduleClass = CalcFragment.class)
+//    void calcDone() {
+//        comment.setText(commentCalcDone);
+//    }
+//
+//    @Event(value = WorkDone.class, moduleClass = SearchFragment.class)
+//    void searchDone() {
+//        comment.setText(commentSearchDone);
+//    }
 }

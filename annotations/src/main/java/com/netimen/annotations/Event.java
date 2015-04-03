@@ -20,4 +20,6 @@ public @interface Event {
     Class<?> value() default Object.class;
     String[] moduleName() default "";
     Class<?>[] moduleClass() default Object.class;
+
+    public static String ANY_MODULE = "_any_module_";
 }

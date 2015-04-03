@@ -55,6 +55,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
         final JBlock initBody = holder.getInitBody();
-        initBody.assign(injectField, ModuleHelper.moduleGetInstanceOrAddDefault(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass, "")); // field = Module.getInstance()
+        initBody.assign(injectField, ModuleHelper.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass, "")); // field = Module.getInstance()
     }
 }

@@ -10,6 +10,7 @@ package com.netimen.annotations.helpers;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * inspired by Dagger's module concept
@@ -68,7 +69,11 @@ public class ModuleProvider {
     }
 
     public static <T> T setInstance(Class<T> cls, T instance) {
-        return setInstance(getInstanceHolder(null), cls, instance);
+        return setInstance("", cls, instance);
+    }
+
+    public static <T> T setInstance(String moduleName, Class<T> cls, T instance) {
+        return setInstance(getInstanceHolder(moduleName), cls, instance);
     }
 
     public static <T> T getInstance(Class<T> cls) {
@@ -90,6 +95,10 @@ public class ModuleProvider {
 
     public static boolean moduleExists(String moduleName) {
         return getInstanceHolder(moduleName) != null;
+    }
+
+    public static Set<String> modulesNames() {
+        return modules.keySet();
     }
 
     public static void clearModules() {
