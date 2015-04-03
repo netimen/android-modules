@@ -81,22 +81,22 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         final JVar param = processingMethod.param(cls, "param");
         addMethodCall(processingMethod.body(), callProcessorMethod((ExecutableElement) element, methodName, param)); // return isPublic(param);
 
-        List<String> moduleNames = new ArrayList<>();
-        final String[] moduleNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
-        if (moduleNamesParam != null)
-            if (moduleNamesParam.length == 1 && Event.ANY_MODULE.equals(moduleNamesParam[0]))
+        List<String> modulesNames = new ArrayList<>();
+        final String[] modulesNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
+        if (modulesNamesParam != null)
+            if (modulesNamesParam.length == 1 && Event.ANY_MODULE.equals(modulesNamesParam[0]))
                 registerAll(holder, cls, processingClass);
             else
-                for (String moduleName : moduleNamesParam)
+                for (String moduleName : modulesNamesParam)
                     if (!Utility.isEmpty(moduleName))
-                        moduleNames.add(moduleName);
+                        modulesNames.add(moduleName);
 
         final List<DeclaredType> moduleClasses = annotationHelper.extractAnnotationClassArrayParameter(element, getTarget(), "moduleClass");
         if (moduleClasses != null)
             for (DeclaredType t : moduleClasses)
-                moduleNames.add(t.toString());
+                modulesNames.add(t.toString());
 
-        registerMany(holder, cls, processingClass, moduleNames);
+        registerMany(holder, cls, processingClass, modulesNames);
     }
 
     protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
@@ -174,10 +174,10 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 //            register(holder, cls, listenerClass, "", method);
     }
 
-    private void registerMany(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, List<String> moduleNames) {
+    private void registerMany(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, List<String> modulesNames) {
         JMethod method = getMethodForRegistering(holder);
-        if (moduleNames.size() > 0)
-            for (String moduleName : moduleNames)
+        if (modulesNames.size() > 0)
+            for (String moduleName : modulesNames)
                 register(holder, cls, listenerClass, moduleName, method);
         else // registering to default module
             register(holder, cls, listenerClass, "", method);
