@@ -42,11 +42,13 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import static com.sun.codemodel.JExpr._new;
+import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr.invoke;
 import static com.sun.codemodel.JMod.PUBLIC;
 
 public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder> {
     final AnnotationHelper annotationHelper;
+    private ParamType firstParamType = ParamType.NONE, secondParamType = ParamType.NONE;
 
     public BusHandler(Class<?> targetClass, ProcessingEnvironment processingEnvironment) {
         super(targetClass, processingEnvironment);
@@ -70,7 +72,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     public void process(Element element, EComponentHolder holder) throws Exception {
 
         final String methodName = element.getSimpleName().toString(); // isPublic
-
+        parseParameters((ExecutableElement) element);
         final JClass cls = getEventOrRequestClass((ExecutableElement) element, methodName); // IsPublic.class
         if (cls == null)
             return;
@@ -79,7 +81,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         JMethod processingMethod = processingClass.method(PUBLIC, getProcessingMethodReturnType(), getProcessingMethodName()); // Boolean process()
         processingMethod.annotate(Override.class);
         final JVar param = processingMethod.param(cls, "param");
-        addMethodCall(processingMethod.body(), callProcessorMethod((ExecutableElement) element, methodName, param)); // return isPublic(param);
+        addMethodCall(processingMethod.body(), callProcessorMethod(methodName, param)); // return isPublic(param);
 
         List<String> modulesNames = new ArrayList<>();
         final String[] modulesNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
@@ -99,6 +101,19 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         registerMany(holder, cls, processingClass, modulesNames);
     }
 
+    private void parseParameters(ExecutableElement element) {
+        firstParamType = parseParameter(element, 0);
+        secondParamType = parseParameter(element, 1);
+    }
+
+    private ParamType parseParameter(ExecutableElement element, int paramNo) {
+        if (element.getParameters().size() > paramNo) {
+            final TypeMirror typeMirror = element.getParameters().get(0).asType();
+            return refClass(typeMirror.toString()) == refClass(ModuleProvider.IModule.class) ? ParamType.MODULE : ParamType.EVENT_OR_REQUEST;
+        }
+        return ParamType.NONE;
+    }
+
     protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
 
     protected abstract String getProcessingMethodName();
@@ -116,8 +131,10 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
         TypeMirror classType = annotationHelper.extractAnnotationClassParameter(element, getTarget());
 
-        if (classType == null && element.getParameters().size() > 0) // trying to extract the event/request class from parameters
+        if (classType == null && firstParamType == ParamType.EVENT_OR_REQUEST) // trying to extract the event/request class from parameters
             classType = element.getParameters().get(0).asType();
+        if (classType == null && secondParamType == ParamType.EVENT_OR_REQUEST) // trying to extract the event/request class from parameters
+            classType = element.getParameters().get(1).asType();
 
         String className, extractedName = null;
         if (classType != null)
@@ -157,10 +174,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         printError(element, methodName, "couldn't load class: " + className + " for");
     }
 
-    private JInvocation callProcessorMethod(ExecutableElement element, String methodName, JVar eventOrRequestVar) {
+    private JInvocation callProcessorMethod(String methodName, JVar eventOrRequestVar) {
         final JInvocation call = invoke(methodName);
-        if (((ExecutableElement) element).getParameters().size() > 0) // passing parameters if needed
+        if (firstParamType == ParamType.EVENT_OR_REQUEST) // passing parameters if needed
             call.arg(eventOrRequestVar);
+        else if (firstParamType == ParamType.MODULE)
+            call.arg(_null()); // CUR
         return call;
     }
 
@@ -206,5 +225,8 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         block.add(register);
     }
 
+    private static enum ParamType {
+        NONE, EVENT_OR_REQUEST, MODULE;
+    }
 
 }
