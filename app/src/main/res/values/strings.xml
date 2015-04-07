@@ -10,7 +10,7 @@
     <string name="result_desc_search">Found:</string>
     <string name="comment_calc_done">something calculated…</string>
     <string name="comment_search_done">something found…</string>
-    <string name="comment_working_with">user is working with %s module…</string>
+    <string name="comment_working_with">user is working with %1$s module (%2$s.class)</string>
     <string name="search_some"> some %s\'s</string>
 
 </resources>

@@ -28,21 +28,12 @@ public class MainActivity extends Activity {
     String commentCalcDone, commentSearchDone, commentWorkingWith;
 
     @Event(moduleClass = {CalcFragment.class, SearchFragment.class})
-    void workingWith(InputChanged inputChanged) {
-        comment.setText(String.format(commentWorkingWith, inputChanged.moduleName));
+    void workingWith(InputChanged inputChanged, ModuleProvider.IModule module) {
+        comment.setText(String.format(commentWorkingWith, inputChanged.moduleName, module.getClass().getSimpleName()));
     }
 
     @Event(moduleName = Event.ANY_MODULE)
     void workDone(ModuleProvider.IModule module) {
         comment.setText(module instanceof CalcFragment ? commentCalcDone : commentSearchDone);
     }
-//    @Event(value = WorkDone.class, moduleClass = CalcFragment.class)
-//    void calcDone() {
-//        comment.setText(commentCalcDone);
-//    }
-//
-//    @Event(value = WorkDone.class, moduleClass = SearchFragment.class)
-//    void searchDone() {
-//        comment.setText(commentSearchDone);
-//    }
 }

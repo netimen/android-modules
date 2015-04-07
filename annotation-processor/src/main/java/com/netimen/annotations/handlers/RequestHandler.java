@@ -41,10 +41,14 @@ public class RequestHandler extends BusHandler {
     }
 
     @Override
-    protected JClass getProcessingClass(JClass cls, Element element) throws ClassNotFoundException {
-        resultClass = codeModel().parseType(((ExecutableElement) element).getReturnType().toString()).boxify();
-        return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, cls);
+    protected JClass getProcessingClass(JClass eventOrRequestClass, Element element) {
+        try {
+            resultClass = codeModel().parseType(((ExecutableElement) element).getReturnType().toString()).boxify();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, eventOrRequestClass);
     }
 
-    // CUR document, test, validate submodules (no '_' classes), "android modules", optimize viewbyid, ANY_MODULE
+    // CUR document, test, validate submodules (no '_' classes), "android modules", optimize viewbyid
 }

@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2015 Bookmate.
  * All Rights Reserved.
- *
+ * <p/>
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   13.03.15
  */
@@ -21,6 +21,7 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JForEach;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JMod;
 import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 
@@ -42,8 +43,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 import static com.sun.codemodel.JExpr._new;
-import static com.sun.codemodel.JExpr._null;
 import static com.sun.codemodel.JExpr.invoke;
+import static com.sun.codemodel.JExpr.lit;
 import static com.sun.codemodel.JMod.PUBLIC;
 
 public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder> {
@@ -73,22 +74,17 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
         final String methodName = element.getSimpleName().toString(); // isPublic
         parseParameters((ExecutableElement) element);
-        final JClass cls = getEventOrRequestClass((ExecutableElement) element, methodName); // IsPublic.class
-        if (cls == null)
+        final JClass eventOrRequestClass = getEventOrRequestClass((ExecutableElement) element, methodName); // IsPublic.class
+        if (eventOrRequestClass == null)
             return;
-
-        JDefinedClass processingClass = codeModel().anonymousClass(getProcessingClass(cls, element)); // Bus.RequestProcessor<Boolean, IsPublic>
-        JMethod processingMethod = processingClass.method(PUBLIC, getProcessingMethodReturnType(), getProcessingMethodName()); // Boolean process()
-        processingMethod.annotate(Override.class);
-        final JVar param = processingMethod.param(cls, "param");
-        addMethodCall(processingMethod.body(), callProcessorMethod(methodName, param)); // return isPublic(param);
 
         List<String> modulesNames = new ArrayList<>();
         final String[] modulesNamesParam = annotationHelper.extractAnnotationParameter(element, getTarget(), "moduleName");
         if (modulesNamesParam != null)
-            if (modulesNamesParam.length == 1 && Event.ANY_MODULE.equals(modulesNamesParam[0]))
-                registerAll(holder, cls, processingClass);
-            else
+            if (modulesNamesParam.length == 1 && Event.ANY_MODULE.equals(modulesNamesParam[0])) {
+                registerAll(holder, element, methodName, eventOrRequestClass);
+                return;
+            } else
                 for (String moduleName : modulesNamesParam)
                     if (!Utility.isEmpty(moduleName))
                         modulesNames.add(moduleName);
@@ -98,8 +94,35 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
             for (DeclaredType t : moduleClasses)
                 modulesNames.add(t.toString());
 
-        registerMany(holder, cls, processingClass, modulesNames);
+        registerMany(holder, element, methodName, eventOrRequestClass, modulesNames);
     }
+
+    ////
+
+    protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
+
+    protected abstract String getProcessingMethodName();
+
+    protected abstract JType getProcessingMethodReturnType();
+
+    protected abstract JClass getProcessingClass(JClass eventOrRequestClass, Element element);
+
+    ////
+
+
+    private void printError(Element element, String methodName, String message) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Bus. " + message + " " + element.getEnclosingElement().getSimpleName() + "." + methodName + "()");
+    }
+
+    private void methodNameEqualsClassNameError(Element element, String methodName) {
+        printError(element, methodName, "we can't generate correct code if the method name is equal to the event/request class name. ");
+    }
+
+    private void classNotFoundError(Element element, String methodName, String className) {
+        printError(element, methodName, "couldn't load class: " + className + " for");
+    }
+
+    ///
 
     private void parseParameters(ExecutableElement element) {
         firstParamType = parseParameter(element, 0);
@@ -108,20 +131,13 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     private ParamType parseParameter(ExecutableElement element, int paramNo) {
         if (element.getParameters().size() > paramNo) {
-            final TypeMirror typeMirror = element.getParameters().get(0).asType();
-            return refClass(typeMirror.toString()) == refClass(ModuleProvider.IModule.class) ? ParamType.MODULE : ParamType.EVENT_OR_REQUEST;
+            final TypeMirror typeMirror = element.getParameters().get(paramNo).asType();
+            return ModuleProvider.IModule.class.getCanonicalName().equals(typeMirror.toString()) ? ParamType.MODULE : ParamType.EVENT_OR_REQUEST;
         }
         return ParamType.NONE;
     }
 
-    protected abstract void addMethodCall(JBlock body, JInvocation processorMethod);
-
-    protected abstract String getProcessingMethodName();
-
-    protected abstract JType getProcessingMethodReturnType();
-
-    protected abstract JClass getProcessingClass(JClass cls, Element element) throws ClassNotFoundException;
-
+    ////
 
     JClass getEventOrRequestClass(ExecutableElement element, String methodName) throws MalformedURLException, ClassNotFoundException {
         if (Character.isUpperCase(methodName.charAt(0))) {
@@ -162,44 +178,52 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         }
     }
 
-    private void printError(Element element, String methodName, String message) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Bus. " + message + " " + element.getEnclosingElement().getSimpleName() + "." + methodName + "()");
+    ////
+
+    JDefinedClass createProcessingClass(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, JExpression moduleName) {
+        JDefinedClass processingClass = codeModel().anonymousClass(getProcessingClass(eventOrRequestClass, element)); // Bus.RequestProcessor<Boolean, IsPublic>
+        JMethod processingMethod = processingClass.method(PUBLIC, getProcessingMethodReturnType(), getProcessingMethodName()); // Boolean process()
+        processingMethod.annotate(Override.class);
+        final JVar param = processingMethod.param(eventOrRequestClass, "param");
+        addMethodCall(processingMethod.body(), callProcessorMethod(holder, methodName, param, moduleName)); // return isPublic(param);
+        return processingClass;
     }
 
-    private void methodNameEqualsClassNameError(Element element, String methodName) {
-        printError(element, methodName, "we can't generate correct code if the method name is equal to the event/request class name. ");
-    }
-
-    private void classNotFoundError(Element element, String methodName, String className) {
-        printError(element, methodName, "couldn't load class: " + className + " for");
-    }
-
-    private JInvocation callProcessorMethod(String methodName, JVar eventOrRequestVar) {
+    private JInvocation callProcessorMethod(EComponentHolder holder, String methodName, JVar eventOrRequestVar, JExpression moduleName) {
         final JInvocation call = invoke(methodName);
-        if (firstParamType == ParamType.EVENT_OR_REQUEST) // passing parameters if needed
-            call.arg(eventOrRequestVar);
-        else if (firstParamType == ParamType.MODULE)
-            call.arg(_null()); // CUR
+        addArgument(holder, call, firstParamType, eventOrRequestVar, moduleName);
+        addArgument(holder, call, secondParamType, eventOrRequestVar, moduleName);
         return call;
     }
 
-    private void registerAll(EComponentHolder holder, JClass cls, JDefinedClass listenerClass) {
+    private void addArgument(EComponentHolder holder, JInvocation call, ParamType argType, JVar eventOrRequestVar, JExpression moduleName) {
+        if (argType == ParamType.EVENT_OR_REQUEST) // passing parameters if needed
+            call.arg(eventOrRequestVar);
+        else if (argType == ParamType.MODULE)
+            call.arg(ModuleHelper.getModule(holder, moduleName));
+    }
+
+    ////
+
+    private void registerAll(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass) {
         JMethod method = getMethodForRegistering(holder);
         final JClass moduleProviderClass = refClass(ModuleProvider.class);
         final JInvocation modulesNames = moduleProviderClass.staticInvoke("modulesNames");
         final JConditional isEmpty = method.body()._if(modulesNames.invoke("isEmpty"));
-        final JForEach forEach = isEmpty._then().forEach(refClass(String.class), "moduleName", modulesNames);
-        register(holder, cls, listenerClass, forEach.var(), forEach.body());
-//            register(holder, cls, listenerClass, "", method);
+        register(holder, element, methodName, eventOrRequestClass, lit(""), isEmpty._then());
+        final JForEach forEach = isEmpty._else().forEach(refClass(String.class), "moduleName", modulesNames);
+        forEach.body().directStatement("// we need to store module name in some final variable to use it in the listener");
+        final JVar moduleNameToPass = forEach.body().decl(JMod.FINAL, refClass(String.class), "moduleNameToPass", forEach.var());
+        register(holder, element, methodName, eventOrRequestClass, moduleNameToPass, forEach.body());
     }
 
-    private void registerMany(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, List<String> modulesNames) {
+    private void registerMany(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, List<String> modulesNames) {
         JMethod method = getMethodForRegistering(holder);
         if (modulesNames.size() > 0)
             for (String moduleName : modulesNames)
-                register(holder, cls, listenerClass, moduleName, method);
+                register(holder, element, methodName, eventOrRequestClass, moduleName, method);
         else // registering to default module
-            register(holder, cls, listenerClass, "", method);
+            register(holder, element, methodName, eventOrRequestClass, "", method);
     }
 
     private JMethod getMethodForRegistering(EComponentHolder holder) {
@@ -210,23 +234,23 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         return method;
     }
 
-    private void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, String moduleName, JMethod method) {
+    private void register(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, String moduleName, JMethod method) {
         final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
-        performRegister(cls, listenerClass, method.body(), getBus);
+        performRegister(eventOrRequestClass, createProcessingClass(holder, element, methodName, eventOrRequestClass, lit(moduleName)), method.body(), getBus);
     }
 
-    private void register(EComponentHolder holder, JClass cls, JDefinedClass listenerClass, JExpression moduleName, JBlock block) {
+    private void register(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, JExpression moduleName, JBlock block) {
         final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, block, codeModel().ref(Bus.class), moduleName);
-        performRegister(cls, listenerClass, block, getBus);
+        performRegister(eventOrRequestClass, createProcessingClass(holder, element, methodName, eventOrRequestClass, moduleName), block, getBus);
     }
 
-    private void performRegister(JClass cls, JDefinedClass listenerClass, JBlock block, JInvocation getBus) {
-        final JInvocation register = getBus.invoke("register").arg(cls.dotclass()).arg(_new(listenerClass));
+    private void performRegister(JClass eventOrRequestClass, JDefinedClass processingClass, JBlock block, JInvocation getBus) {
+        final JInvocation register = getBus.invoke("register").arg(eventOrRequestClass.dotclass()).arg(_new(processingClass));
         block.add(register);
     }
 
-    private static enum ParamType {
-        NONE, EVENT_OR_REQUEST, MODULE;
+    private enum ParamType {
+        NONE, EVENT_OR_REQUEST, MODULE
     }
 
 }

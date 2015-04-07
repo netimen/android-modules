@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2015 Bookmate.
  * All Rights Reserved.
- *
+ * <p/>
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   24.03.15
  */
@@ -43,6 +43,14 @@ public class ModuleHelper {
 //        return instance;
 //    }
 
+
+    public static JInvocation getModule(EComponentHolder holder) {
+        return getModule(holder, lit(""));
+    }
+
+    public static JInvocation getModule(EComponentHolder holder, JExpression moduleName) {
+        return moduleGetInstance(holder, moduleName, holder.refClass(ModuleProvider.IModule.class));
+    }
 
     public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
         return moduleGetInstance(holder, "", instanceCls);

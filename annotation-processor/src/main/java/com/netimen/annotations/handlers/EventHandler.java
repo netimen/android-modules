@@ -41,8 +41,8 @@ public class EventHandler extends BusHandler {
     }
 
     @Override
-    protected JClass getProcessingClass(JClass cls, Element element) {
-        return codeModel().ref(Bus.EventListener.class).narrow(cls);
+    protected JClass getProcessingClass(JClass eventOrRequestClass, Element element) {
+        return codeModel().ref(Bus.EventListener.class).narrow(eventOrRequestClass);
     }
 
     @Override
