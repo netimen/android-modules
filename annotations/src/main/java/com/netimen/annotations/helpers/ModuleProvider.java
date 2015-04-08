@@ -18,13 +18,8 @@ import java.util.Set;
 @SuppressWarnings("UnusedDeclaration")
 public class ModuleProvider {
 
-    public static interface IModule {
-
+    public interface IModule {
     }
-
-    private static final Map<String, WeakReference<InstancesHolder>> modules = new HashMap<>();
-    private static WeakReference<InstancesHolder> currentModule = null;
-    private static String currentModuleName = "";
 
     public static class InstancesHolder {
         private final Map<Object, Object> accessibleInstances = new HashMap<>();
@@ -50,10 +45,10 @@ public class ModuleProvider {
             return (T) accessibleInstances.get(cls);
         }
 
-        private void clear() {
-            accessibleInstances.clear();
-        }
     }
+
+    private static final Map<String, WeakReference<InstancesHolder>> modules = new HashMap<>();
+    private static WeakReference<InstancesHolder> currentModule = null;
 
     private static InstancesHolder getInstanceHolder(String moduleName) {
         final WeakReference<InstancesHolder> moduleWeakReference = Utility.isEmpty(moduleName) ? currentModule : modules.get(moduleName);
@@ -88,7 +83,6 @@ public class ModuleProvider {
         final InstancesHolder instancesHolder = new InstancesHolder();
         currentModule = new WeakReference<>(instancesHolder);
 
-        currentModuleName = moduleName;
         modules.put(moduleName, currentModule);
         return instancesHolder;
     }
@@ -103,7 +97,6 @@ public class ModuleProvider {
 
     public static void clearModules() {
         modules.clear();
-        currentModuleName = "";
         currentModule = null;
     }
 
