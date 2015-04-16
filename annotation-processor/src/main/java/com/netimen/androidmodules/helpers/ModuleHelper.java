@@ -94,7 +94,7 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleGetInstanceOrAddDefaultIfNeeded(EComponentHolder holder, JDefinedClass generatedClass, JMethod method, JClass instanceCls, String moduleName) {
-        final String setInstanceMethodName = "set" + instanceCls.name() + "_" + moduleName.hashCode();
+        final String setInstanceMethodName = "set" + instanceCls.name() + "_" + Math.abs(moduleName.hashCode());
         if (findMethod(generatedClass, setInstanceMethodName) == null) { // if we already have such a method generated it means the instance is already initialized, so don't add unnecessary ifs
             final JMethod setNewInstance = holder.getGeneratedClass().method(JMod.PRIVATE, void.class, setInstanceMethodName);
             setNewInstance.body().add(ModuleHelper.moduleSetInstance(holder, moduleName, instanceCls));

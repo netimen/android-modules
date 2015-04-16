@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   25.03.15
  */
-package netimen.com.demo.api.events;
+package com.netimen.androidmodules.api.events;
 
 public class Search {
     public final String query;

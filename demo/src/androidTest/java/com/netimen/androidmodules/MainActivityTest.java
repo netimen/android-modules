@@ -1,4 +1,4 @@
-package netimen.com.demo;
+package com.netimen.androidmodules;
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.BoundedMatcher;
@@ -7,6 +7,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+
+import com.netimen.androidmodules.demo.MainActivity_;
+import com.netimen.androidmodules.demo.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

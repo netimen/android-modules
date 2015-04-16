@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.demo.api.events;
+package com.netimen.androidmodules.api.events;
 
 public class InputChanged {
 

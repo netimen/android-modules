@@ -5,22 +5,21 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.demo.api.calc;
+package com.netimen.androidmodules.api.calc;
 
 import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.netimen.androidmodules.annotations.Module;
 import com.netimen.androidmodules.annotations.Request;
+import com.netimen.androidmodules.api.BaseApi;
+import com.netimen.androidmodules.api.events.InputChanged;
+import com.netimen.androidmodules.demo.R;
+import com.netimen.androidmodules.demo.WorkFragment;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
-
-import netimen.com.demo.R;
-import netimen.com.demo.WorkFragment;
-import netimen.com.demo.api.BaseApi;
-import netimen.com.demo.api.events.InputChanged;
 
 @EBean
 public class NumberWatcherApi extends BaseApi {

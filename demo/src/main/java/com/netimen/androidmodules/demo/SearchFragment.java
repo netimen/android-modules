@@ -5,20 +5,19 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   25.03.15
  */
-package netimen.com.demo;
+package com.netimen.androidmodules.demo;
 
 import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.api.events.Search;
+import com.netimen.androidmodules.api.search.PerformSearchApi;
+import com.netimen.androidmodules.api.search.QueryWatcherApi;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
-
-import netimen.com.demo.api.events.Search;
-import netimen.com.demo.api.search.PerformSearchApi;
-import netimen.com.demo.api.search.QueryWatcherApi;
 
 @EFragment(R.layout.fragment_search)
 @EModule(submodules = {PerformSearchApi.class, QueryWatcherApi.class})

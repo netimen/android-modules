@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
-package netimen.com.demo.api;
+package com.netimen.androidmodules.api;
 
 import com.netimen.androidmodules.annotations.Inject;
 import com.netimen.androidmodules.helpers.Bus;

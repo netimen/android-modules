@@ -5,19 +5,18 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   24.03.15
  */
-package netimen.com.demo;
+package com.netimen.androidmodules.demo;
 
 import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.api.calc.NumberWatcherApi;
+import com.netimen.androidmodules.api.calc.PerformCalcApi;
+import com.netimen.androidmodules.api.events.Calc;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import netimen.com.demo.api.calc.NumberWatcherApi;
-import netimen.com.demo.api.calc.PerformCalcApi;
-import netimen.com.demo.api.events.Calc;
 
 @EFragment(R.layout.fragment_calc)
 @EModule(submodules = {PerformCalcApi.class, NumberWatcherApi.class})

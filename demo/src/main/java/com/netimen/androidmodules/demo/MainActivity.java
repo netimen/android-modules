@@ -5,19 +5,19 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   07.12.14
  */
-package netimen.com.demo;
+package com.netimen.androidmodules.demo;
 
 import android.app.Activity;
 import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.api.events.InputChanged;
 import com.netimen.androidmodules.helpers.ModuleProvider;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
-import netimen.com.demo.api.events.InputChanged;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {

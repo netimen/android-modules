@@ -5,18 +5,18 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   25.03.15
  */
-package netimen.com.demo;
+package com.netimen.androidmodules.demo;
 
 import android.app.Fragment;
 
 import com.netimen.androidmodules.annotations.Inject;
+import com.netimen.androidmodules.api.events.WorkDone;
 import com.netimen.androidmodules.helpers.Bus;
 
 import org.androidannotations.annotations.EFragment;
 
 import java.util.Random;
 
-import netimen.com.demo.api.events.WorkDone;
 
 @EFragment
 public abstract class WorkFragment extends Fragment {
