@@ -31,6 +31,7 @@ android {
 
 apt {
     arguments {
+        //noinspection GroovyAssignabilityCheck
         androidManifestFile variant.outputs[0].processResources.manifestFile
         // if you have multiple outputs (when using splits), you may want to have other index than 0
 
