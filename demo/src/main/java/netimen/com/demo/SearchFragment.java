@@ -9,8 +9,8 @@ package netimen.com.demo;
 
 import android.widget.TextView;
 
-import com.netimen.annotations.EModule;
-import com.netimen.annotations.Event;
+import com.netimen.androidmodules.annotations.EModule;
+import com.netimen.androidmodules.annotations.Event;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;

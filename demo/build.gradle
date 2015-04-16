@@ -6,7 +6,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "netimen.com.simplebrowser"
+        applicationId "netimen.com.androidmodulesdemo"
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
@@ -47,12 +47,11 @@ apt {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
     compile "org.androidannotations:androidannotations-api:3.2"
 
     apt project(':annotation-processor')
     compile project(':annotations')
-    compile project(':bus')
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'

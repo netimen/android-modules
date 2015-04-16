@@ -9,8 +9,8 @@ package netimen.com.demo;
 
 import android.app.Fragment;
 
-import com.bookmate.bus.Bus;
-import com.netimen.annotations.Inject;
+import com.netimen.androidmodules.annotations.Inject;
+import com.netimen.androidmodules.helpers.Bus;
 
 import org.androidannotations.annotations.EFragment;
 

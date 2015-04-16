@@ -7,8 +7,8 @@
  */
 package netimen.com.demo.api;
 
-import com.bookmate.bus.Bus;
-import com.netimen.annotations.Inject;
+import com.netimen.androidmodules.annotations.Inject;
+import com.netimen.androidmodules.helpers.Bus;
 
 import org.androidannotations.annotations.EBean;
 

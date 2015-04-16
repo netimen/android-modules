@@ -9,7 +9,7 @@ package netimen.com.demo.api.search;
 
 import android.widget.Button;
 
-import com.netimen.annotations.Event;
+import com.netimen.androidmodules.annotations.Event;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;

@@ -7,7 +7,7 @@
  */
 package netimen.com.demo.api.events;
 
-import com.bookmate.bus.Bus;
+import com.netimen.androidmodules.helpers.Bus;
 
 public class GetNumber extends Bus.Request<Integer> {
 }

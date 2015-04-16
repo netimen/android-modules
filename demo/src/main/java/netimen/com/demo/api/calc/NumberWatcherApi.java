@@ -10,8 +10,8 @@ package netimen.com.demo.api.calc;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.netimen.annotations.Module;
-import com.netimen.annotations.Request;
+import com.netimen.androidmodules.annotations.Module;
+import com.netimen.androidmodules.annotations.Request;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.TextChange;

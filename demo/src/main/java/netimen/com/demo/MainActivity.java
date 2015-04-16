@@ -10,8 +10,8 @@ package netimen.com.demo;
 import android.app.Activity;
 import android.widget.TextView;
 
-import com.netimen.annotations.Event;
-import com.netimen.annotations.helpers.ModuleProvider;
+import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.helpers.ModuleProvider;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
