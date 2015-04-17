@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Android Modules Demo</string>
     <string name="title_activity_demo">Android Modules Demo</string>
+    <string name="query_hint">search for a place</string>
+    <string name="location_not_found">Location not found</string>
+    <string name="clear_all">Clear all</string>
 </resources>
