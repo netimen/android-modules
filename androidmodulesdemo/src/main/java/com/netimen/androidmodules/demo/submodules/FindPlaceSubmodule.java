@@ -7,9 +7,7 @@
  */
 package com.netimen.androidmodules.demo.submodules;
 
-import android.content.Context;
 import android.location.Address;
-import android.location.Geocoder;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -21,7 +19,6 @@ import com.netimen.androidmodules.demo.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -33,14 +30,8 @@ public class FindPlaceSubmodule extends Submodule {
     @ViewById
     SearchView search;
 
-    @RootContext
-    Context context;
-
-    private Geocoder geocoder;
-
     @AfterViews
     void ready() {
-        geocoder = new Geocoder(context);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -63,7 +54,7 @@ public class FindPlaceSubmodule extends Submodule {
             List<Address> addresses = geocoder.getFromLocationName(locationName, 1);
             final Address address = addresses.get(0);
             final LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
-            getMap().addMarker(new MarkerOptions().position(position).title(address.getLocality()));
+            getMap().addMarker(new MarkerOptions().position(position).title(MapUtils.getAddressString(address)));
             getMap().animateCamera(CameraUpdateFactory.newLatLng(position));
             return address;
         } catch (IOException | NullPointerException | IndexOutOfBoundsException e) {

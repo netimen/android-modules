@@ -7,6 +7,8 @@
  */
 package com.netimen.androidmodules.demo.submodules;
 
+import android.content.Context;
+import android.location.Geocoder;
 import android.view.View;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -14,8 +16,10 @@ import com.netimen.androidmodules.annotations.Inject;
 import com.netimen.androidmodules.demo.R;
 import com.netimen.androidmodules.helpers.Bus;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -30,11 +34,21 @@ public abstract class Submodule {
     @ViewById
     View clearAll;
 
+    @RootContext
+    Context context;
+
     /**
      * used for communication between submodules. The library makes sure that all submodules use same instance of Bus.
      */
     @Inject
     Bus bus;
+
+    protected Geocoder geocoder;
+
+    @AfterInject
+    void createGeocoder() {
+        geocoder = new Geocoder(context);
+    }
 
     protected com.google.android.gms.maps.GoogleMap getMap() {
         return mapFragment.getMap();

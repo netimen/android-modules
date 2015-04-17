@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -26,11 +27,11 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.DimensionRes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EBean
 public class CalcDistanceSubmodule extends Submodule {
-    private Polyline polyline;
 
     @ColorRes
     int accent;
@@ -41,6 +42,9 @@ public class CalcDistanceSubmodule extends Submodule {
     @ViewById
     ImageButton toggleRuler;
 
+    private Polyline polyline;
+    private final List<Marker> markers = new ArrayList<>();
+
     @AfterViews
     void ready() {
         getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -48,13 +52,14 @@ public class CalcDistanceSubmodule extends Submodule {
             public void onMapClick(LatLng latLng) {
                 bus.event(new MapTouched());
 
-                if (polyline == null)
+                if (polyline == null) // means that we aren't currently editing the ruler
                     return;
 
-                final List<LatLng> points = polyline.getPoints(); // I'm not very good with Google Maps so may be there is a better way to add new point to Polyline
-                points.add(latLng);
-                polyline.setPoints(points);
-                getMap().addMarker(new MarkerOptions().position(latLng));
+                MapUtils.addPolylinePoint(polyline, latLng);
+
+                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng))));
+
+                enableClearAll(true);
             }
         });
     }
@@ -66,6 +71,8 @@ public class CalcDistanceSubmodule extends Submodule {
             toggleRuler.setImageResource(R.drawable.abc_ic_clear_mtrl_alpha);
         } else {
             polyline.remove();
+            for (Marker marker : markers)
+                marker.remove();
             clearRuler();
         }
     }
@@ -73,6 +80,7 @@ public class CalcDistanceSubmodule extends Submodule {
     @Event(ClearMap.class)
     void clearRuler() {
         polyline = null;
+        markers.clear();
         toggleRuler.setImageResource(R.drawable.ruler);
     }
-} // CUR circle in start, better cross icon, show clear button when adding points, calc distance
+} // CUR  calc distance,  move action button up on marker selected
