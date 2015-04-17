@@ -16,7 +16,7 @@ import org.androidannotations.annotations.EBean;
  * the clear functionality is common for both FindPlace and CalcDistance submodules, because it clears the markers as well as the ruler. So we put it into a differnt submodule to keep the logic clear
  */
 @EBean
-public class ClearMapSubmodule extends Submodule {
+public class ClearMapSubmodule extends BaseMapSubmodule {
 
     @Click
     void clearAll() {

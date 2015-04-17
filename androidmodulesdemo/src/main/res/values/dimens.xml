@@ -2,7 +2,7 @@
 <resources>
     <dimen name="margin">16dp</dimen>
     <dimen name="margin_small">4dp</dimen>
-    <dimen name="margin_big">64dp</dimen>
+    <dimen name="marker_buttons_height_guess">44dp</dimen>
 
     <dimen name="action_button_size">48dp</dimen>
 

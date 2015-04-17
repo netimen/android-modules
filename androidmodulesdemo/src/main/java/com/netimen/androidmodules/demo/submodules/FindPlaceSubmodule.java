@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @EBean
-public class FindPlaceSubmodule extends Submodule {
+public class FindPlaceSubmodule extends BaseMapSubmodule {
 
     @ViewById
     SearchView search;
@@ -64,7 +64,7 @@ public class FindPlaceSubmodule extends Submodule {
 
     /**
      * we want soft keyboard to be hidden when user touches the map. But {@link CalcDistanceSubmodule} already added an OnMapClickListener, so we use the event system to get a touch notification from that submodule.
-     * Actually there are other design patterns for this simple case: for instance we could just add a listener in a base class {@link Submodule}
+     * Actually there are other design patterns for this simple case: for instance we could just add a listener in a base class {@link BaseMapSubmodule}
      */
     @Event
     void onMapTouched() {

@@ -26,7 +26,7 @@ import org.androidannotations.annotations.ViewById;
  * contains some basic stuff used by all the submodules
  */
 @EBean
-public abstract class Submodule {
+public abstract class BaseMapSubmodule {
 
     @FragmentById(R.id.map)
     SupportMapFragment mapFragment;

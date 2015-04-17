@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EBean
-public class CalcDistanceSubmodule extends Submodule {
+public class CalcDistanceSubmodule extends BaseMapSubmodule {
 
     @ColorRes
     int accent;
@@ -91,4 +91,4 @@ public class CalcDistanceSubmodule extends Submodule {
         distance.setText(null);
         toggleRuler.setImageResource(R.drawable.ruler);
     }
-} // CUR    move action button up on marker selected
+} // CUR    move action button down when selected marker destroyed
