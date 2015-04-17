@@ -1,0 +1,46 @@
+/**
+ * Copyright (c) 2015 Bookmate.
+ * All Rights Reserved.
+ *
+ * Author: Dmitry Gordeev <netimen@dreamindustries.co>
+ * Date:   17.04.15
+ */
+package com.netimen.androidmodules.demo.submodules;
+
+import android.view.View;
+
+import com.google.android.gms.maps.SupportMapFragment;
+import com.netimen.androidmodules.annotations.Inject;
+import com.netimen.androidmodules.demo.R;
+import com.netimen.androidmodules.helpers.Bus;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.ViewById;
+
+/**
+ * contains some basic stuff used by all the submodules
+ */
+@EBean
+public abstract class Submodule {
+
+    @FragmentById(R.id.map)
+    SupportMapFragment mapFragment;
+
+    @ViewById
+    View clearAll;
+
+    /**
+     * used for communication between submodules. The library makes sure that all submodules use same instance of Bus.
+     */
+    @Inject
+    Bus bus;
+
+    protected com.google.android.gms.maps.GoogleMap getMap() {
+        return mapFragment.getMap();
+    }
+
+    protected void enableClearAll(boolean enable) {
+       clearAll.setVisibility(enable ? View.VISIBLE : View.GONE);
+    }
+}

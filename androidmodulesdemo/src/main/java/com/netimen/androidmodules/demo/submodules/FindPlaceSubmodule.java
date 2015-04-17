@@ -5,21 +5,21 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.demo;
+package com.netimen.androidmodules.demo.submodules;
 
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.demo.R;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
@@ -33,9 +33,6 @@ public class FindPlaceSubmodule extends Submodule {
     @ViewById
     SearchView search;
 
-    @ViewById
-    View clearAll;
-
     @RootContext
     Context context;
 
@@ -48,7 +45,7 @@ public class FindPlaceSubmodule extends Submodule {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (addPlace(query) != null)
-                    clearAll.setEnabled(true);
+                    enableClearAll(true);
                 else
                     Toast.makeText(context, R.string.location_not_found, Toast.LENGTH_LONG).show();
                 return true;
@@ -74,9 +71,21 @@ public class FindPlaceSubmodule extends Submodule {
         }
     }
 
-    @Click
-    void clearAll() {
-        getMap().clear();
-        clearAll.setEnabled(false);
+    /**
+     * we want soft keyboard to be hidden when user touches the map. But {@link CalcDistanceSubmodule} already added an OnMapClickListener, so we use the event system to get a touch notification from that submodule.
+     * Actually there are other design patterns for this simple case: for instance we could just add a listener in a base class {@link Submodule}
+     */
+    @Event
+    void onMapTouched() {
+        search.clearFocus();
     }
+
+    /**
+     * Like in Android Annotations library there is no need to specify the event directly - Android Modules tries to guess it from the method name.
+     */
+    @Event
+    void clearMap() {
+        search.clearFocus();
+    }
+
 }
