@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,7 +52,7 @@ public class FindPlaceSubmodule {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (addMarker(query))
+                if (addPlace(query))
                     clearAll.setEnabled(true);
                 else
                     Toast.makeText(context, R.string.location_not_found, Toast.LENGTH_LONG).show();
@@ -65,12 +66,14 @@ public class FindPlaceSubmodule {
         });
     }
 
-    private boolean addMarker(String locationName) {
+    private boolean addPlace(String locationName) {
         try {
             List<Address> addresses = geocoder.getFromLocationName(locationName, 1);
             final Address address = addresses.get(0);
-            mapFragment.getMap().addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())).title(address.getLocality()));
-        } catch (IOException e) {
+            final LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
+            mapFragment.getMap().addMarker(new MarkerOptions().position(position).title(address.getLocality()));
+            mapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(position));
+        } catch (IOException | NullPointerException | IndexOutOfBoundsException e) {
             return false;
         }
         return true;
