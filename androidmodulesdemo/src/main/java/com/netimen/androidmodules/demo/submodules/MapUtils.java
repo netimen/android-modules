@@ -53,7 +53,7 @@ public class MapUtils {
     /**
      * @return distance in km
      */
-    public static float calcLineTotalDistance(Polyline polyline) {
+    public static float calcTotalDistance(Polyline polyline) {
         float totalDistance = 0;
         for (int i = 0; i < polyline.getPoints().size() - 1; i++) {
             final LatLng point1 = polyline.getPoints().get(i);

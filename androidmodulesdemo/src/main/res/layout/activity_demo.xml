@@ -24,11 +24,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin"
+            android:layout_marginTop="8dp"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
             android:src="@android:drawable/ic_menu_delete"
             android:background="@null"
             android:elevation="@dimen/elevation"
+            android:visibility="gone"
             tools:ignore="ContentDescription,RtlHardcoded" />
 
         <SearchView

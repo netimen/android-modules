@@ -59,12 +59,12 @@ public class CalcDistanceSubmodule extends Submodule {
                 if (polyline == null) // means that we aren't currently editing the ruler
                     return;
 
-                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng))));
+                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng)))); // creates a marker for each point
 
-                MapUtils.addPolylinePoint(polyline, latLng);
+                MapUtils.addPolylinePoint(polyline, latLng); // adds point tuo the ruler
 
                 if (polyline.getPoints().size() > 1)
-                    distance.setText(context.getResources().getString(R.string.distance, MapUtils.calcLineTotalDistance(polyline)));
+                    distance.setText(context.getResources().getString(R.string.distance, MapUtils.calcTotalDistance(polyline)));
 
                 enableClearAll(true);
             }
