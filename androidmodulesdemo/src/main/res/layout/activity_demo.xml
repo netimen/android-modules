@@ -10,37 +10,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:animateLayoutChanges="true"
         tools:ignore="UnusedAttribute">
-
-        <SearchView
-            android:id="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/semi_transparent"
-            android:elevation="@dimen/elevation"
-            android:queryHint="@string/query_hint" />
 
         <ImageButton
             android:id="@+id/clear_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin"
+            android:layout_alignParentRight="true"
             android:visibility="gone"
             android:src="@android:drawable/ic_menu_delete"
             android:background="@null"
             android:elevation="@dimen/elevation"
             tools:ignore="ContentDescription,RtlHardcoded" />
-    </LinearLayout>
+
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/clear_all"
+            android:background="@color/semi_transparent"
+            android:elevation="@dimen/elevation"
+            android:queryHint="@string/query_hint"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textSize="@dimen/text_big"
+            android:textColor="@color/accent"
+            android:layout_below="@id/search"/>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/toggle_ruler"

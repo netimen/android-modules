@@ -9,6 +9,7 @@ package com.netimen.androidmodules.demo.submodules;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
@@ -47,5 +48,20 @@ public class MapUtils {
         final List<LatLng> points = polyline.getPoints(); // I'm not very good with Google Maps so may be there is a better way to add new point to Polyline
         points.add(latLng);
         polyline.setPoints(points);
+    }
+
+    /**
+     * @return distance in km
+     */
+    public static float calcLineTotalDistance(Polyline polyline) {
+        float totalDistance = 0;
+        for (int i = 0; i < polyline.getPoints().size() - 1; i++) {
+            final LatLng point1 = polyline.getPoints().get(i);
+            final LatLng point2 = polyline.getPoints().get(i + 1);
+            float[] results = new float[1];
+            Location.distanceBetween(point1.latitude, point1.longitude, point2.latitude, point2.longitude, results);
+            totalDistance += results[0];
+        }
+        return totalDistance / 1000;
     }
 }

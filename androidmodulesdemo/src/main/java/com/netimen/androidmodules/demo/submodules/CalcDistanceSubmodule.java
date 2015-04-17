@@ -8,6 +8,7 @@
 package com.netimen.androidmodules.demo.submodules;
 
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,6 +43,9 @@ public class CalcDistanceSubmodule extends Submodule {
     @ViewById
     ImageButton toggleRuler;
 
+    @ViewById
+    TextView distance;
+
     private Polyline polyline;
     private final List<Marker> markers = new ArrayList<>();
 
@@ -55,9 +59,12 @@ public class CalcDistanceSubmodule extends Submodule {
                 if (polyline == null) // means that we aren't currently editing the ruler
                     return;
 
+                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng))));
+
                 MapUtils.addPolylinePoint(polyline, latLng);
 
-                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng))));
+                if (polyline.getPoints().size() > 1)
+                    distance.setText(context.getResources().getString(R.string.distance, MapUtils.calcLineTotalDistance(polyline)));
 
                 enableClearAll(true);
             }
@@ -81,6 +88,7 @@ public class CalcDistanceSubmodule extends Submodule {
     void clearRuler() {
         polyline = null;
         markers.clear();
+        distance.setText(null);
         toggleRuler.setImageResource(R.drawable.ruler);
     }
-} // CUR  calc distance,  move action button up on marker selected
+} // CUR    move action button up on marker selected
