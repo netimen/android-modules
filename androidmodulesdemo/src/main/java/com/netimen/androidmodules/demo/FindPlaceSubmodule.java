@@ -15,14 +15,12 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
 
@@ -30,10 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 @EBean
-public class FindPlaceSubmodule {
-
-    @FragmentById(R.id.map)
-    SupportMapFragment mapFragment;
+public class FindPlaceSubmodule extends Submodule {
 
     @ViewById
     SearchView search;
@@ -52,7 +47,7 @@ public class FindPlaceSubmodule {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (addPlace(query))
+                if (addPlace(query) != null)
                     clearAll.setEnabled(true);
                 else
                     Toast.makeText(context, R.string.location_not_found, Toast.LENGTH_LONG).show();
@@ -66,22 +61,22 @@ public class FindPlaceSubmodule {
         });
     }
 
-    private boolean addPlace(String locationName) {
+    private Address addPlace(String locationName) {
         try {
             List<Address> addresses = geocoder.getFromLocationName(locationName, 1);
             final Address address = addresses.get(0);
             final LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
-            mapFragment.getMap().addMarker(new MarkerOptions().position(position).title(address.getLocality()));
-            mapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(position));
+            getMap().addMarker(new MarkerOptions().position(position).title(address.getLocality()));
+            getMap().animateCamera(CameraUpdateFactory.newLatLng(position));
+            return address;
         } catch (IOException | NullPointerException | IndexOutOfBoundsException e) {
-            return false;
+            return null;
         }
-        return true;
     }
 
     @Click
     void clearAll() {
-        mapFragment.getMap().clear();
+        getMap().clear();
         clearAll.setEnabled(false);
     }
 }

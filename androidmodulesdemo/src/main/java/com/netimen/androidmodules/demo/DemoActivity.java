@@ -7,6 +7,6 @@ import com.netimen.androidmodules.annotations.EModule;
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_demo)
-@EModule(submodules = {FindPlaceSubmodule.class})
+@EModule(submodules = {FindPlaceSubmodule.class, CalcDistanceSubmodule.class})
 public class DemoActivity extends FragmentActivity {
 }

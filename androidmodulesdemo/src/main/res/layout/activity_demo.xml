@@ -17,7 +17,8 @@
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
 
         <SearchView
             android:id="@+id/search"
@@ -25,13 +26,30 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/semi_transparent"
+            android:elevation="@dimen/elevation"
             android:queryHint="@string/query_hint" />
 
-        <Button
+        <ImageButton
             android:id="@+id/clear_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
             android:enabled="false"
-            android:text="@string/clear_all" />
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="@null"
+            android:elevation="@dimen/elevation"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/calc_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin"
+        android:background="@drawable/accent_button_bg"
+        android:elevation="@dimen/elevation"
+        android:padding="@dimen/margin_small"
+        android:src="@drawable/ruler"
+        tools:ignore="ContentDescription,UnusedAttribute" />
 </FrameLayout>
