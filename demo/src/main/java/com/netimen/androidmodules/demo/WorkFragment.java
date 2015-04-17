@@ -25,10 +25,12 @@ public abstract class WorkFragment extends Fragment {
 
     public final String name;
 
+    @SuppressWarnings("WeakerAccess")
     protected WorkFragment(String name) {
         this.name = name + "-" + (1 + new Random().nextInt(10));
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected void workDone() {
         bus.event(new WorkDone());
     }

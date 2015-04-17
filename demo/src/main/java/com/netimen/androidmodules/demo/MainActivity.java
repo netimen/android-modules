@@ -7,6 +7,7 @@
  */
 package com.netimen.androidmodules.demo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
     @ViewById

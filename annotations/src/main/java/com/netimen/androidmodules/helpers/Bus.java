@@ -48,6 +48,7 @@ public class Bus {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public abstract static class BooleanRequest extends Request<Boolean> {
 
         @Override

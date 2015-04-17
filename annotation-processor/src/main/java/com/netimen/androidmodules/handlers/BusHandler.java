@@ -7,8 +7,8 @@
  */
 package com.netimen.androidmodules.handlers;
 
-import com.netimen.androidmodules.helpers.Bus;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.helpers.Bus;
 import com.netimen.androidmodules.helpers.ModuleHelper;
 import com.netimen.androidmodules.helpers.ModuleProvider;
 import com.netimen.androidmodules.helpers.SourceHelper;
@@ -31,7 +31,6 @@ import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +47,10 @@ import static com.sun.codemodel.JExpr.lit;
 import static com.sun.codemodel.JMod.PUBLIC;
 
 public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder> {
-    final AnnotationHelper annotationHelper;
+    private final AnnotationHelper annotationHelper;
     private ParamType firstParamType = ParamType.NONE, secondParamType = ParamType.NONE;
 
-    public BusHandler(Class<?> targetClass, ProcessingEnvironment processingEnvironment) {
+    BusHandler(Class<?> targetClass, ProcessingEnvironment processingEnvironment) {
         super(targetClass, processingEnvironment);
         annotationHelper = new AnnotationHelper(processingEnv);
     }
@@ -139,7 +138,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     ////
 
-    JClass getEventOrRequestClass(ExecutableElement element, String methodName) throws MalformedURLException, ClassNotFoundException {
+    JClass getEventOrRequestClass(ExecutableElement element, String methodName) {
         if (Character.isUpperCase(methodName.charAt(0))) {
             methodNameEqualsClassNameError(element, methodName);
             return null;

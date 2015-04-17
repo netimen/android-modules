@@ -27,7 +27,7 @@ import javax.tools.Diagnostic;
  */
 public class SourceHelper {
     private static Map<String, String> classNameToFullName;
-    private static Map<String, JClass> classes = new HashMap<>();
+    private static final Map<String, JClass> classes = new HashMap<>();
 
     private static void init(ProcessingEnvironment processingEnv) {
         classNameToFullName = new HashMap<>();

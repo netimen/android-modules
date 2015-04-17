@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Square calculator</string>
     <string name="enter_number">Enter number</string>
@@ -8,9 +8,9 @@
     <string name="search_button">Search</string>
     <string name="enter_search">Search…</string>
     <string name="result_desc_search">Found:</string>
-    <string name="comment_calc_done">something calculated…</string>
-    <string name="comment_search_done">something found…</string>
-    <string name="comment_working_with">user is working with %1$s module (%2$s.class)</string>
-    <string name="search_some"> some %s\'s</string>
+    <string name="comment_calc_done" tools:ignore="UnusedResources">something calculated…</string>
+    <string name="comment_search_done" tools:ignore="UnusedResources">something found…</string>
+    <string name="comment_working_with" tools:ignore="UnusedResources">user is working with %1$s module (%2$s.class)</string>
+    <string name="search_some" tools:ignore="UnusedResources"> some %s\'s</string>
 
 </resources>

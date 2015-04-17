@@ -61,6 +61,7 @@ public class AnnotationProcessor extends AndroidAnnotationProcessorFix {
 //
 //        field.set(null, newValue);
 //    }
+    @SuppressWarnings("SameParameterValue")
     private void addDecoratingHandler(int position, BaseAnnotationHandler<? extends GeneratedClassHolder> handler) {
         annotationHandlers.get().add(position, handler);
         annotationHandlers.getDecorating().add(position, handler);

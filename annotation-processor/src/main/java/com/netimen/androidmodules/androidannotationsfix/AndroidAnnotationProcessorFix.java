@@ -203,7 +203,7 @@ public class AndroidAnnotationProcessorFix extends AbstractProcessor {
         return manifest;
     }
 
-    private Option<IRClass> findRClasses(AndroidManifest androidManifest) throws IOException {
+    private Option<IRClass> findRClasses(AndroidManifest androidManifest) {
         timeStats.start("Find R Classes");
         ProjectRClassFinder rClassFinder = new ProjectRClassFinder(processingEnv);
 
@@ -217,11 +217,11 @@ public class AndroidAnnotationProcessorFix extends AbstractProcessor {
             return Option.absent();
         }
 
-        IRClass coumpoundRClass = new CoumpoundRClass(rClass.get(), androidRClass.get());
+        IRClass compoundRClass = new CoumpoundRClass(rClass.get(), androidRClass.get());
 
         timeStats.stop("Find R Classes");
 
-        return Option.of(coumpoundRClass);
+        return Option.of(compoundRClass);
     }
 
     private AnnotationElements validateAnnotations(AnnotationElementsHolder extractedModel) throws Exception {
