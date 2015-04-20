@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.Event;
 import com.netimen.androidmodules.api.events.InputChanged;
-import com.netimen.androidmodules.helpers.ModuleProvider;
+import com.netimen.androidmodules.helpers.ModuleObjectsShare;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -30,12 +30,12 @@ public class MainActivity extends Activity {
     String commentCalcDone, commentSearchDone, commentWorkingWith;
 
     @Event(moduleClass = {CalcFragment.class, SearchFragment.class})
-    void workingWith(InputChanged inputChanged, ModuleProvider.IModule module) {
+    void workingWith(InputChanged inputChanged, ModuleObjectsShare.IModule module) {
         comment.setText(String.format(commentWorkingWith, inputChanged.moduleName, module.getClass().getSimpleName()));
     }
 
     @Event(moduleName = Event.ANY_MODULE)
-    void workDone(ModuleProvider.IModule module) {
+    void workDone(ModuleObjectsShare.IModule module) {
         comment.setText(module instanceof CalcFragment ? commentCalcDone : commentSearchDone);
     }
 }

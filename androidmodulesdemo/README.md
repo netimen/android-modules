@@ -1,0 +1,2 @@
+# Android Modules Sample App
+This is a simple app, demonstrating the Android Modules library. The app itself is quite useless, but the code illustrates most possible ways of using the library. For a more real-world sample please go to https://github.com/netimen/android-modules/tree/master/androidmodulesdemo
