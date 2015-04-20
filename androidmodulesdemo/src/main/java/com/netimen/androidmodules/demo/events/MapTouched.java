@@ -7,8 +7,16 @@
  */
 package com.netimen.androidmodules.demo.events;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * needed to pass data about map touch between modules
  */
 public class MapTouched {
+    public final LatLng latLng;
+
+    public MapTouched(LatLng latLng) {
+
+        this.latLng = latLng;
+    }
 }

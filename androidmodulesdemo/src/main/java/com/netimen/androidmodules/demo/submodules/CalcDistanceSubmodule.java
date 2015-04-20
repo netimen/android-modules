@@ -10,8 +10,6 @@ package com.netimen.androidmodules.demo.submodules;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -21,7 +19,6 @@ import com.netimen.androidmodules.demo.R;
 import com.netimen.androidmodules.demo.events.ClearMap;
 import com.netimen.androidmodules.demo.events.MapTouched;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.ViewById;
@@ -49,26 +46,19 @@ public class CalcDistanceSubmodule extends BaseMapSubmodule {
     private Polyline polyline;
     private final List<Marker> markers = new ArrayList<>();
 
-    @AfterViews
-    void ready() {
-        getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                bus.event(new MapTouched());
+    @Event
+    void mapTouched(MapTouched event) {
+        if (polyline == null) // means that we aren't currently editing the ruler
+            return;
 
-                if (polyline == null) // means that we aren't currently editing the ruler
-                    return;
+        markers.add(getMap().addMarker(new MarkerOptions().position(event.latLng).title(MapUtils.getLocationAddress(geocoder, event.latLng)))); // creates a marker for each point
 
-                markers.add(getMap().addMarker(new MarkerOptions().position(latLng).title(MapUtils.getLocationAddress(geocoder, latLng)))); // creates a marker for each point
+        MapUtils.addPolylinePoint(polyline, event.latLng); // adds point tuo the ruler
 
-                MapUtils.addPolylinePoint(polyline, latLng); // adds point tuo the ruler
+        if (polyline.getPoints().size() > 1)
+            distance.setText(context.getResources().getString(R.string.distance, MapUtils.calcTotalDistance(polyline)));
 
-                if (polyline.getPoints().size() > 1)
-                    distance.setText(context.getResources().getString(R.string.distance, MapUtils.calcTotalDistance(polyline)));
-
-                enableClearAll(true);
-            }
-        });
+        enableClearAll(true);
     }
 
     @Click
