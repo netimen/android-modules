@@ -18,6 +18,9 @@ import java.util.Set;
 @SuppressWarnings("UnusedDeclaration")
 public class ModuleProvider {
 
+    /**
+     * this interface is used for injecting the class annotated with @EModule into the submodule classes.
+     */
     public interface IModule {
     }
 
@@ -26,13 +29,6 @@ public class ModuleProvider {
         private Object[] inaccessibleInstances; // just hold these objects, they communicate by Bus;
 
         private InstancesHolder() {
-        }
-
-        /**
-         * we don't initialize these in constructor because we need this objects to be created later than this InstanceHolder, because they will use it.
-         */
-        public void setInaccessibleInstances(Object[] inaccessibleInstances) {
-            this.inaccessibleInstances = inaccessibleInstances;
         }
 
         private <T> T set(Class<T> cls, T instance) {

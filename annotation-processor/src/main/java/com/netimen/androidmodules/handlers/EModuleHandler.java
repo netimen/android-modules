@@ -7,14 +7,13 @@
  */
 package com.netimen.androidmodules.handlers;
 
-import com.netimen.androidmodules.helpers.Bus;
 import com.netimen.androidmodules.annotations.EModule;
+import com.netimen.androidmodules.helpers.Bus;
 import com.netimen.androidmodules.helpers.ModuleHelper;
 import com.netimen.androidmodules.helpers.ModuleProvider;
 import com.netimen.androidmodules.helpers.Utility;
 import com.sun.codemodel.JArray;
 import com.sun.codemodel.JFieldVar;
-import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JMod;
 
 import org.androidannotations.handler.BaseAnnotationHandler;
@@ -69,11 +68,11 @@ public class EModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
         holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
         holder.getInitBody().directStatement("// submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
 
-        final JInvocation setInaccessibleInstances = instances.invoke("setInaccessibleInstances");
         final JArray submodules = ModuleHelper.generateSubmodulesArray(element, holder, annotationHelper, getTarget());
-        if (submodules != null)
-            setInaccessibleInstances.arg(submodules);
-         holder.getInitBody().add(setInaccessibleInstances);
+        if (submodules != null) {
+            final JFieldVar submodulesField = holder.getGeneratedClass().field(JMod.PRIVATE, Object[].class, "submodules_");
+            holder.getInitBody().assign(submodulesField, submodules);
+        }
     }
 
     private boolean skipGeneratedClass(Element element) {
