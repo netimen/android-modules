@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.demo.MapUtils;
 import com.netimen.androidmodules.demo.R;
 
 import org.androidannotations.annotations.AfterViews;

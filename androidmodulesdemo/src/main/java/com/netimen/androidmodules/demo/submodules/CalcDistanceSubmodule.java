@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.demo.MapUtils;
 import com.netimen.androidmodules.demo.R;
 import com.netimen.androidmodules.demo.events.ClearMap;
 import com.netimen.androidmodules.demo.events.MapTouched;
