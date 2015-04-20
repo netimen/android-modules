@@ -50,6 +50,5 @@ public class RequestHandler extends BusHandler {
         return codeModel().ref(Bus.RequestProcessor.class).narrow(resultClass, eventOrRequestClass);
     }
 
-    // CUR document, optimize viewbyid
-    // TODO @SubmoduleExclude, @SafeUIThread, @TargeAPI
+    // TODO @SubmoduleExclude, @SafeUIThread, @TargeAPI, document, optimize viewbyid
 }

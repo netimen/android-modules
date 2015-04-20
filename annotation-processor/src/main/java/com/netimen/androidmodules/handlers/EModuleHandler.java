@@ -9,8 +9,8 @@ package com.netimen.androidmodules.handlers;
 
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.helpers.Bus;
-import com.netimen.androidmodules.helpers.ModuleHelper;
-import com.netimen.androidmodules.helpers.ModuleProvider;
+import com.netimen.androidmodules.helpers.ModuleCodeGenerator;
+import com.netimen.androidmodules.helpers.ModuleObjectsShare;
 import com.netimen.androidmodules.helpers.Utility;
 import com.sun.codemodel.JArray;
 import com.sun.codemodel.JFieldVar;
@@ -57,18 +57,18 @@ public class EModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
     public void process(Element element, EComponentHolder holder) throws Exception {
         if (skipGeneratedClass(element)) // I can't prevent copying @Module to generated class, so just don't process it
             return;
-        holder.getGeneratedClass()._implements(ModuleProvider.IModule.class);
-        final JFieldVar instances = holder.getGeneratedClass().field(JMod.PRIVATE, ModuleProvider.InstancesHolder.class, "instances_");
+        holder.getGeneratedClass()._implements(ModuleObjectsShare.IModule.class);
+        final JFieldVar instances = holder.getGeneratedClass().field(JMod.PRIVATE, ModuleObjectsShare.InstancesHolder.class, "instances_");
 
         String moduleName = element.getAnnotation(EModule.class).moduleName();
         if (Utility.isEmpty(moduleName))
             moduleName = element.asType().toString();
-        holder.getInitBody().assign(instances, ModuleHelper.createModule(moduleName, holder));
+        holder.getInitBody().assign(instances, ModuleCodeGenerator.createModule(moduleName, holder));
 
-        holder.getInitBody().add(ModuleHelper.moduleSetInstance(holder, refClass(ModuleProvider.IModule.class), _this()));
+        holder.getInitBody().add(ModuleCodeGenerator.moduleSetInstance(holder, refClass(ModuleObjectsShare.IModule.class), _this()));
         holder.getInitBody().directStatement("// submodules communicate via {@link " + refClass(Bus.class).fullName() + "}, so we only need to store them");
 
-        final JArray submodules = ModuleHelper.generateSubmodulesArray(element, holder, annotationHelper, getTarget());
+        final JArray submodules = ModuleCodeGenerator.generateSubmodulesArray(element, holder, annotationHelper, getTarget());
         if (submodules != null) {
             final JFieldVar submodulesField = holder.getGeneratedClass().field(JMod.PRIVATE, Object[].class, "submodules_");
             holder.getInitBody().assign(submodulesField, submodules);

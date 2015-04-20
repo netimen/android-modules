@@ -9,8 +9,8 @@ package com.netimen.androidmodules.handlers;
 
 import com.netimen.androidmodules.annotations.Event;
 import com.netimen.androidmodules.helpers.Bus;
-import com.netimen.androidmodules.helpers.ModuleHelper;
-import com.netimen.androidmodules.helpers.ModuleProvider;
+import com.netimen.androidmodules.helpers.ModuleCodeGenerator;
+import com.netimen.androidmodules.helpers.ModuleObjectsShare;
 import com.netimen.androidmodules.helpers.SourceHelper;
 import com.netimen.androidmodules.helpers.Utility;
 import com.sun.codemodel.JBlock;
@@ -131,7 +131,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     private ParamType parseParameter(ExecutableElement element, int paramNo) {
         if (element.getParameters().size() > paramNo) {
             final TypeMirror typeMirror = element.getParameters().get(paramNo).asType();
-            return ModuleProvider.IModule.class.getCanonicalName().equals(typeMirror.toString()) ? ParamType.MODULE : ParamType.EVENT_OR_REQUEST;
+            return ModuleObjectsShare.IModule.class.getCanonicalName().equals(typeMirror.toString()) ? ParamType.MODULE : ParamType.EVENT_OR_REQUEST;
         }
         return ParamType.NONE;
     }
@@ -199,14 +199,14 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         if (argType == ParamType.EVENT_OR_REQUEST) // passing parameters if needed
             call.arg(eventOrRequestVar);
         else if (argType == ParamType.MODULE)
-            call.arg(ModuleHelper.getModule(holder, moduleName));
+            call.arg(ModuleCodeGenerator.getModule(holder, moduleName));
     }
 
     ////
 
     private void registerAll(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass) {
         JMethod method = getMethodForRegistering(holder);
-        final JClass moduleProviderClass = refClass(ModuleProvider.class);
+        final JClass moduleProviderClass = refClass(ModuleObjectsShare.class);
         final JInvocation modulesNames = moduleProviderClass.staticInvoke("modulesNames");
         final JConditional isEmpty = method.body()._if(modulesNames.invoke("isEmpty"));
         register(holder, element, methodName, eventOrRequestClass, lit(""), isEmpty._then());
@@ -226,7 +226,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     }
 
     private JMethod getMethodForRegistering(EComponentHolder holder) {
-        JMethod method = ModuleHelper.findMethod(holder.getGeneratedClass(), "onViewChanged");
+        JMethod method = ModuleCodeGenerator.findMethod(holder.getGeneratedClass(), "onViewChanged");
         if (method != null)
             method.body().directStatement("// register in onViewChanged, because bus may have been initialized in a fragment");
         if (method == null) method = holder.getInit();
@@ -234,12 +234,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     }
 
     private void register(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, String moduleName, JMethod method) {
-        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
+        final JInvocation getBus = ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
         performRegister(eventOrRequestClass, createProcessingClass(holder, element, methodName, eventOrRequestClass, lit(moduleName)), method.body(), getBus);
     }
 
     private void register(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, JExpression moduleName, JBlock block) {
-        final JInvocation getBus = ModuleHelper.moduleGetInstanceOrAddDefault(holder, block, codeModel().ref(Bus.class), moduleName);
+        final JInvocation getBus = ModuleCodeGenerator.moduleGetInstanceOrAddDefault(holder, block, codeModel().ref(Bus.class), moduleName);
         performRegister(eventOrRequestClass, createProcessingClass(holder, element, methodName, eventOrRequestClass, moduleName), block, getBus);
     }
 

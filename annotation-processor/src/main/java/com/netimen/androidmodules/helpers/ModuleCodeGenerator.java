@@ -31,7 +31,7 @@ import static com.sun.codemodel.JExpr._this;
 import static com.sun.codemodel.JExpr.lit;
 import static com.sun.codemodel.JExpr.newArray;
 
-public class ModuleHelper {
+public class ModuleCodeGenerator {
 
 //    static public void returnNewInstance(EComponentHolder holder, JMethod method, JDefinedClass instanceCls, JInvocation newInstance) {
 //        method.body()._return(getInstance(holder, method, instanceCls, newInstance));
@@ -49,7 +49,7 @@ public class ModuleHelper {
     }
 
     public static JInvocation getModule(EComponentHolder holder, JExpression moduleName) {
-        return moduleGetInstance(holder, moduleName, holder.refClass(ModuleProvider.IModule.class));
+        return moduleGetInstance(holder, moduleName, holder.refClass(ModuleObjectsShare.IModule.class));
     }
 
 //    public static JInvocation moduleGetInstance(EComponentHolder holder, JClass instanceCls) {
@@ -61,7 +61,7 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleGetInstance(EComponentHolder holder, JExpression moduleName, JClass instanceCls) {
-        return holder.refClass(ModuleProvider.class).staticInvoke("getInstance").arg(moduleName).arg(instanceCls.dotclass());
+        return holder.refClass(ModuleObjectsShare.class).staticInvoke("getInstance").arg(moduleName).arg(instanceCls.dotclass());
     }
 
 //    public static JInvocation moduleSetInstance(EComponentHolder holder, JClass instanceCls) {
@@ -85,11 +85,11 @@ public class ModuleHelper {
     }
 
     public static JInvocation moduleSetInstance(EComponentHolder holder, JExpression moduleName, JClass instanceCls, JExpression newInstance) {
-        return holder.refClass(ModuleProvider.class).staticInvoke("setInstance").arg(moduleName).arg(instanceCls.dotclass()).arg(newInstance);
+        return holder.refClass(ModuleObjectsShare.class).staticInvoke("setInstance").arg(moduleName).arg(instanceCls.dotclass()).arg(newInstance);
     }
 
     public static JInvocation moduleGetInstanceOrAddDefault(EComponentHolder holder, JBlock block, JClass instanceCls, JExpression moduleName) {
-        block._if(moduleGetInstance(holder, moduleName, instanceCls).eq(_null()))._then().add(ModuleHelper.moduleSetInstance(holder, moduleName, instanceCls));
+        block._if(moduleGetInstance(holder, moduleName, instanceCls).eq(_null()))._then().add(ModuleCodeGenerator.moduleSetInstance(holder, moduleName, instanceCls));
         return moduleGetInstance(holder, moduleName, instanceCls);
     }
 
@@ -97,7 +97,7 @@ public class ModuleHelper {
         final String setInstanceMethodName = "set" + instanceCls.name() + "_" + Math.abs(moduleName.hashCode());
         if (findMethod(generatedClass, setInstanceMethodName) == null) { // if we already have such a method generated it means the instance is already initialized, so don't add unnecessary ifs
             final JMethod setNewInstance = holder.getGeneratedClass().method(JMod.PRIVATE, void.class, setInstanceMethodName);
-            setNewInstance.body().add(ModuleHelper.moduleSetInstance(holder, moduleName, instanceCls));
+            setNewInstance.body().add(ModuleCodeGenerator.moduleSetInstance(holder, moduleName, instanceCls));
             method.body().directStatement("// this is needed to ensure we really have instance of " + instanceCls.name());
             method.body()._if(moduleGetInstance(holder, moduleName, instanceCls).eq(_null()))._then().add(_this().invoke(setNewInstance));
         }
@@ -112,7 +112,7 @@ public class ModuleHelper {
     }
 
     public static JInvocation createModule(String moduleName, EComponentHolder holder) {
-        return holder.refClass(ModuleProvider.class).staticInvoke("createModule").arg(moduleName);
+        return holder.refClass(ModuleObjectsShare.class).staticInvoke("createModule").arg(moduleName);
     }
 
     public static JArray generateSubmodulesArray(Element element, EComponentHolder holder, TargetAnnotationHelper annotationHelper, String annotationName) {

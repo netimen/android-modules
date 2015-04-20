@@ -13,10 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * inspired by Dagger's module concept
+ * Inspired by Dagger's module concept.
+ * Used for sharing objects between submodules. Stores only one instance per class.
+ * Submodules call {@link com.netimen.androidmodules.helpers.ModuleObjectsShare#getInstance(Class)} to get a shared object.
  */
 @SuppressWarnings("UnusedDeclaration")
-public class ModuleProvider {
+public class ModuleObjectsShare {
 
     /**
      * this interface is used for injecting the class annotated with @EModule into the submodule classes.
@@ -24,6 +26,9 @@ public class ModuleProvider {
     public interface IModule {
     }
 
+    /**
+     * holds objects to be shared by submodules. Holds one instance per class
+     */
     public static class InstancesHolder {
         private final Map<Object, Object> accessibleInstances = new HashMap<>();
         private Object[] inaccessibleInstances; // just hold these objects, they communicate by Bus;
@@ -75,6 +80,9 @@ public class ModuleProvider {
         return getInstance(getInstanceHolder(moduleName), cls);
     }
 
+    /**
+     * the returned InstanceHolder is to be stored as a field in the class annotated with @EModule, and ModuleObjectsShare stores only a WeakReference to it. Thus the InstanceHolder lifecycle is attached to @EModule lifecycle.
+     */
     public static InstancesHolder createModule(String moduleName) {
         final InstancesHolder instancesHolder = new InstancesHolder();
         currentModule = new WeakReference<>(instancesHolder);

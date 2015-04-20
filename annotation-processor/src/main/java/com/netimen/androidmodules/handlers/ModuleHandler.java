@@ -8,7 +8,7 @@
 package com.netimen.androidmodules.handlers;
 
 import com.netimen.androidmodules.annotations.Module;
-import com.netimen.androidmodules.helpers.ModuleHelper;
+import com.netimen.androidmodules.helpers.ModuleCodeGenerator;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -55,7 +55,7 @@ public class ModuleHandler extends BaseAnnotationHandler<EComponentHolder> {
         JClass injectedClass = refClass(typeMirror.toString());
 
         final JBlock initBody = holder.getInitBody();
-        initBody.assign(injectField, cast(injectedClass, ModuleHelper.getModule(holder))); // field = Module.getInstance()
+        initBody.assign(injectField, cast(injectedClass, ModuleCodeGenerator.getModule(holder))); // field = Module.getInstance()
     }
 
 }

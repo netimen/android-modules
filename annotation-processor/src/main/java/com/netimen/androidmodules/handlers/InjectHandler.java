@@ -8,7 +8,7 @@
 package com.netimen.androidmodules.handlers;
 
 import com.netimen.androidmodules.annotations.Inject;
-import com.netimen.androidmodules.helpers.ModuleHelper;
+import com.netimen.androidmodules.helpers.ModuleCodeGenerator;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
@@ -55,6 +55,6 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
         final JBlock initBody = holder.getInitBody();
-        initBody.assign(injectField, ModuleHelper.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass, "")); // field = Module.getInstance()
+        initBody.assign(injectField, ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass, "")); // field = Module.getInstance()
     }
 }
