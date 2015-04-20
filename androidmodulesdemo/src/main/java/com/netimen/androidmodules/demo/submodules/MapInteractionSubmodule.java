@@ -19,6 +19,7 @@ import org.androidannotations.annotations.EBean;
 /**
  * We need to perform many different actions when user touches map or marker. But we can add only one listener to the map, so it's logical to put it to a separate module
  * Also we need to perform many actions when user clears the map.
+ * Alternatively we could put this code into the DemoActivity, but putting it in a separate module simplifies possible code reuse
  */
 @EBean
 public class MapInteractionSubmodule extends BaseMapSubmodule {

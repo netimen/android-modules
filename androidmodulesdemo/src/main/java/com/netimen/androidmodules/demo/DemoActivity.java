@@ -10,6 +10,9 @@ import com.netimen.androidmodules.demo.submodules.MapInteractionSubmodule;
 
 import org.androidannotations.annotations.EActivity;
 
+/**
+ * all the code
+ */
 @EActivity(R.layout.activity_demo)
 @EModule(submodules = {FindPlaceSubmodule.class, CalcDistanceSubmodule.class, MapInteractionSubmodule.class, AnimateActionButtonSubmodule.class})
 public class DemoActivity extends FragmentActivity {
