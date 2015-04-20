@@ -18,6 +18,7 @@ import com.netimen.androidmodules.annotations.Event;
 import com.netimen.androidmodules.demo.R;
 import com.netimen.androidmodules.demo.events.ClearMap;
 import com.netimen.androidmodules.demo.events.MapTouched;
+import com.netimen.androidmodules.demo.events.MarkerRemoved;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
@@ -68,8 +69,10 @@ public class CalcDistanceSubmodule extends BaseMapSubmodule {
             toggleRuler.setImageResource(R.drawable.abc_ic_clear_mtrl_alpha);
         } else {
             polyline.remove();
-            for (Marker marker : markers)
+            for (Marker marker : markers) {
+                bus.event(new MarkerRemoved(marker));
                 marker.remove();
+            }
             clearRuler();
         }
     }
@@ -81,4 +84,4 @@ public class CalcDistanceSubmodule extends BaseMapSubmodule {
         distance.setText(null);
         toggleRuler.setImageResource(R.drawable.ruler);
     }
-} // CUR    move action button down when selected marker destroyed
+}

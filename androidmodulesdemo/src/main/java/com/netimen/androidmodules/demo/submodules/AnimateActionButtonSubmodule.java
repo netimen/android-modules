@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.demo.events.MarkerRemoved;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EBean;
@@ -31,17 +32,25 @@ public class AnimateActionButtonSubmodule extends BaseMapSubmodule {
     @DimensionRes
     float markerButtonsHeightGuess;
 
-    private boolean buttonIsHigh;
+    /**
+     * stores the button normal poisition y (when no marker is selected).
+     */
+    private float toggleRulerNormalPositionY = -1;
+
+    /**
+     * we store the selected marker for later check if it was removed.
+     */
+    private Marker selectedMarker;
 
     @AfterViews
     void ready() {
         getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (!buttonIsHigh) { // not very elegant code...
-                    toggleRuler.animate().yBy(-markerButtonsHeightGuess);
-                    buttonIsHigh = true;
-                }
+                evaluateInitialY();
+
+                selectedMarker = marker;
+                toggleRuler.animate().y(toggleRulerNormalPositionY - markerButtonsHeightGuess).setStartDelay(0);
                 return false; // we also want default processing: it shows title and action buttons
             }
         });
@@ -54,9 +63,33 @@ public class AnimateActionButtonSubmodule extends BaseMapSubmodule {
      */
     @Event
     void onMapTouched() {
-        if (buttonIsHigh) {
-            toggleRuler.animate().yBy(markerButtonsHeightGuess);
-            buttonIsHigh = false;
-        }
+        returnButtonToNormalPosition();
     }
+
+    @Event
+    void onClearMap() {
+        returnButtonToNormalPosition();
+    }
+
+    @Event
+    void onMarkerRemoved(MarkerRemoved event) {
+        if (event.marker.equals(selectedMarker))
+            returnButtonToNormalPosition();
+    }
+
+    private void returnButtonToNormalPosition() {
+        evaluateInitialY();
+
+        selectedMarker = null;
+        toggleRuler.animate().y(toggleRulerNormalPositionY).setStartDelay(300); // start delay is to wait while marker buttons hide
+    }
+
+    /**
+     * we use lazy evaluation to calculate the normal position y (other option use some LayoutChange listener in ready())
+     */
+    private void evaluateInitialY() {
+        if (toggleRulerNormalPositionY < 0) // happens on first time only
+            toggleRulerNormalPositionY = toggleRuler.getY();
+    }
+
 }
