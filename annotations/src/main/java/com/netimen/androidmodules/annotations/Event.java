@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to subscribe to an event. By default, it uses the {@link com.netimen.androidmodules.helpers.Bus} instance stored in the class annotated with {@link EModule}, so every submodule uses the same bus.
+ * This annotation is used to subscribe to an event. By default, it uses the {@link com.netimen.androidmodules.helpers.Bus} instance stored in the class annotated with {@link EModule} with the help of {@link com.netimen.androidmodules.helpers.ModuleObjectsShare}, so every submodule uses the same bus.
  *
  * <pre>
  * &#064;EBean

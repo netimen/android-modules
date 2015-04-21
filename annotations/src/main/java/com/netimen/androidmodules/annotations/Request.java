@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to subscribe to a request. By default, it uses the {@link com.netimen.androidmodules.helpers.Bus} instance stored in the class annotated with {@link EModule}, so every submodule uses the same bus.
+ * This annotation is used to subscribe to a request. By default, it uses the {@link com.netimen.androidmodules.helpers.Bus} instance stored in the class annotated with {@link EModule} with the help of {@link com.netimen.androidmodules.helpers.ModuleObjectsShare}, so every submodule uses the same bus.
  * The difference between request and event is that event is used only to notify about something, and request is used to get some data from other submodule.
  *
  * <pre>
