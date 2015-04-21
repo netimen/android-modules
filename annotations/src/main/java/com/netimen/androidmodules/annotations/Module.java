@@ -12,6 +12,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Used in submodules to inject instance of the class annotated with {@link EModule}}. It's like {@link org.androidannotations.annotations.App}.
+ *
+ * <pre>
+ * &#064;EBean
+ * public class Submodule {
+ *
+ * 	&#064;Module
+ * 	SomeModuleParentClass module; // here the type of the variable can be the actual module class or one of its parents or interfaces
+ * }
+ * </pre>
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
 public @interface Module {
