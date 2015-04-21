@@ -54,5 +54,74 @@ public class CalcDistanceSubmodule {
     ... // some code related to distance calculation
 }
 ```
+## Installation
+Same as [Android Annotations](https://github.com/excilys/androidannotations/wiki/Building-Project-Gradle)
+
+```groovy
+buildscript {
+    repositories {
+      mavenCentral()
+    }
+    dependencies {
+        // replace with the current version of the Android plugin
+        classpath 'com.android.tools.build:gradle:1.1.3'
+        // replace with the current version of the android-apt plugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+def AAVersion = 'XXX'
+
+dependencies {
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+        // if you have multiple outputs (when using splits), you may want to have other index than 0
+
+        resourcePackageName 'com.myproject.package'
+
+        // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
+        // resourcePackageName android.defaultConfig.applicationId
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 19
+    }
+
+    // This is only needed if you project structure doesn't fit the one found here
+    // http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Project-Structure
+    sourceSets {
+        main {
+            // manifest.srcFile 'src/main/AndroidManifest.xml'
+            // java.srcDirs = ['src/main/java', 'build/generated/source/apt/${variant.dirName}']
+            // resources.srcDirs = ['src/main/resources']
+            // res.srcDirs = ['src/main/res']
+            // assets.srcDirs = ['src/main/assets']
+        }
+    }
+}
+```
+
 Inspired by and thanks to [Android Annotations](https://github.com/excilys/androidannotations)
 
