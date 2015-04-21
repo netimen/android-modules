@@ -6,7 +6,7 @@ A library allowing to split large classes into several independent modules. This
 2. Code reuse
 3. We can easily combine submodules, replace them or turn them off, so we can provide several "flavors" of the functionality
 
-Like in [Android Annotations](https://github.com/excilys/androidannotations) all the code is generated and reflection isn't used, so we don't get any performance impact. Also the library uses only [3 very small classes](tree/master/annotations/src/main/java/com/netimen/androidmodules/helpers) to function, so it doesn't add much to the APK size.
+Like in [Android Annotations](https://github.com/excilys/androidannotations) all the code is generated and reflection isn't used, so we don't get any performance impact. Also the library uses only [3 very small classes](annotations/src/main/java/com/netimen/androidmodules/helpers) to function, so it doesn't add much to the APK size.
 
 ```java
 @EModule(submodules={UrlLoadModule.class, FindInPageModule.class})
