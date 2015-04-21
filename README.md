@@ -3,7 +3,7 @@ A library allowing to split large classes into several independent modules. This
 
 **Android Modules** offer a simple way to split the code into several independent units (let's call them *submodules*). Benefits are:
  1. Code readability and maintainability is improved
- 2. Code reuse
+2. Code reuse
  3. We can easily combine submodules, replace them or turn them off, so we can provide several "flavors" of the functionality
 
 ```java
