@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.apidemos.submodules;
+package com.netimen.androidmodules.mapsdemo.submodules;
 
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,11 +15,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.netimen.androidmodules.annotations.Event;
-import com.netimen.androidmodules.apidemos.MapUtils;
-import com.netimen.androidmodules.apidemos.R;
-import com.netimen.androidmodules.apidemos.events.ClearMap;
-import com.netimen.androidmodules.apidemos.events.MapTouched;
-import com.netimen.androidmodules.apidemos.events.MarkerRemoved;
+import com.netimen.androidmodules.mapsdemo.MapUtils;
+import com.netimen.androidmodules.mapsdemo.R;
+import com.netimen.androidmodules.mapsdemo.events.ClearMap;
+import com.netimen.androidmodules.mapsdemo.events.MapTouched;
+import com.netimen.androidmodules.mapsdemo.events.MarkerRemoved;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EBean
-public class CalcDistanceSubmodule extends BaseMapSubmodule {
+public class CalcDistanceSubmodule extends com.netimen.androidmodules.mapsdemo.submodules.BaseMapSubmodule {
 
     @ColorRes
     int accent;

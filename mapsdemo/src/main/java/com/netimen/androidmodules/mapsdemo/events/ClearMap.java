@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.apidemos.events;
+package com.netimen.androidmodules.mapsdemo.events;
 
 public class ClearMap {
 }

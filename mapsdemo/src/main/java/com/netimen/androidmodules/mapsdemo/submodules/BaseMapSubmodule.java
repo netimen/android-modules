@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.apidemos.submodules;
+package com.netimen.androidmodules.mapsdemo.submodules;
 
 import android.content.Context;
 import android.location.Geocoder;
@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.netimen.androidmodules.annotations.Inject;
-import com.netimen.androidmodules.apidemos.R;
 import com.netimen.androidmodules.helpers.Bus;
+import com.netimen.androidmodules.mapsdemo.R;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;

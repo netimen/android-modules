@@ -5,7 +5,7 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.apidemos.submodules;
+package com.netimen.androidmodules.mapsdemo.submodules;
 
 import android.location.Address;
 import android.widget.SearchView;
@@ -15,8 +15,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.netimen.androidmodules.annotations.Event;
-import com.netimen.androidmodules.apidemos.MapUtils;
-import com.netimen.androidmodules.apidemos.R;
+import com.netimen.androidmodules.mapsdemo.MapUtils;
+import com.netimen.androidmodules.mapsdemo.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EBean;

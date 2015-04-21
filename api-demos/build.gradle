@@ -6,7 +6,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.netimen.androidmodules.demo"
+        applicationId "com.netimen.androidmodules.adpidemos"
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
@@ -35,7 +35,7 @@ apt {
         androidManifestFile variant.outputs[0].processResources.manifestFile
         // if you have multiple outputs (when using splits), you may want to have other index than 0
 
-        resourcePackageName 'com.netimen.androidmodules.demo'
+        resourcePackageName 'com.netimen.androidmodules.apidemos'
 
         // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
         // resourcePackageName android.defaultConfig.packageName

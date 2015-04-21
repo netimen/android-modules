@@ -5,14 +5,14 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   17.04.15
  */
-package com.netimen.androidmodules.apidemos.submodules;
+package com.netimen.androidmodules.mapsdemo.submodules;
 
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.netimen.androidmodules.annotations.Event;
-import com.netimen.androidmodules.apidemos.events.MarkerRemoved;
+import com.netimen.androidmodules.mapsdemo.events.MarkerRemoved;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EBean;

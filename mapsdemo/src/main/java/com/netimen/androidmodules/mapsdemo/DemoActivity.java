@@ -1,12 +1,12 @@
-package com.netimen.androidmodules.apidemos;
+package com.netimen.androidmodules.mapsdemo;
 
 import android.support.v4.app.FragmentActivity;
 
 import com.netimen.androidmodules.annotations.EModule;
-import com.netimen.androidmodules.apidemos.submodules.AnimateActionButtonSubmodule;
-import com.netimen.androidmodules.apidemos.submodules.CalcDistanceSubmodule;
-import com.netimen.androidmodules.apidemos.submodules.FindPlaceSubmodule;
-import com.netimen.androidmodules.apidemos.submodules.MapInteractionSubmodule;
+import com.netimen.androidmodules.mapsdemo.submodules.AnimateActionButtonSubmodule;
+import com.netimen.androidmodules.mapsdemo.submodules.CalcDistanceSubmodule;
+import com.netimen.androidmodules.mapsdemo.submodules.FindPlaceSubmodule;
+import com.netimen.androidmodules.mapsdemo.submodules.MapInteractionSubmodule;
 
 import org.androidannotations.annotations.EActivity;
 

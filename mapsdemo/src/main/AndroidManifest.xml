@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.netimen.androidmodules.apidemos" >
+    package="com.netimen.androidmodules.mapsdemo" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <!--
- The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but are recommended.
-    -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -26,7 +22,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.netimen.androidmodules.apidemos.DemoActivity_"
+            android:name="com.netimen.androidmodules.mapsdemo.DemoActivity_"
             android:label="@string/title_activity_demo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

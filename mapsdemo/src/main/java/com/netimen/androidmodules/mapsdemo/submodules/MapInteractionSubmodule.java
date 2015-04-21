@@ -5,12 +5,12 @@
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   20.04.15
  */
-package com.netimen.androidmodules.apidemos.submodules;
+package com.netimen.androidmodules.mapsdemo.submodules;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.netimen.androidmodules.apidemos.events.ClearMap;
-import com.netimen.androidmodules.apidemos.events.MapTouched;
+import com.netimen.androidmodules.mapsdemo.events.ClearMap;
+import com.netimen.androidmodules.mapsdemo.events.MapTouched;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
