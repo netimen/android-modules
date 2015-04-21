@@ -55,7 +55,7 @@ public class CalcDistanceSubmodule {
 }
 ```
 ## Installation
-Same as [Android Annotations](https://github.com/excilys/androidannotations/wiki/Building-Project-Gradle)
+Almost the same as [Android Annotations](https://github.com/excilys/androidannotations/wiki/Building-Project-Gradle)
 
 ```groovy
 buildscript {
@@ -71,20 +71,20 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
-    mavenLocal()
+    jCenter()
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
-def AAVersion = 'XXX'
 
 dependencies {
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:3.2"
+    compile "com.netimen.androidmodules:androidmodules-api:1.0.0"
+
+    apt "com.netimen.androidmodules:1.0.0" // we replace Android Annotations processor with Android Modules processor
 }
 
-apt {
+apt { // exactly same arguments as for Android Annotations
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
         // if you have multiple outputs (when using splits), you may want to have other index than 0
@@ -122,6 +122,9 @@ android {
     }
 }
 ```
+
+## Hacks used
+
 
 Inspired by and thanks to [Android Annotations](https://github.com/excilys/androidannotations)
 
