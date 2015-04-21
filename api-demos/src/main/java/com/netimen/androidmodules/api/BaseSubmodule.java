@@ -13,7 +13,7 @@ import com.netimen.androidmodules.helpers.Bus;
 import org.androidannotations.annotations.EBean;
 
 @EBean
-public abstract class BaseApi {
+public abstract class BaseSubmodule {
 
     @Inject
     protected Bus bus;

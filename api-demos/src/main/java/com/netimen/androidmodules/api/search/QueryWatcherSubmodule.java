@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import com.netimen.androidmodules.annotations.Module;
 import com.netimen.androidmodules.annotations.Request;
-import com.netimen.androidmodules.api.BaseApi;
+import com.netimen.androidmodules.api.BaseSubmodule;
 import com.netimen.androidmodules.api.events.InputChanged;
 import com.netimen.androidmodules.demo.R;
 import com.netimen.androidmodules.demo.WorkFragment;
@@ -22,7 +22,7 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
 @EBean
-public class QueryWatcherApi extends BaseApi {
+public class QueryWatcherSubmodule extends BaseSubmodule {
     @ViewById
     EditText editQuery;
 

@@ -3,41 +3,41 @@
  * All Rights Reserved.
  *
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
- * Date:   25.03.15
+ * Date:   12.03.15
  */
-package com.netimen.androidmodules.api.search;
+package com.netimen.androidmodules.api.calc;
 
 import android.widget.Button;
 
 import com.netimen.androidmodules.annotations.Event;
-import com.netimen.androidmodules.api.BaseApi;
-import com.netimen.androidmodules.api.events.GetQuery;
+import com.netimen.androidmodules.api.BaseSubmodule;
+import com.netimen.androidmodules.api.events.Calc;
+import com.netimen.androidmodules.api.events.GetNumber;
 import com.netimen.androidmodules.api.events.InputChanged;
-import com.netimen.androidmodules.api.events.Search;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
 
-
 @EBean
-public class PerformSearchApi extends BaseApi {
+public class PerformCalcSubmodule extends BaseSubmodule {
+
     @ViewById
-    Button search;
+    Button calc;
 
     @Event
     void onInputChanged(InputChanged event) {
-        search.setEnabled(!event.isEmpty);
+        calc.setEnabled(!event.isEmpty);
     }
 
     @Click
-    void search() {
-        bus.event(new Search(bus.request(new GetQuery())));
+    void calc() {
+        bus.event(new Calc(bus.request(new GetNumber())));
     }
 
     @EditorAction
-    void editQuery() {
-        search();
+    void editNumber() {
+        calc();
     }
 }

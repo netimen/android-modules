@@ -12,15 +12,15 @@ import android.widget.TextView;
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.annotations.Event;
 import com.netimen.androidmodules.api.events.Search;
-import com.netimen.androidmodules.api.search.PerformSearchApi;
-import com.netimen.androidmodules.api.search.QueryWatcherApi;
+import com.netimen.androidmodules.api.search.PerformSearchSubmodule;
+import com.netimen.androidmodules.api.search.QueryWatcherSubmodule;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 @EFragment(R.layout.fragment_search)
-@EModule(submodules = {PerformSearchApi.class, QueryWatcherApi.class})
+@EModule(submodules = {PerformSearchSubmodule.class, QueryWatcherSubmodule.class})
 public class SearchFragment extends WorkFragment {
 
     @ViewById

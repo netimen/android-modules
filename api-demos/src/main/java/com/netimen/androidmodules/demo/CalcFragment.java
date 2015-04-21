@@ -11,15 +11,15 @@ import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.annotations.Event;
-import com.netimen.androidmodules.api.calc.NumberWatcherApi;
-import com.netimen.androidmodules.api.calc.PerformCalcApi;
+import com.netimen.androidmodules.api.calc.NumberWatcherSubmodule;
+import com.netimen.androidmodules.api.calc.PerformCalcSubmodule;
 import com.netimen.androidmodules.api.events.Calc;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_calc)
-@EModule(submodules = {PerformCalcApi.class, NumberWatcherApi.class})
+@EModule(submodules = {PerformCalcSubmodule.class, NumberWatcherSubmodule.class})
 public class CalcFragment extends WorkFragment {
 
     @ViewById
