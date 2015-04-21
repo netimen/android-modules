@@ -123,8 +123,8 @@ android {
 }
 ```
 
-## Hacks used
+## Relations to Android Annotations library
+**Android Modules** is inspired by and is only possible thanks to [Android Annotations](https://github.com/excilys/androidannotations).
 
-
-Inspired by and thanks to [Android Annotations](https://github.com/excilys/androidannotations)
+But here comes the complex part. Due to java limitations if Android Annotations library genreated a MapsActivity_.java file, no other annotation processing library can modify it. So to use simultaneously Android Modules and Android Annotations I had to plug into the Android Annotations library. Currently this solution is not officially supported by Android Annotations and is a little bit hacky, but hopefully they will provide plugin system in a future release
 
