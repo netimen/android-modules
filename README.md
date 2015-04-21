@@ -8,6 +8,7 @@ A library allowing to split large classes into several independent modules. This
 
 Like in [Android Annotations](https://github.com/excilys/androidannotations) all the code is generated and reflection isn't used, so we don't get much performance impact. Also the library uses only [3 very small classes](annotations/src/main/java/com/netimen/androidmodules/helpers) to function, so it doesn't add much to the APK size.
 
+## API usage
 ```java
 @EModule(submodules={FindPlaceSubmodule.class, CalcDistanceSubmodule.class, UserActionsSubmodule.class})
 public class MapsActivity extends Activity {
@@ -17,11 +18,40 @@ public class MapsActivity extends Activity {
 Now we can put all the code into submodule classes, which must be annotated with [@EBean](https://github.com/excilys/androidannotations/wiki/Enhance-custom-classes)
 ```java
 @EBean
+public class UserActionsSubmodule {
+    @Inject
+    Bus bus; // submodules don't call each other's methods directly and use Bus to communicate.
+
+    @Click
+    void clear() {
+        bus.event(new ClearMap());
+    }
+}
+
+@EBean
 public class FindPlaceSubmodule {
-    @Event // submodules don't call each other's methods directly and use [Bus]() to communicate
-    void clearMap() {
+
+    @ViewById
+    SearchView search;
+
+    @Event
+    void clearMap() { // subscribes to ClearMap event issued by UserActionsSubmodule
         search.clearFocus();
     }
+    ... // some code related to finding places, adding markers etc.
+}
+
+@EBean
+public class CalcDistanceSubmodule {
+
+    @ViewById
+    TextView distance;
+
+    @Event
+    void clearMap() { // subscribes to ClearMap event issued by UserActionsSubmodule
+        distance.setText(null);
+    }
+    ... // some code related to distance calculation
 }
 ```
 Inspired by and thanks to [Android Annotations](https://github.com/excilys/androidannotations)
