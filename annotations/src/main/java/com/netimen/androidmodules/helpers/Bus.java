@@ -5,12 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides type-safe communication between submodules. Consists of event and request systems.
+ * <p>
+ * {@link #event(Object)} is used to notify about some event and to pass some data via it's parameter. There can be any number of listeners of event of certain type
+ * <p>
+ * {@link #request(com.netimen.androidmodules.helpers.Bus.Request)} is used to retrieve some data from another submodule. There can be ONLY ONE processor of request of certain type.
+ */
 @SuppressWarnings("UnusedDeclaration")
 public class Bus {
 
     private final Map<Class<?>, RequestProcessor> requestProcessors = new HashMap<>();
     private final Map<Class<?>, List<EventListener>> eventListeners = new HashMap<>();
 
+    /**
+     * it's better not to call this method directly, but to use {@link com.netimen.androidmodules.annotations.Request} instead
+     */
     public <RESULT, R extends Request<RESULT>> void register(Class<R> requestClass, RequestProcessor<RESULT, R> processor) {
         requestProcessors.put(requestClass, processor);
     }
@@ -23,6 +33,9 @@ public class Bus {
 
     ///
 
+    /**
+     * it's better not to call this method directly, but to use {@link com.netimen.androidmodules.annotations.Event} instead
+     */
     public <E> void register(Class<E> eventClass, EventListener<E> listener) {
         List<EventListener> listeners = eventListeners.get(eventClass);
         if (listeners == null) {

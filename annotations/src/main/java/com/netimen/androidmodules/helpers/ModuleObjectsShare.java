@@ -15,7 +15,8 @@ import java.util.Set;
 /**
  * Inspired by Dagger's module concept.
  * Used for sharing objects between submodules. Stores only one instance per class.
- * Submodules call {@link com.netimen.androidmodules.helpers.ModuleObjectsShare#getInstance(Class)} to get a shared object.
+ * <p>
+ * Submodules call {@link #getInstance(Class)} to get a shared object.
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ModuleObjectsShare {

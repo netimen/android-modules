@@ -16,10 +16,8 @@ import java.lang.annotation.Target;
  * The main annotation of the library. Used when we have some activity or fragment performing several almost independent tasks, but using the same UI for this. For example, when we have some fragment with WebView or MapView performing many tasks on it. This annotation helps to split this code into several files, providing better code readability, maintainability and reuse.
  * <p>
  * Currently the class MUST be an enhanced compononent (so annotated with {@link org.androidannotations.annotations.EBean}, {@link org.androidannotations.annotations.EFragment} etc). Sumbodules MUST be classes annotated with {@link org.androidannotations.annotations.EBean}. Submodules lifecycle is tied to the module lifecycle.
- * </p>
  * <p>
  * The submodules are supposed to avoid direct calling each other's methods and to communicate via {@link com.netimen.androidmodules.helpers.Bus} instead.
- * </p>
  * <pre>
  * &#064;EActivity(R.layout.activity_maps)
  * &#064;EModule(submodules = {FindPlaceSubmodule.class, CalcDistanceSubmodule.class})
