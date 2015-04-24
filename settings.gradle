@@ -1,1 +1,1 @@
-include ':api-demos', ':annotations', ':annotation-processor', ':mapsdemo'
+include ':api-demos', ':androidmodules-api', ':androidmodules-apt', ':mapsdemo'

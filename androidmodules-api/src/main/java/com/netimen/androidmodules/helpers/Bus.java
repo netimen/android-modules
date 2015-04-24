@@ -71,7 +71,7 @@ public class Bus {
     }
 
     public interface RequestProcessor<RESULT, R extends Request<RESULT>> {
-        public RESULT process(R request);
+        RESULT process(R request);
     }
 
     ///
