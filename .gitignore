@@ -28,13 +28,17 @@ proguard/
 *.ipr
 *.iws
 .idea/
-.DS_Store
 
-#Gradle files
+# Windows & OS X stuff
+.DS_Store
+Thumbs.db
+
+
+# Gradle files
 .gradle
 gradle-app.setting
 
-#other stuff
+# other stuff
 *.hprof
 hs_err*
 
