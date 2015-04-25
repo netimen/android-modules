@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply from: '../maven_push.gradle'
 
 android {
     compileSdkVersion 21
@@ -23,3 +22,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 }
+
