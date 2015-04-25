@@ -5,15 +5,18 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
-
+        classpath 'com.android.tools.build:gradle:1.1.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.1"
+}
+
 allprojects {
+    version = '1.0.1' // CUR specify version, publish src & javadoc, apt, stupid gradle warns
     repositories {
         jcenter()
     }
