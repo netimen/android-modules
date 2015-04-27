@@ -1,7 +1,7 @@
 package com.netimen.androidmodules;
 
 
-import com.netimen.androidmodules.helpers.ModuleProvider;
+import com.netimen.androidmodules.helpers.ModuleObjectsShare;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,34 +19,34 @@ public class ModuleTest {
 
     @Before
     public void setUp() {
-        ModuleProvider.clearModules();
+        ModuleObjectsShare.clearModules();
     }
 
     @Test
     public void initModuleAndModuleExists() {
         final String moduleName = "module";
-        assertFalse(ModuleProvider.moduleExists(moduleName));
-        ModuleProvider.createModule(moduleName);
-        assertTrue(ModuleProvider.moduleExists(moduleName));
+        assertFalse(ModuleObjectsShare.moduleExists(moduleName));
+        ModuleObjectsShare.createModule(moduleName);
+        assertTrue(ModuleObjectsShare.moduleExists(moduleName));
     }
 
     @Test
     public void modulesNames() {
         final HashSet<String> modulesNames = new HashSet<>(asList(new String[]{"module1", "module2", "module3"}));
         for (String moduleName: modulesNames)
-            ModuleProvider.createModule(moduleName);
-        assertEquals(ModuleProvider.modulesNames(), modulesNames);
-        ModuleProvider.createModule("aaa");
-        assertNotSame(ModuleProvider.modulesNames(), modulesNames);
+            ModuleObjectsShare.createModule(moduleName);
+        assertEquals(ModuleObjectsShare.modulesNames(), modulesNames);
+        ModuleObjectsShare.createModule("aaa");
+        assertNotSame(ModuleObjectsShare.modulesNames(), modulesNames);
     }
 
     @Test
     public void getInstance() {
-        ModuleProvider.createModule("module");
-        assertNull(ModuleProvider.getInstance(Integer.class));
+        ModuleObjectsShare.createModule("module");
+        assertNull(ModuleObjectsShare.getInstance(Integer.class));
         final Integer instance = 5;
-        ModuleProvider.setInstance(Integer.class, instance);
-        assertEquals(instance, ModuleProvider.getInstance(Integer.class));
+        ModuleObjectsShare.setInstance(Integer.class, instance);
+        assertEquals(instance, ModuleObjectsShare.getInstance(Integer.class));
     }
 
     @Test
@@ -54,13 +54,13 @@ public class ModuleTest {
         createInstanceInModule("module1", 5);
         final Integer instance = 4;
         createInstanceInModule("module2", instance);
-        assertEquals(instance, ModuleProvider.getInstance(Integer.class)); // when retrieving without modulename, should return last module's instance
+        assertEquals(instance, ModuleObjectsShare.getInstance(Integer.class)); // when retrieving without modulename, should return last module's instance
     }
 
     void createInstanceInModule(String moduleName, Integer instance) {
-        ModuleProvider.createModule(moduleName);
-        assertNull(ModuleProvider.getInstance(Integer.class));
-        ModuleProvider.setInstance(Integer.class, instance);
-        assertEquals(instance, ModuleProvider.getInstance(moduleName, Integer.class));
+        ModuleObjectsShare.createModule(moduleName);
+        assertNull(ModuleObjectsShare.getInstance(Integer.class));
+        ModuleObjectsShare.setInstance(Integer.class, instance);
+        assertEquals(instance, ModuleObjectsShare.getInstance(moduleName, Integer.class));
     }
 }
