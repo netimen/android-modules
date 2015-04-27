@@ -20,3 +20,10 @@ allprojects {
         jcenter()
     }
 }
+
+ext { // publishing: run ./gradlew generateRelease to publish
+    PUBLISH_GROUP_ID = 'com.netimen'
+    PUBLISH_VERSION = '1.0.9'
+    PUBLISH_ARTIFACT_ID = name
+    // CUR  apt
+}
