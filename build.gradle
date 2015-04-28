@@ -5,16 +5,38 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
-
+        classpath 'com.android.tools.build:gradle:1.1.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.1"
 }
 
 allprojects {
     repositories {
         jcenter()
     }
+
+    // publishing
+    group = "com.netimen"
+    version = '1.2.0'
+
+    ext {
+        siteUrl = 'https://github.com/netimen/android-modules'
+        gitUrl = 'git@github.com:netimen/android-modules.git'
+        shortDescr = 'Android Modules, a library allowing splitting large classes into independent modules'
+
+        developerId = 'netimen'
+        developerName = 'Dmitry Gordeev'
+        developerEmail = 'netimen@gmail.com'
+
+        bintrayRepoName = 'android-modules'
+        bintrayApiKey = 'ea310abeba42de8631bf205f87f466ffbc2ade68'
+
+        publishAndroidLibraryAsJar = true // for more info read http://theartofdev.com/2015/02/19/publish-android-library-to-bintray-jcenter-aar-vs-jar-and-optional-dependency/
+    }
 }
+

@@ -1,0 +1,67 @@
+// thanks to https://www.virag.si/2015/01/publishing-gradle-android-library-to-jcenter/
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+if (hasProperty('android'))
+    apply from: '../publishing-android.gradle'
+else
+    apply from: '../publishing-java.gradle'
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            //noinspection GroovyAssignabilityCheck
+            project {
+                packaging 'aar'
+
+                //noinspection GroovyAssignabilityCheck
+                name shortDescr
+                url siteUrl
+
+                licenses {
+                    license {
+                        //noinspection GroovyAssignabilityCheck
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        //noinspection GrUnresolvedAccess,GroovyAssignabilityCheck
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection siteUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = developerId
+    key = bintrayApiKey
+
+    publish = true
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepoName
+        name = project.name // bintray package name now equals module name
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+    }
+}
+
