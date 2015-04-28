@@ -1,0 +1,77 @@
+// https://www.virag.si/2015/01/publishing-gradle-android-library-to-jcenter/
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+def siteUrl = 'https://github.com/netimen/android-modules'
+def gitUrl = 'git@github.com:netimen/android-modules.git'
+
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+
+                name 'Android Modules, a library allowing splitting large classes into independent modules'
+                url siteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'netimen'
+                        name 'Dmitry Gordeev'
+                        email 'netimen@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+//task javadoc(type: Javadoc) {
+//    source = sourceSets.main.java.srcDirs
+//    classpath += project.files(getBootClasspath().join(File.pathSeparator))
+//}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = 'netimen'
+    key = 'c8138dc423b862fe5e50966c7c29741772133086'
+
+    publish = true
+    configurations = ['archives']
+    pkg {
+        repo = "androidmodules"
+        name = "androidmodules-apt"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+    }
+}
+

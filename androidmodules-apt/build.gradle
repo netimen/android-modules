@@ -25,3 +25,6 @@ dependencies {
 //apply from: 'https://raw.githubusercontent.com/ArthurHub/release-android-library/master/android-release-jar.gradle'
 
 
+apply from: '../publishing.gradle'
+bintray.pkg.name = 'bbb'
+println 'AAA3' + bintray.pkg.name
