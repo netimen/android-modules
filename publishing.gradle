@@ -1,37 +1,42 @@
-// https://www.virag.si/2015/01/publishing-gradle-android-library-to-jcenter/
+// thanks to https://www.virag.si/2015/01/publishing-gradle-android-library-to-jcenter/
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-def siteUrl = 'https://github.com/netimen/android-modules'
-def gitUrl = 'git@github.com:netimen/android-modules.git'
-
+if (hasProperty('android'))
+    apply from: '../publishing-android.gradle'
+else
+    apply from: '../publishing-java.gradle'
 
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
         pom {
+            //noinspection GroovyAssignabilityCheck
             project {
                 packaging 'aar'
 
-                name 'Android Modules, a library allowing splitting large classes into independent modules'
+                //noinspection GroovyAssignabilityCheck
+                name shortDescr
                 url siteUrl
 
                 licenses {
                     license {
+                        //noinspection GroovyAssignabilityCheck
                         name 'The Apache Software License, Version 2.0'
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
                 developers {
                     developer {
-                        id 'netimen'
-                        name 'Dmitry Gordeev'
-                        email 'netimen@gmail.com'
+                        id developerId
+                        //noinspection GrUnresolvedAccess,GroovyAssignabilityCheck
+                        name developerName
+                        email developerEmail
                     }
                 }
                 scm {
                     connection gitUrl
-                    developerConnection gitUrl
+                    developerConnection siteUrl
                     url siteUrl
 
                 }
@@ -40,35 +45,20 @@ install {
     }
 }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-//task javadoc(type: Javadoc) {
-//    source = sourceSets.main.java.srcDirs
-//    classpath += project.files(getBootClasspath().join(File.pathSeparator))
-//}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
 artifacts {
     archives javadocJar
     archives sourcesJar
 }
 
 bintray {
-    user = 'netimen'
-    key = 'c8138dc423b862fe5e50966c7c29741772133086'
+    user = developerId
+    key = bintrayApiKey
 
     publish = true
     configurations = ['archives']
     pkg {
-        repo = "androidmodules"
-        name = "androidmodules-apt"
+        repo = bintrayRepoName
+        name = project.name // bintray package name now equals module name
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

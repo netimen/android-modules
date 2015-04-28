@@ -15,16 +15,4 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
 }
 
-/// publishing: run ./gradlew clean build generateRelease to publish
-
-//ext {
-//    PUBLISH_ARTIFACT_ID = name
-//}
-//
-//// we publish as jar, not aar due to stupid AStudio bug: it can't attach sources to aar dependency http://theartofdev.com/2015/02/19/publish-android-library-to-bintray-jcenter-aar-vs-jar-and-optional-dependency/
-//apply from: 'https://raw.githubusercontent.com/ArthurHub/release-android-library/master/android-release-jar.gradle'
-
-
 apply from: '../publishing.gradle'
-bintray.pkg.name = 'bbb'
-println 'AAA3' + bintray.pkg.name

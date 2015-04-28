@@ -19,14 +19,24 @@ allprojects {
     repositories {
         jcenter()
     }
-    group = "com.netimen"
-    version = '1.0.3'
-}
 
-ext { // publishing: run ./gradlew generateRelease to publish
-    PUBLISH_GROUP_ID = 'com.netimen'
-    PUBLISH_VERSION = '1.0.9'
-    PUBLISH_ARTIFACT_ID = name
-    // CUR  apt
+    // publishing
+    group = "com.netimen"
+    version = '1.0.29'
+
+    ext {
+        siteUrl = 'https://github.com/netimen/android-modules'
+        gitUrl = 'git@github.com:netimen/android-modules.git'
+        shortDescr = 'Android Modules, a library allowing splitting large classes into independent modules'
+
+        developerId = 'netimen'
+        developerName = 'Dmitry Gordeev'
+        developerEmail = 'netimen@gmail.com'
+
+        bintrayRepoName = 'androidmodules'
+        bintrayApiKey = 'ea310abeba42de8631bf205f87f466ffbc2ade68'
+
+        publishAndroidLibraryAsJar = true // for more info read http://theartofdev.com/2015/02/19/publish-android-library-to-bintray-jcenter-aar-vs-jar-and-optional-dependency/
+    }
 }
 

@@ -1,0 +1,25 @@
+if (publishAndroidLibraryAsJar)// this is needed for publishing jar instead of aar, because of this stupid IntelliJ bug https://youtrack.jetbrains.com/issue/IDEA-130028
+    android.libraryVariants.all { variant ->
+        def name = variant.buildType.name
+        if (!name.equals('debug')) {
+            def task = project.tasks.create "jar${name.capitalize()}", Jar
+            task.dependsOn variant.javaCompile
+            task.from variant.javaCompile.destinationDir
+            artifacts.add('archives', task);
+        }
+    }
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
