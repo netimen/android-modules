@@ -22,7 +22,7 @@ allprojects {
 
     // publishing
     group = "com.netimen"
-    version = '1.0.29'
+    version = '1.2.0'
 
     ext {
         siteUrl = 'https://github.com/netimen/android-modules'
@@ -33,7 +33,7 @@ allprojects {
         developerName = 'Dmitry Gordeev'
         developerEmail = 'netimen@gmail.com'
 
-        bintrayRepoName = 'androidmodules'
+        bintrayRepoName = 'android-modules'
         bintrayApiKey = 'ea310abeba42de8631bf205f87f466ffbc2ade68'
 
         publishAndroidLibraryAsJar = true // for more info read http://theartofdev.com/2015/02/19/publish-android-library-to-bintray-jcenter-aar-vs-jar-and-optional-dependency/
