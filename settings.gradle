@@ -1,1 +1,1 @@
-include ':api-demos', ':androidmodules-api', ':androidmodules-apt', ':mapsdemo'
+include ':api-demos', ':android-modules-api', ':android-modules-apt', ':mapsdemo'

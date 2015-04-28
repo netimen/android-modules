@@ -39,8 +39,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile "org.androidannotations:androidannotations-api:3.2"
 
-    apt project(':androidmodules-apt')
-    compile project(':androidmodules-api')
+    apt project(':android-modules-apt')
+    compile project(':android-modules-api')
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
