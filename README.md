@@ -78,10 +78,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 dependencies {
-    compile "org.androidannotations:androidannotations-api:3.2"
-    compile "com.netimen.androidmodules:androidmodules-api:1.0.0"
+    compile 'org.androidannotations:androidannotations-api:3.2'
 
-    apt "com.netimen.androidmodules:1.0.0" // we replace Android Annotations processor with Android Modules processor
+    compile 'com.netimen:android-modules-api:1.2.0'
+    apt 'com.netimen:android-modules-apt:1.2.0' // we replace Android Annotations processor with Android Modules processor
 }
 
 apt { // exactly same arguments as for Android Annotations
@@ -122,6 +122,8 @@ android {
     }
 }
 ```
+## Working Sample
+Please see [this project](https://github.com/netimen/android-modules-demo)
 
 ## Relations to Android Annotations library
 **Android Modules** is inspired by and is only possible thanks to [Android Annotations](https://github.com/excilys/androidannotations).
