@@ -8,11 +8,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:1.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'  // http://stackoverflow.com/a/30151830/190148
     }
-}
-
-plugins {
-    id "com.jfrog.bintray" version "1.1"
 }
 
 allprojects {
@@ -20,9 +17,9 @@ allprojects {
         jcenter()
     }
 
-    // publishing: inc version and execute 'bintrayUpload' for -api and -apt (regenerate the key if errors occur)
+    // publishing: inc version and execute 'bintrayUpload' (regenerate the key if errors occur)
     group = "com.netimen"
-    version = '1.2.1'
+    version = '1.2.2'
 
     ext {
         siteUrl = 'https://github.com/netimen/android-modules'
@@ -34,7 +31,7 @@ allprojects {
         developerEmail = 'netimen@gmail.com'
 
         bintrayRepoName = 'android-modules'
-        bintrayApiKey = 'f875dda004b34a9247a7b22eb4efb451e13e2a9d'
+        bintrayApiKey = '4846aadbb7a7d97f468fb4a704d24eb91b43ef09'
 
         publishAndroidLibraryAsJar = true // for more info read http://theartofdev.com/2015/02/19/publish-android-library-to-bintray-jcenter-aar-vs-jar-and-optional-dependency/
     }
