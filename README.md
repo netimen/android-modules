@@ -8,6 +8,9 @@ A library allowing to split large classes into several independent modules. This
 
 Like in [Android Annotations](https://github.com/excilys/androidannotations) all the code is generated and reflection isn't used, so we don't get much performance impact. Also the library uses only [3 very small classes](annotations/src/main/java/com/netimen/androidmodules/helpers) to function, so it doesn't add much to the APK size.
 
+## Release Notes
+Version **1.2.1** is out. Supports [Android Annotations](https://github.com/excilys/androidannotations) **3.3.1**
+
 ## API usage
 ```java
 @EModule(submodules={FindPlaceSubmodule.class, CalcDistanceSubmodule.class, UserActionsSubmodule.class})
@@ -79,9 +82,8 @@ apply plugin: 'android-apt'
 
 dependencies {
     compile 'org.androidannotations:androidannotations-api:3.3.1'
-
-    compile 'com.netimen:android-modules-api:1.2.0'
-    apt 'com.netimen:android-modules-apt:1.2.0' // we replace Android Annotations processor with Android Modules processor
+    compile 'com.netimen:android-modules-api:1.2.1'
+    apt 'com.netimen:android-modules-apt:1.2.1' // we replace Android Annotations processor with Android Modules processor
 }
 
 apt { // exactly same arguments as for Android Annotations
