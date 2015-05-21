@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.netimen.androidmodules.annotations.EModule;
 import com.netimen.androidmodules.annotations.Event;
+import com.netimen.androidmodules.apidemos.events.Calc;
 import com.netimen.androidmodules.apidemos.submodules.calc.NumberWatcherSubmodule;
 import com.netimen.androidmodules.apidemos.submodules.calc.PerformCalcSubmodule;
-import com.netimen.androidmodules.apidemos.events.Calc;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_calc)
@@ -29,6 +30,7 @@ public class CalcFragment extends WorkFragment {
         super("calc");
     }
 
+    @UiThread // just to make sure such a combination compiles OK
     @Event
     void calc(Calc calc) {
         result.setText(" " + (calc.number * calc.number));

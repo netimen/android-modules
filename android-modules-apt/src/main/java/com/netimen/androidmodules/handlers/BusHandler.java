@@ -26,6 +26,7 @@ import com.sun.codemodel.JType;
 import com.sun.codemodel.JVar;
 
 import org.androidannotations.handler.BaseAnnotationHandler;
+import org.androidannotations.helper.APTCodeModelHelper;
 import org.androidannotations.helper.AnnotationHelper;
 import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
@@ -48,6 +49,7 @@ import static com.sun.codemodel.JMod.PUBLIC;
 
 public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder> {
     private final AnnotationHelper annotationHelper;
+    private final APTCodeModelHelper codeModelHelper = new APTCodeModelHelper();
     private ParamType firstParamType = ParamType.NONE, secondParamType = ParamType.NONE;
 
     BusHandler(Class<?> targetClass, ProcessingEnvironment processingEnvironment) {
@@ -57,6 +59,8 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     @Override
     protected void validate(Element element, AnnotationElements validatedElements, IsValid valid) {
+        if (skipGeneratedClass(element)) // I can't prevent copying @Event etc to generated class, so just don't process it
+            return;
 
         validatorHelper.enclosingElementHasEnhancedComponentAnnotation(element, validatedElements, valid);
 
@@ -70,10 +74,12 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     @Override
     public void process(Element element, EComponentHolder holder) throws Exception {
+        if (skipGeneratedClass(element)) // I can't prevent copying @Event etc to generated class, so just don't process it
+            return;
 
         final String methodName = element.getSimpleName().toString(); // isPublic
         parseParameters((ExecutableElement) element);
-        final JClass eventOrRequestClass = getEventOrRequestClass((ExecutableElement) element, methodName); // IsPublic.class
+        final JClass eventOrRequestClass = getEventOrRequestClass((ExecutableElement) element, methodName, holder); // IsPublic.class
         if (eventOrRequestClass == null)
             return;
 
@@ -138,7 +144,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
 
     ////
 
-    JClass getEventOrRequestClass(ExecutableElement element, String methodName) {
+    JClass getEventOrRequestClass(ExecutableElement element, String methodName, EComponentHolder holder) {
         if (Character.isUpperCase(methodName.charAt(0))) {
             methodNameEqualsClassNameError(element, methodName);
             return null;
@@ -152,9 +158,9 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
             classType = element.getParameters().get(1).asType();
 
         String className, extractedName = null;
-        if (classType != null)
+        if (classType != null) {
             className = classType.toString();
-        else {
+        } else {
             extractedName = methodName.startsWith("on") ? methodName.substring(2) : methodName;
             extractedName = extractedName.substring(0, 1).toUpperCase() + extractedName.substring(1); // making it start from an uppercase letter
             className = SourceHelper.getClassesFullNameMap(processingEnv).get(extractedName); // trying to guess the package
@@ -167,7 +173,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         try {
             JClass jClass = SourceHelper.getClass(className); // for some reason if I call codeModel().ref twice on the same class it doesn't get imported correctly in the generated code. So I reuse previous JClass instead
             if (jClass == null) {
-                jClass = codeModel().ref(className);
+                jClass = classType != null ? codeModelHelper.typeMirrorToJClass(classType, holder) : codeModel().ref(className);
                 SourceHelper.addClass(className, jClass);
             }
             return jClass;
@@ -252,4 +258,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
         NONE, EVENT_OR_REQUEST, MODULE
     }
 
+    private boolean skipGeneratedClass(Element element) {
+        return element.getEnclosingElement().getSimpleName().toString().endsWith("_");
+    }
 }
