@@ -19,7 +19,7 @@ allprojects {
 
     // publishing: inc version and execute 'bintrayUpload' (regenerate the key if errors occur)
     group = "com.netimen"
-    version = '1.2.5'
+    version = '1.2.6'
 
     ext {
         siteUrl = 'https://github.com/netimen/android-modules'
