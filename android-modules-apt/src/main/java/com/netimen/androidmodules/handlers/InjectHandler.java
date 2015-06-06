@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2015 Bookmate.
  * All Rights Reserved.
- *
+ * <p/>
  * Author: Dmitry Gordeev <netimen@dreamindustries.co>
  * Date:   12.03.15
  */
@@ -13,11 +13,14 @@ import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JFieldRef;
 
+import org.androidannotations.annotations.EBean;
 import org.androidannotations.handler.BaseAnnotationHandler;
 import org.androidannotations.helper.TargetAnnotationHelper;
 import org.androidannotations.holder.EComponentHolder;
 import org.androidannotations.model.AnnotationElements;
 import org.androidannotations.process.IsValid;
+
+import java.lang.annotation.Annotation;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -55,6 +58,11 @@ public class InjectHandler extends BaseAnnotationHandler<EComponentHolder> {
         JFieldRef injectField = ref(element.getSimpleName().toString());
 
         final JBlock initBody = holder.getInitBody();
-        initBody.assign(injectField, ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), holder.getInit(), injectedClass, "")); // field = Module.getInstance()
+        initBody.assign(injectField, ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, annotationHelper, holder.getGeneratedClass(), holder.getInit(), injectedClass, "", typeHasAnnotation(typeMirror, EBean.class))); // field = Module.getInstance()
+    }
+
+    boolean typeHasAnnotation(TypeMirror type, Class<? extends Annotation> annotation) {
+        Element typeElement = annotationHelper.getTypeUtils().asElement(type);
+        return typeElement.getAnnotation(annotation) != null;
     }
 }

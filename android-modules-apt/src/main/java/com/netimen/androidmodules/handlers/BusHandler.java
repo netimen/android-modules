@@ -240,7 +240,7 @@ public abstract class BusHandler extends BaseAnnotationHandler<EComponentHolder>
     }
 
     private void register(EComponentHolder holder, Element element, String methodName, JClass eventOrRequestClass, String moduleName, JMethod method) {
-        final JInvocation getBus = ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName);
+        final JInvocation getBus = ModuleCodeGenerator.moduleGetInstanceOrAddDefaultIfNeeded(holder, annotationHelper, holder.getGeneratedClass(), method, codeModel().ref(Bus.class), moduleName, false);
         performRegister(eventOrRequestClass, createProcessingClass(holder, element, methodName, eventOrRequestClass, lit(moduleName)), method.body(), getBus);
     }
 
